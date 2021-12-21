@@ -224,23 +224,25 @@ export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
 ## pluggin
-[[ -f /etc/profile ]] &&     . /etc/profile   
+[[ ! -f /etc/profile ]] &&     . /etc/profile   
 
 ## private-alias
-source $HOME/ownCloud/private-git/p-aliasrc
+[[ -f $HOME/ownCloud/private-git/p-aliasrc ]] && source $HOME/ownCloud/private-git/p-aliasrc
 
 ## oh-my-zsh 
-source /usr/share/oh-my-zsh/    
-[[ -f ~/.dir_colors ]] &&    eval `dircolors ~/.dir_colors`
+[[ ! -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
+
+## dir-colors
+[[ ! -f ~/.dir_colors ]] &&    eval `dircolors ~/.dir_colors`
 
 ## zsh-autosuggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ ! -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 ## Use syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ ! -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 ## Use history substring search
- source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+[[ ! -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] ; source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
  
 ## bind UP and DOWN arrow keys to history substring search
 #zmodload zsh/terminfo
@@ -250,7 +252,7 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # powerlevel10k
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
 [[ ! -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
