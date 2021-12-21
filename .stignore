@@ -1,0 +1,169 @@
+#!/bin/bash
+#/          ##Block all
+#(?d).local                                ##Proxy Video Editor -- Notiz
+
+############## Test / Todo #############
+#
+#(?d)(?i)*history*
+#(?d)(?i)*Trash*
+
+#(?d)VirtualBox VMs
+#
+########################################
+########################################
+
+## allow
+#(?i)!Preferences
+(?i)!setting*
+!.cfg
+!.conf
+!*sync-conflict*
+
+(?d).cargo*
+(?d)Downloads
+(?d).local/share/webkitgtk/*
+(?d)(?i)*Cookies*
+(?d).config/balena-etcher/
+(?d).config/libreoffice/
+(?d)*databases/
+(?d).lesshst
+(?d)*/gce
+(?d)*obs-studio/
+(?d).config/ghb
+(?d).config/deluge
+(?d).config/bode
+(?d)gPodder
+(?d)*Bitwarden
+(?d)diffuse
+(?d)(?i)*Session*
+(?i)(?d)*cache*
+(?d).vscode*
+(?i)(?d)*history*
+
+## Popcorntime
+(?d).config/Popcorn-Time/*
+!.config/Popcorn-Time/Default/Preferences
+!.config/Popcorn-Time/Default/data/settings.db
+
+## Microsoft
+(?d)*.wine
+(?d)*desktop.ini*
+(?d)$RECYCLE.BIN
+(?d)System Volume Information
+(?d)*.jak
+(?d).config/Microsoft*
+(?d).config/teams/
+
+## qBittorrent
+(?d).config/qBittorrent/
+
+## tmp file
+(?d)*.tmp
+(?d)(?i)*temp*
+(?d)*._mp
+(?d)*.old
+(?d)*.syd
+(?d)*.dir
+(?d)*.gid
+(?d)*.chk
+(?d)*.dmp
+(?d)*.nch
+(?d)*..swp
+(?d)~
+(?d)(?i)*.log*
+(?d)(?i)*logs.*
+(?d)*.db*
+(?d)*_db*
+(?d)*.ds
+kglobalshortcutsrc
+(?d)*.list
+(?d)*dconf
+(?d)(?i)sublime
+(?d)*.steam
+(?d)*lutris
+(?d)*PlayOnLinux
+(?d)*BlackmagicDesign
+
+# Visual code / codium, vscode
+(?d)(?i)*vscod*
+(?d)*vsliveshare*
+
+#.thunderbird
+(?d).thunderbird/
+
+.gnupg
+(?d)Schreibtisch
+(?i)*barrier*
+(?d)VBoxSVC
+(?d)selectorwindow
+(?d)(?i)kdenlive
+(?d)(?i)shotcut
+(?d)(?i)Thunar
+(?d)M-link*
+(?i)(?d)VirtualBox
+(?d)snap
+(?d)proxy
+showfoto
+.zcompdump
+(?d)(?i)*zeitgeist
+(?d)*Telegram*
+(?d)(?i)*metadata
+*keyring
+.npm
+recently-used.*
+(?d)evolution
+(?d)*maps*
+
+## ownCloud Ignorelist ##
+#.owncloudsync
+##.stfolder                                ## Don't delete
+!.stignore
+(?d)*.stversions*
+(?d)*.subversion*
+(?d)*.oscamerafaceu*
+(?d)owncloud.cfg
+
+
+
+## syncthing
+.config/syncthing/
+
+
+
+## Android
+(?d)thumbnails
+(?d)*.android
+
+##.ssh
+.ssr
+(?d)VM-share-rsx
+(?d)*nvidia*
+
+## .Xauthority programm opener if delete false
+*.xinitrc*
+*.Xauthority*
+(?d)*.xsession*
+
+# xfce-panel
+(?d)*.config/xfce4/
+(?d)*.config/pavucontrol.ini
+!*notes*
+!config/xfce4/panel*
+
+# Signal
+(?d).config/Signal/
+
+# whatsapp
+(?d).config/skypeforlinux/
+
+# Messenger
+(?d)(?i).config/Caprine/
+
+# GitHub Desktop
+(?d)GitHub
+
+## Brave #don't delete
+.config/BraveSoftware/   
+
+## Sound Pipewire
+(?d).local/state/
