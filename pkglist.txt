@@ -237,11 +237,15 @@ mugshot
 mysql++
 nano
 nemo
+nemo-audio-tab
 nemo-bulk-rename
+nemo-emblems
 nemo-engrampa
 nemo-image-converter
 nemo-preview
 nemo-repairer
+nemo-run-with-nvidia-prime-run
+nemo-seahorse
 nemo-terminal
 neovim
 nerd-fonts-terminus
@@ -301,6 +305,7 @@ python-jedi
 python-typogrify
 qbittorrent
 qt5-translations
+rabbitvcs-nemo
 ranger
 rclone
 rclone-browser

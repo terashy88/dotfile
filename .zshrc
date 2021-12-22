@@ -1,7 +1,7 @@
 #!/bin/bash
                            ### By the way if it ain't broke, break it then fix it. ###
 export PATH=$PATH:~/.local/bin
-source /etc/profile
+export PATH=$PATH:~/ownCloud/.bin
 
 
 # Pfetch, Neofetch Terminal CPU info 
@@ -9,22 +9,14 @@ pfetch
 
 echo '                     Yes Richard'
 
-
-
-
-
 ################## Test ####################
 
 
 
-
+#if pfetch ; then pfetch ; else neofetch 
+#fi 
 #Exec=prime-run cmatrix
-################## Test ####################
 
-# Load aliases and shortcuts if existent.
-[ -f "$HOME/aliasrc" ] && source "$HOME/aliasrc"
-
-#[ -n "$PS1" ] && source ~/.bash_profile;
 
 ###############################################
 
@@ -223,8 +215,13 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
-## pluggin
+## pluggin          #[ -n "$PS1" ] && source ~/.bash_profile;
+
+## profile
 [[ ! -f /etc/profile ]] &&     . /etc/profile   
+
+## aliasrc
+[ -f "$HOME/aliasrc" ] && source "$HOME/aliasrc"
 
 ## private-alias
 [[ -f $HOME/ownCloud/private-git/p-aliasrc ]] && source $HOME/ownCloud/private-git/p-aliasrc
@@ -233,7 +230,7 @@ export LESS=-r
 [[ ! -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
 
 ## dir-colors
-[[ ! -f ~/.dir_colors ]] &&    eval `dircolors ~/.dir_colors`
+[[ ! -f ~/.config/.dir_colors ]] &&    eval `dircolors ~/.config/.dir_colors`
 
 ## zsh-autosuggestions
 [[ ! -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh

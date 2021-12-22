@@ -4,11 +4,10 @@
 
 ############## Test / Todo #############
 #
-#(?d)(?i)*history*
+
 #(?d)(?i)*Trash*
 
-#(?d)VirtualBox VMs
-#
+
 ########################################
 ########################################
 
@@ -18,8 +17,9 @@
 !.cfg
 !.conf
 !*sync-conflict*
+#################
 
-(?d).cargo*
+(?d).cargo/*
 (?d)Downloads
 (?d).local/share/webkitgtk/*
 (?d)(?i)*Cookies*
@@ -27,6 +27,7 @@
 (?d).config/libreoffice/
 (?d)*databases/
 (?d).lesshst
+(?d).config/TabNine/*
 (?d)*/gce
 (?d)*obs-studio/
 (?d).config/ghb
@@ -100,13 +101,12 @@ kglobalshortcutsrc
 (?d)(?i)shotcut
 (?d)(?i)Thunar
 (?d)M-link*
-(?i)(?d)VirtualBox
 (?d)snap
 (?d)proxy
 showfoto
 .zcompdump
 (?d)(?i)*zeitgeist
-(?d)*Telegram*
+(?d)(?i)*Telegram*
 (?d)(?i)*metadata
 *keyring
 .npm
@@ -123,7 +123,9 @@ recently-used.*
 (?d)*.oscamerafaceu*
 (?d)owncloud.cfg
 
-
+## VirtualBox VMs
+VirtualBox VMs/*
+!VirtualBox VMs/arch-linux
 
 ## syncthing
 .config/syncthing/
@@ -154,7 +156,7 @@ recently-used.*
 (?d).config/Signal/
 
 # whatsapp
-(?d).config/skypeforlinux/
+(?d).config/skypeforlinux/*
 
 # Messenger
 (?d)(?i).config/Caprine/
