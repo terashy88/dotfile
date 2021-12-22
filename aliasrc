@@ -22,7 +22,7 @@ sudo          ln -fv /etc/systemd/journald.conf            $HOME/ownCloud/dotfil
               ln -fv $HOME/.config/.dir_colors             $HOME/ownCloud/dotfile/.dir_colors
               ln -fv $HOME/aliasrc                         $HOME/ownCloud/dotfile/aliasrc
               sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt
-              ;echo                  hear we go Richard'
+              ;echo                  here we go Richard'
 
 
 alias backup-restore='ln -fv $HOME/ownCloud/dotfile/.zshrc $HOME/.zshrc
@@ -42,14 +42,14 @@ sudo find $HOME/.cache/ -type f -atime +88 -delete
 sudo find /tmp -type f -atime +10 -delete
 sudo systemctl enable --now systemd-timesyncd
 sudo fc-cache -vf
-;echo                   hear we go Richard
+;echo                   here we go Richard
 '
 
 
 # sudo pacman -Qqe > pkglist.txt
 alias pkglist-backup='pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 alias pkglist-restore='sudo pacman --needed --noconfirm -Syu && yay --needed --noanswerclean --nocleanmenu --cleanafter --norebuild --batchinstall --combinedupgrade --useask --noredownload --topdown --sudoloop -Syv < $HOME/ownCloud/dotfile/pkglist.txt 
-;echo                   hear we go Richard'
+;echo                   here we go Richard'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
 
@@ -65,11 +65,11 @@ alias free='free -h'                                            # Show sizes in 
 alias np='nano -w PKGBUILD'
 alias whereami='echo $PWD'
 alias more='less'
-alias pacman-update='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   hear we go Richard'
-alias update-pacman='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   hear we go Richard'
+alias pacman-update='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
+alias update-pacman='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
-alias pacman-clean='sudo pacman  -Sc ; /usr/bin/sudo journalctl --vacuum-time=14d ; sudo find /tmp -type f -atime +10 -delete ; sudo find ~/.cache/ -type f -atime +88 -delete ; rm -fr ~/.local/share/Trash/files/* ;ccache -C  ;echo                   hear we go Richard'
+alias pacman-clean='sudo pacman  -Sc ; /usr/bin/sudo journalctl --vacuum-time=14d ; sudo find /tmp -type f -atime +10 -delete ; sudo find ~/.cache/ -type f -atime +88 -delete ; rm -fr ~/.local/share/Trash/files/* ;ccache -C  ;echo                   here we go Richard'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4'
 alias mv='mv -iv' 
@@ -118,9 +118,9 @@ alias diff='diff  --color=auto'
 
 # These common commands are just too long! Abbreviate them.
 alias ka='killall' 
-alias 	e='vscodium' 
-alias 	v='$EDITOR' 
-alias   p='sudo pacman'
+alias  e='vscodium ' 
+alias  v='$EDITOR' 
+alias  p='sudo pacman '
 
 # Git
 alias gu='git update'
@@ -143,9 +143,10 @@ alias gdiscard='git checkout -- .'
 
 # Quick/fast access
 #alias i='.stignore && $HOME/aliasrc && $HOME/.zshrc' 
-alias stignore='e $HOME/.stignore' 
-alias zshrc='e $HOME/.zshrc' 
-alias aliasrc='e $HOME/aliasrc' 
+alias ee='$EDITOR $HOME/.stignore;$EDITOR $HOME/aliasrc;$EDITOR $HOME/.zshrc' 
+alias stignore='$EDITOR $HOME/.stignore' 
+alias zshrc='$EDITOR $HOME/.zshrc' 
+alias aliasrc='$EDITOR $HOME/aliasrc' 
 alias t='mkdir -p ~/Downloads/test && cd ~/Downloads/test && ls'  
 alias dl='~/Downloads/ && cd ~/Downloads/ && ls'  
 alias cd..='cd .. && ls'
@@ -170,7 +171,7 @@ alias mem-psmc='ps -Ao "comm %cpu %mem"'
 
 #turn screen off
 alias screenoff="xset dpms force off"
-
+alias qq='xfce4-terminal --drop-down cmatric'
 # sort files in current directory by the number of words they contain
 alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
