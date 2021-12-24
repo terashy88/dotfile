@@ -158,7 +158,6 @@ istio
 itstool
 iucode-tool
 jdk8-openjdk
-jdownloader2
 jfsutils
 jnettop
 jre8-openjdk

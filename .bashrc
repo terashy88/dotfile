@@ -7,7 +7,7 @@ export PATH=$PATH:~/ownCloud/.bin
 # Pfetch, Neofetch Terminal CPU info 
 pfetch
 
-echo '                     Yes Richard'
+echo '                     bash on Richard'
 
 ############### Todo / TEST ###############
 
@@ -24,20 +24,7 @@ echo '                     Yes Richard'
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-setopt autocd extendedglob nomatch
-setopt BANG_HIST                 # Treat the '!' character specially during expansion.
-setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
-setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
-setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
-setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
-setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-unsetopt beep
-bindkey -e
+
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
@@ -77,71 +64,6 @@ if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
     install_powerline_precmd
 fi
 
-# Use manjaro zsh prompt
-#if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-#  source /usr/share/zsh/manjaro-zsh-prompt
-#fi
-
-## Options section
-setopt correct                                                  # Auto correct mistakes
-setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
-setopt nocaseglob                                               # Case insensitive globbing
-setopt rcexpandparam                                            # Array expension with parameters
-setopt nocheckjobs                                              # Don't warn about running processes when exiting
-setopt numericglobsort                                          # Sort filenames numerically when it makes sense
-setopt nobeep                                                   # No beep
-setopt appendhistory                                            # Immediately append history instead of overwriting
-setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
-setopt autocd               
-                                    # if only directory path is entered, cd there.
-
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
-zstyle ':completion:*' rehash true                              # automatically find new executables in path 
-# Speed up completions
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.config/.zsh/cache
-
-## Keybindings section
-bindkey -e
-bindkey '^[[7~' beginning-of-line                               # Home key
-bindkey '^[[H' beginning-of-line                                # Home key
-if [[ "${terminfo[khome]}" != "" ]]; then
-  bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
-fi
-bindkey '^[[8~' end-of-line                                     # End key
-bindkey '^[[F' end-of-line                                      # End key
-if [[ "${terminfo[kend]}" != "" ]]; then
-  bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
-fi
-bindkey '^[[2~' overwrite-mode                                  # Insert key
-bindkey '^[[3~' delete-char                                     # Delete key
-bindkey '^[[C'  forward-char                                    # Right key
-bindkey '^[[D'  backward-char                                   # Left key
-#bindkey '^[[5~' history-beginning-search-backward               # Page up key
-#bindkey '^[[6~' history-beginning-search-forward                # Page down key
-
-# Navigate words with ctrl+arrow keys
-bindkey '^[Oc' forward-word                                     #
-bindkey '^[Od' backward-word                                    #
-bindkey '^[[1;5D' backward-word                                 #
-bindkey '^[[1;5C' forward-word                                  #
-bindkey '^H' backward-kill-word                                 # delete previous word with ctrl+backspace
-bindkey '^[[Z' undo                                             # Shift+tab undo last action
-
-# Menu select
-zmodload -i zsh/complist
-bindkey -M menuselect '^h' vi-backward-char
-bindkey -M menuselect '^j' vi-down-line-or-history
-bindkey -M menuselect '^k' vi-up-line-or-history
-bindkey -M menuselect '^l' vi-forward-char
-
-# Theming section  
-autoload -U compinit colors zcalc
-compinit -d
-colors
-
 #Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo
 GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$reset_color%}"
@@ -152,6 +74,7 @@ GIT_PROMPT_MERGING="%{$fg_bold[magenta]%}??%{$reset_color%}"     # lightning bol
 GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}?%{$reset_color%}"       # red circle     - untracked files
 GIT_PROMPT_MODIFIED="%{$fg_bold[yellow]%}?%{$reset_color%}"     # yellow circle  - tracked files modified
 GIT_PROMPT_STAGED="%{$fg_bold[green]%}?%{$reset_color%}"        # green circle   - staged changes present = ready for "git push"
+
 
 parse_git_branch() {
   # Show Git branch/tag, or name-rev if on detached head
@@ -211,32 +134,15 @@ export LESS=-r
 ## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
 
 ## aliasrc
-[[ -f $HOME/aliasrc ]] && source "$HOME/aliasrc"
+#source ~/aliasrc #TODO not working for Suffix alias
 
 ## private-alias
 [[ -f $HOME/ownCloud/private-git/p-aliasrc ]] && source $HOME/ownCloud/private-git/p-aliasrc
 
-## oh-my-zsh 
-[[ -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
-
 ## dir-colors
 [[ -f ~/.config/.dir_colors ]] &&  eval `dircolors ~/.config/.dir_colors`
 
-## zsh-autosuggestions
-[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-## Use syntax highlighting
-[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-## Use history substring search
-[[ -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] ; source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
- 
-## bind UP and DOWN arrow keys to history substring search
-#zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-bindkey '^[[A' history-substring-search-up      
-bindkey '^[[B' history-substring-search-down
 
 ##TEST powerlevel10k
 [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
@@ -244,52 +150,6 @@ bindkey '^[[B' history-substring-search-down
 # To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
 [[ -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
 
-
-## Date Zeit
-# date
-
-## Calender Wetter
-# cal
-
-# apropos            ## Comandline input helper zb. 'apropos vpn' 
-
-###########################################
-
-#fpath+=(~/.zsh/completion/)
-
-autoload -Uz compinit && compinit -i
-
-setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
-setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
-setopt PATH_DIRS           # Perform path search even on command names with slashes.
-setopt AUTO_MENU           # Show completion menu on a succesive tab press.
-setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
-setopt AUTO_PARAM_SLASH    # If completed parameter is a directory, add a trailing slash.
-unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
-unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor.
-
-# Group matches and describe.
-#zstyle ':completion:*:default' menu select=2
-
-# Completing Groping
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
-zstyle ':completion:*' group-name ''
-
-# Completing misc
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list
-zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
-zstyle ':completion:*' use-cache true
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-# Directory
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-zstyle ':completion:*' file-list all
 
 #####################  FUNCTIONS  ########################
 
@@ -336,6 +196,15 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 done;
 unset file;
 
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob;
+
+# Append to the Bash history file, rather than overwriting it
+shopt -s histappend;
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell;
+
 # Enable some Bash 4 features when possible:
 # * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
 # * Recursive globbing, e.g. `echo **/*.txt`
@@ -352,8 +221,21 @@ elif [ -f /etc/bash_completion ]; then
 	source /etc/bash_completion;
 fi;
 
+# Enable tab completion for `g` by marking it as an alias for `git`
+if type _git &> /dev/null; then
+	complete -o default -o nospace -F _git g;
+fi;
+
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
+# Add tab completion for `defaults read|write NSGlobalDomain`
+# You could just use `-g` instead, but I like being explicit
+complete -W "NSGlobalDomain" defaults;
+
+# Add `killall` tab completion for common apps
+complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+
 
 
 ################################################################################
@@ -692,6 +574,12 @@ bash_prompt() {
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
 
+##	Call bash_promnt only once, then unset it (not needed any more)
+##	It will set $PS1 with colors and relative to $NEW_PWD, 
+##	which gets updated by $PROMT_COMMAND on behalf of the terminal
+bash_prompt
+unset bash_prompt
+
 # Use powerline
 USE_POWERLINE="true"
 
@@ -699,3 +587,234 @@ USE_POWERLINE="true"
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################  alias  ###################
+
+
+#alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
+#alias please='sudo !!'
+################ Todo ######################
+############################################
+
+## shortcut=
+
+## Ln Links herstellen
+alias backup='ln -fv .zshrc                                $HOME/ownCloud/dotfile/.zshrc
+sudo          ln -fv /etc/lightdm/lightdm.conf             $HOME/ownCloud/dotfile/lightdm.conf
+sudo          ln -fv /etc/vconsole.conf                    $HOME/ownCloud/dotfile/vconsole.conf
+sudo          ln -fv /etc/systemd/journald.conf            $HOME/ownCloud/dotfile/journald.conf
+              ln -fv $HOME/.stignore                       $HOME/ownCloud/dotfile/.stignore
+              ln -fv $HOME/.config/.dir_colors             $HOME/ownCloud/dotfile/.dir_colors
+              ln -fv $HOME/aliasrc                         $HOME/ownCloud/dotfile/aliasrc
+              ln -fv $HOME/.bashrc                         $HOME/ownCloud/dotfile/.bashrc
+              sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt
+              ;echo                  here we go Richard'
+
+alias backup-restore='ln -fv $HOME/ownCloud/dotfile/.zshrc $HOME/.zshrc
+sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf             /etc/lightdm/lightdm.conf
+     ln -fv $HOME/ownCloud/dotfile/.stignore                $HOME/.stignore 
+     ln -fv $HOME/ownCloud/dotfile/.dir_colors              $HOME/.config/.dir_colors
+     ln -fv $HOME/ownCloud/dotfile/aliasrc                  $HOME/aliasrc 
+     ln -fv $HOME/ownCloud/dotfile/.bashrc                  $HOME/.bashrc 
+     sudo ln -fv  $HOME/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf
+     sudo ln -fv  $HOME/ownCloud/dotfile/journald.conf /etc/journald.conf
+sudo timedatectl set-ntp true
+sudo systemctl enable --now auto-cpufreq.service
+sudo systemctl enable --now NetworkManager
+sudo systemctl enable lightdm
+sudo mkinitcpio -P && sudo update-grub
+sudo journalctl --vacuum-size=33M
+sudo systemctl enable --now systemd-timesyncd
+sudo fc-cache -vf 
+;echo                   here we go Richard'
+
+## xfce4-backup
+alias xfce4-backup='
+ln -fv $HOME/.config/mimeapps.list $HOME/ownCloud/dotfile/xfce4/mimeapps.list; 
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/ownCloud/dotfile/xfce4/xfce-perchannel-xml; 
+xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles
+;echo                  here we go Richard'
+
+alias xfce4-restore='
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list $HOME/.config/mimeapps.list; 
+ln -fv $HOME/ownCloud/dotfile/xfce-perchannel-xml $HOME/.config/xfce4/xfconf/xfce-perchannel-xml;
+xfce4-panel-profiles load $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles
+;echo                   here we go Richard'
+
+# sudo pacman -Qqe > pkglist.txt
+alias pkglist-backup='pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+alias pkglist-restore='sudo pacman --needed --noconfirm -Syu && yay --needed --noanswerclean --nocleanmenu --cleanafter --norebuild --batchinstall --combinedupgrade --useask --noredownload --topdown --sudoloop -Syv < $HOME/ownCloud/dotfile/pkglist.txt 
+;echo                   here we go Richard'
+
+## Systemclean
+alias cclean='sudo pacman  -Sc; /usr/bin/sudo journalctl --vacuum-time=14d; sudo find /tmp -type f -atime +10 -delete; sudo find ~/.cache/ -type f -atime +88 -delete; rm -fr ~/.local/share/Trash/*; ccache -C; echo                   here we go Richard'
+
+# yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
+
+## Block any Website
+# zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
+
+#TODO Suffix alias
+#alias -s pdf='xreader'
+#alias -s {jpg,jpeg,png,gif}='ristretto'
+
+alias cp='cp -vi'                                               # Confirm before overwriting something
+alias df='df -h'                                                # Human-readable sizes check
+alias free='free -h'                                            # Show sizes in MB
+alias np='nano -w PKGBUILD'
+alias whereami='echo $PWD'
+alias more='less'
+alias pacman-update='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
+alias update-pacman='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
+alias errors='sudo systemctl --failed'
+alias failed='sudo systemctl --failed'
+alias grub-update='sudo mkinitcpio -P && sudo update-grub'
+alias ping='ping -c 4'
+alias mv='mv -iv' 
+alias rm='sudo rm -rfv' 
+alias rechner-bc='bc -ql'  								     		#Calculator
+alias calculator-bc='bc -ql'  										#Calculator
+alias mkdir='mkdir -pv' 
+alias yt='youtube-dl --add-metadata -i' 
+alias yta='yt -x -f bestaudio/best' 
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias ffmpeg='ffmpeg -hide_banner'										 #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
+alias inxi-Fanzy='inxi -Fanzy'                                                   #Info System
+alias ip-c='ip -c a'                                                       #ip-coler
+alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
+alias defenderscan-libredefender='libredefender scan'                             #Linux Antivierus/Defender programm
+alias antivirusscan-libredefender='libredefender scan'                           #Linux Antivierus/Defender programm
+
+# Pretty print the path
+#alias  path='echo $PATH | tr -s ':' '\n''
+alias path='echo -e ${PATH//:/\\n}'
+
+# Network
+alias myip='curl http:/ipecho.net/plain; echo'
+alias traffic-jnettop='sudo jnettop'
+alias nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like 
+alias traffic-nmap='sudo nmap -sS -v'                    #nmap -v google.ch  Network Ip scan programm like 
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
+
+## open port check
+alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+
+alias wget='wget -c'              			  #web get #Commandline Homepage URL Download > index.html
+alias nvim='nvim'                                                          
+alias  vim='nvim'
+alias    n='nvim'                                                              
+alias  env='env'                               #Startup memorie speicher Information  
+alias htop='sudo htop'
+alias    f='nemo'
+alias   rr='ranger'
+
+
+# Colorize commands when possible.
+alias ls='ls -thaNr  --color=auto --group-directories-first' 
+alias ll='ls -thaNrl --color=auto --group-directories-first' 
+alias ln='ln -v'
+alias grep='grep --color=auto' 
+alias    g='grep --color=auto'
+alias diff='diff --color=auto' 
+
+# These common commands are just too long! Abbreviate them.
+alias ka='killall' 
+alias  e='vscodium ' 
+alias  v='$EDITOR' 
+alias  p='sudo pacman '
+
+# Git
+alias gu='git update'
+alias gitu='git add . && git commit && git push'
+alias ga='git add'
+alias gp='git push'
+alias gl='git log'
+alias gs='git status'
+alias gd='git diff'
+alias gcm='git commit -m'
+alias gb='git branch'
+alias gc='git checkout'
+alias gra='git remote add'
+alias grr='git remote rm'
+alias gpl='git pull'
+alias gcl='git clone'
+alias gta='git tag -a -m'
+alias gf='git reflog'
+alias gdiscard='git checkout -- .'
+
+# Quick/fast access
+#alias i='.stignore && $HOME/aliasrc && $HOME/.zshrc' 
+alias ee='$EDITOR $HOME/.stignore;$EDITOR $HOME/aliasrc;$EDITOR $HOME/.zshrc; exit' 
+alias stignore='$EDITOR $HOME/.stignore; exit'
+alias zshrc='$EDITOR $HOME/.zshrc; exit'
+alias aliasrc='$EDITOR $HOME/aliasrc; exit'
+alias t='mkdir -p ~/Downloads/test && cd ~/Downloads/test && ls'  
+alias dl='~/Downloads/ && cd ~/Downloads/ && ls'  
+alias cd..='cd .. && ls'
+alias ownCloud='$HOME/ownCloud ; ls'
+alias D-link='$HOME/ownCloud/D-link ; ls'
+alias S-link='$HOME/ownCloud/S-link ; ls'
+alias M-link='$HOME/ownCloud/M-link ; ls'
+alias W-link='$HOME/ownCloud/W-link ; ls'
+alias P-link='$HOME/ownCloud/P-link ; ls'
+alias D-link='$HOME/ownCloud/D-link ; ls'
+
+## mount
+alias mount='mount |column -t'
+
+## Get server cpu info ##
+alias cpuinfo='lscpu'
+alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
+
+## get GPU ram on desktop / laptop## 
+alias meminfo='grep -i --color memory /var/log/Xorg.0.log'
+alias mem-psmc='ps -Ao "comm %cpu %mem"'
+
+#turn screen off
+alias screenoff="xset dpms force off"
+alias qq='xfce4-terminal --drop-down cmatric'
+# sort files in current directory by the number of words they contain
+alias wordy='wc -w * | sort | tail -n10'
+alias filecount='sudo ls -aRF | wc -l'
+
+#Gets the total disk usage on your machine
+alias diskinfo='df -hl --total | grep total'
+#alias disk='    df -hTl'
+
+#Gives you what is using the most space. Both directories and files. Varies on current directory
+alias most='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
+alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
+
+#shutdown
+alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"' 
+alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias gg=' xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+
+
+#########  opensource ##########
+
+# alias phone-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    #android-screen
+# alias tablets-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    # android-screen
+# alias scp-up='  scp -rv'     #-P22                                             #scp -P 1234 file user@remote.host:/remote/location/
+# alias scp-down='scp -rv'     #-P22                                             #scp -P 1234 user@remote.host:/remote/location/file ./
+# manuel alias  rsync-up='rsync -e'ssh   -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/           --exclude
+# manuel alias  rsync-down='rsync -e'ssh -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/
+# manuel alias  rsyncvm='rsync -e 'ssh -p22'  $HOME/VirtualBox\ VMs/ 172.20.10.6:$HOME/VirtualBox\ VMs/ -r --force -avz'
+
+# alias .config-update='rsync -e'ssh -p 22' --force -Rravuz --delete-before --exclude gnupg --exclude VirtualBox --exclude Barrier --exclude syncthing --exclude BraveSoftware --exclude .ssh --exclude ownCloud --exclude .stversions --exclude .xsession-errors .config/'   ## 172.0.0.1:
+
+# rclone
+#alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'

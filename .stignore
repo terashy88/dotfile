@@ -2,14 +2,14 @@
 #/          ##Block all
 #(?d).local                                ##Proxy Video Editor -- Notiz
 
-############## Test / Todo #############
-#
-
-#(?d)(?i)*Trash*
+############### Todo / TEST ###############
 
 
-########################################
-########################################
+
+
+
+################ Todo ######################
+############################################
 
 ## allow
 #(?i)!Preferences
@@ -19,79 +19,79 @@
 !*sync-conflict*
 #################
 
-(?d).cargo*
-(?d)Downloads
-(?d).local/share/webkitgtk/*
-(?d)(?i)*Cookies*
-(?d).config/balena-etcher/
-(?d).config/libreoffice/
-(?d)*databases/
-(?d).lesshst
-(?d).config/TabNine/*
-(?d).local/share/TabNine/*
-(?d)*/gce
-(?d)*obs-studio/
-(?d).config/ghb
-(?d).config/deluge
-(?d).config/bode
-(?d)gPodder
-(?d)*Bitwarden
-(?d)diffuse
-(?d)(?i)*Session*
-(?i)(?d)*cache*
-(?d)(?i).vscode*
-(?i)(?d)*history*
+.config/flameshot/*
+.cargo/*
+Downloads/*
+.local/share/webkitgtk/*
+(?i)*Cookies*
+.config/balena-etcher/*
+.config/libreoffice/*
+*databases/
+.lesshst/*
+.config/TabNine/*
+.local/share/TabNine/*
+*/gce/*
+*obs-studio/*
+.config/ghb/*
+.config/deluge
+.config/bode
+gPodder
+*Bitwarden
+diffuse
+(?i)*Session*
+(?i)*cache*
+(?i)*history*
 
 ## Popcorntime
-(?d).config/Popcorn-Time/*
+.config/Popcorn-Time/*
 !.config/Popcorn-Time/Default/Preferences
 !.config/Popcorn-Time/Default/data/settings.db
 
 ## Microsoft
-(?d)*.wine
-(?d)*desktop.ini*
-(?d)$RECYCLE.BIN
-(?d)System Volume Information
-(?d)*.jak
-(?d).config/Microsoft*
-(?d).config/teams/
+*.wine
+*desktop.ini*
+$RECYCLE.BIN
+System Volume Information
+*.jak
+.config/Microsoft*
+.config/teams/*
 
 ## qBittorrent
-(?d).config/qBittorrent/
+.config/qBittorrent/*
 
 ## tmp file
-(?d)*.tmp
-(?d)(?i)*temp*
-(?d)*._mp
-(?d)*.old
-(?d)*.syd
-(?d)*.dir
-(?d)*.gid
-(?d)*.chk
-(?d)*.dmp
-(?d)*.nch
-(?d)*..swp
-(?d)~
-(?d)(?i)*.log*
-(?d)(?i)*logs.*
-(?d)*.db*
-(?d)*_db*
-(?d)*.ds
+*.tmp
+(?i)*temp*
+*._mp
+*.old
+*.syd
+*.dir
+*.gid
+*.chk
+*.dmp
+*.nch
+*..swp
+~
+(?i)*.log*
+(?i)*logs.*
+*.db*
+*_db*
+*.ds
 kglobalshortcutsrc
-(?d)*.list
-(?d)*dconf
-(?d)(?i)sublime
-(?d)*.steam
-(?d)*lutris
-(?d)*PlayOnLinux
-(?d)*BlackmagicDesign
+*.list
+*dconf
+(?i)sublime
+*.steam
+*lutris
+*PlayOnLinux
+*BlackmagicDesign
 
 # Visual code / codium, vscode
-(?d)(?i)*vscod*
-(?d)*vsliveshare*
+(?i)*vscod*
+*vsliveshare*
 
 #.thunderbird
-(?d).thunderbird/
+.thunderbird/*
 
 .gnupg
 (?d)Schreibtisch
@@ -107,7 +107,7 @@ kglobalshortcutsrc
 showfoto
 .zcompdump
 (?d)(?i)*zeitgeist
-(?d)(?i)*Telegram*
+(?i)*Telegram*
 (?d)(?i)*metadata
 *keyring
 .npm
@@ -119,10 +119,10 @@ recently-used.*
 #.owncloudsync
 ##.stfolder                                ## Don't delete
 !.stignore
-(?d)*.stversions*
-(?d)*.subversion*
-(?d)*.oscamerafaceu*
-(?d)owncloud.cfg
+*.stversions*
+*.subversion*
+*.oscamerafaceu*
+owncloud.cfg
 
 ## VirtualBox VMs
 VirtualBox VMs/*
@@ -148,25 +148,25 @@ VirtualBox VMs/*
 (?d)*.xsession*
 
 # xfce-panel
-.config/xfce4/
+.config/xfce4/*
 (?d)*.config/pavucontrol.ini
 !*notes*
-!config/xfce4/panel*
+!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml
 
 # Signal
-(?d).config/Signal/
+(?d).config/Signal/*
 
 # whatsapp
-(?d).config/skypeforlinux*
+.config/skypeforlinux/*
 
 # Messenger
-(?d)(?i).config/Caprine*
+(?d)(?i).config/Caprine/*
 
 # GitHub Desktop
 (?d)GitHub*
 
 ## Brave #don't delete
-.config/BraveSoftware/  
+.config/BraveSoftware/*  
 
 ## Sound Pipewire
 (?d).local/state/*
