@@ -2,13 +2,10 @@
 
 
 ##########  Test / Todo ##############
-#alias gg='xfce4-terminal --drop-down --hold -x bash -c "echo hi"'
-alias gg='xfce4-terminal --drop-down --hold -x bash -c  ' termdown 88  ''
 
 
-#alias zz='exec xfce4-terminal ;  echo termdown 88 ; sleep 1 ; sudo poweroff'
+
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
-#alias gg='xfce4-terminal --drop-down; termdown 88 ; sleep1 ; poweroff'
 #alias please='sudo !!'
 ######################################
 ######################################
@@ -114,7 +111,7 @@ alias ls='ls -thaNr  --color=auto --group-directories-first'
 alias ll='ls -thaNrl --color=auto --group-directories-first' 
 alias ln='ln -v'
 alias grep='grep --color=auto' 
-alias    G='grep --color=auto'
+alias    g='grep --color=auto'
 alias diff='diff  --color=auto' 
 
 # These common commands are just too long! Abbreviate them.
@@ -186,9 +183,10 @@ alias most='du -hsx * | sort -rh | head -15'                     # Bigest files 
 alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
 
 #shutdown
-alias poweroff='termdown 88 ; sleep 1 ; sudo poweroff'      
-alias shutdown='termdown 88 ; sleep 1 ; sudo poweroff'    
-alias pwf='termdown 88 ; sleep 1 ; sudo poweroff'
+alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"' 
+alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias gg=' xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
 
 
 #########  opensource ##########

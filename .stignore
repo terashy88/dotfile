@@ -19,7 +19,7 @@
 !*sync-conflict*
 #################
 
-(?d).cargo/*
+(?d).cargo*
 (?d)Downloads
 (?d).local/share/webkitgtk/*
 (?d)(?i)*Cookies*
@@ -28,6 +28,7 @@
 (?d)*databases/
 (?d).lesshst
 (?d).config/TabNine/*
+(?d).local/share/TabNine/*
 (?d)*/gce
 (?d)*obs-studio/
 (?d).config/ghb
@@ -38,7 +39,7 @@
 (?d)diffuse
 (?d)(?i)*Session*
 (?i)(?d)*cache*
-(?d).vscode*
+(?d)(?i).vscode*
 (?i)(?d)*history*
 
 ## Popcorntime
@@ -147,7 +148,7 @@ VirtualBox VMs/*
 (?d)*.xsession*
 
 # xfce-panel
-(?d)*.config/xfce4/
+.config/xfce4/
 (?d)*.config/pavucontrol.ini
 !*notes*
 !config/xfce4/panel*
@@ -156,16 +157,16 @@ VirtualBox VMs/*
 (?d).config/Signal/
 
 # whatsapp
-(?d).config/skypeforlinux/*
+(?d).config/skypeforlinux*
 
 # Messenger
-(?d)(?i).config/Caprine/
+(?d)(?i).config/Caprine*
 
 # GitHub Desktop
-(?d)GitHub
+(?d)GitHub*
 
 ## Brave #don't delete
-.config/BraveSoftware/   
+.config/BraveSoftware/  
 
 ## Sound Pipewire
-(?d).local/state/
+(?d).local/state/*
