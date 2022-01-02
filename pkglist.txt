@@ -29,13 +29,14 @@ bitwarden
 bleachbit
 blender
 blueman
-bluez
-bluez-tools
 bluez-utils
 boost
 bpf
 brave-browser
 broadcom-wl-dkms
+brother-dcpl2520dw
+brscan3
+brscan4
 btrfs-progs
 bzip2
 caprine
@@ -187,6 +188,7 @@ libva-intel-driver
 licenses
 light-locker
 lightdm
+lightdm-gtk-greeter-settings
 lightdm-slick-greeter
 linssid
 linux515
@@ -202,12 +204,14 @@ man-db
 man-pages
 man-pages-de
 manjaro-application-utility
+manjaro-bluetooth
 manjaro-browser-settings
 manjaro-documentation-en
 manjaro-firmware
 manjaro-hello
 manjaro-hotfixes
 manjaro-pipewire
+manjaro-printer
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
@@ -245,6 +249,7 @@ nemo-preview
 nemo-repairer
 nemo-run-with-nvidia-prime-run
 nemo-seahorse
+nemo-share
 nemo-terminal
 neovim
 nerd-fonts-terminus
@@ -287,6 +292,7 @@ perf
 perl
 perl-file-mimeinfo
 pfetch
+pipewire-media-session
 pkgconf
 popcorntime-bin
 poppler-data
@@ -378,7 +384,6 @@ wallpapers-juhraya
 wget
 whatsapp-for-linux
 which
-wireplumber
 wireshark-cli
 wireshark-qt
 wordpress

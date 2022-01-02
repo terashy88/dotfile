@@ -1,6 +1,6 @@
 #!/bin/bash
 #/          ##Block all
-#(?d).local                                ##Proxy Video Editor -- Notiz
+#.local                                ##Proxy Video Editor -- Notiz
 
 ############### Todo / TEST ###############
 
@@ -8,12 +8,12 @@
 
 
 
-################ Todo ######################
+################## Todo ####################
 ############################################
 
 ## allow
 #(?i)!Preferences
-(?i)!setting*
+(?i)!*setting*
 !.cfg
 !.conf
 !*sync-conflict*
@@ -36,6 +36,7 @@ Downloads/*
 .config/deluge
 .config/bode
 gPodder
+/home/shaderico/.anydesk
 *Bitwarden
 diffuse
 (?i)*Session*
@@ -88,32 +89,32 @@ kglobalshortcutsrc
 
 # Visual code / codium, vscode
 (?i)*vscod*
-*vsliveshare*
+#*vsliveshare*
 
 #.thunderbird
 .thunderbird/*
 
 .gnupg
-(?d)Schreibtisch
+Schreibtisch
 (?i)*barrier*
-(?d)VBoxSVC
-(?d)selectorwindow
-(?d)(?i)kdenlive
-(?d)(?i)shotcut
-(?d)(?i)Thunar
-(?d)M-link*
-(?d)snap
-(?d)proxy
+VBoxSVC
+selectorwindow
+(?i)kdenlive
+(?i)shotcut
+(?i)Thunar
+M-link*
+snap
+proxy
 showfoto
 .zcompdump
-(?d)(?i)*zeitgeist
+(?i)*zeitgeist
 (?i)*Telegram*
-(?d)(?i)*metadata
+(?i)*metadata
 *keyring
 .npm
 recently-used.*
-(?d)evolution
-(?d)*maps*
+evolution
+*maps*
 
 ## ownCloud Ignorelist ##
 #.owncloudsync
@@ -125,8 +126,7 @@ recently-used.*
 owncloud.cfg
 
 ## VirtualBox VMs
-VirtualBox VMs/*
-!VirtualBox VMs/arch-linux
+VirtualBox VMs/
 
 ## syncthing
 .config/syncthing/
@@ -134,39 +134,39 @@ VirtualBox VMs/*
 
 
 ## Android
-(?d)thumbnails
-(?d)*.android
+thumbnails
+*.android
 
 ##.ssh
 .ssr
-(?d)VM-share-rsx
-(?d)*nvidia*
+VM-share-rsx
+*nvidia*
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
 *.Xauthority*
-(?d)*.xsession*
+*.xsession*
 
 # xfce-panel
 .config/xfce4/*
-(?d)*.config/pavucontrol.ini
+*.config/pavucontrol.ini
 !*notes*
 !/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml
 
 # Signal
-(?d).config/Signal/*
+.config/Signal/*
 
 # whatsapp
-.config/skypeforlinux/*
+.config/skypeforlinux/
 
 # Messenger
-(?d)(?i).config/Caprine/*
+(?i).config/Caprine/*
 
 # GitHub Desktop
-(?d)GitHub*
+GitHub*
 
 ## Brave #don't delete
-.config/BraveSoftware/*  
+.config/BraveSoftware/*
 
 ## Sound Pipewire
-(?d).local/state/*
+.local/state/*

@@ -13,50 +13,50 @@
 
 ## Ln Links herstellen
 alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
-ln -fv $HOME/.zshrc                               $HOME/ownCloud/dotfile/.zshrc  ;
-sudo    ln -fv /etc/lightdm/lightdm.conf          $HOME/ownCloud/dotfile/lightdm.conf ;
-sudo    ln -fv /etc/vconsole.conf                 $HOME/ownCloud/dotfile/vconsole.conf ;
-sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journald.conf ;
-        ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore ;
-        ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors ;
-        ln -fv $HOME/aliasrc                      $HOME/ownCloud/dotfile/.aliasrc ;
-        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashr ;
-        sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+ln -fv $HOME/.zshrc                               $HOME/ownCloud/dotfile/.zshrc &
+sudo    ln -fv /etc/lightdm/lightdm.conf          $HOME/ownCloud/dotfile/lightdm.conf &
+sudo    ln -fv /etc/vconsole.conf                 $HOME/ownCloud/dotfile/vconsole.conf &
+sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journald.conf &
+        ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore &
+        ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors &
+        ln -fv $HOME/aliasrc                      $HOME/ownCloud/dotfile/.aliasrc &
+        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashr &
+                sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 
 alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/ ;
-     ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
-     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
-     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
-     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
-     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
-sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
-sudo ln -fv $HOME/ownCloud/dotfile/vconsole.conf       /etc/vconsole.conf ;
-sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
-sudo timedatectl set-ntp true ;
-sudo systemctl enable --now auto-cpufreq.service ;
-sudo systemctl enable --now NetworkManager ;
-sudo systemctl enable lightdm ;
-sudo mkinitcpio -P && sudo update-grub ;
-sudo journalctl --vacuum-size=33M ;
-sudo systemctl enable --now systemd-timesyncd ;
+     ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc &
+     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore &
+     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors &
+     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc &
+     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc &
+sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf &
+sudo ln -fv $HOME/ownCloud/dotfile/vconsole.conf       /etc/vconsole.conf &
+sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf &
+sudo timedatectl set-ntp true &
+sudo systemctl enable --now auto-cpufreq.service &
+sudo systemctl enable --now NetworkManager &
+sudo systemctl enable lightdm &
+sudo mkinitcpio -P && sudo update-grub &
+sudo journalctl --vacuum-size=33M &
+sudo systemctl enable --now systemd-timesyncd &
 sudo fc-cache -vf'
 
 ## xfce4-backup
 alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ;
+ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list &
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml &
 xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
 
 alias xfce-restore='mkdir -pv                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list ;
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list &
 ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml'
 
 # sudo pacman -Qqe > pkglist.txt
-alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ;pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 alias pkglist-restor='yay -Syu --needed --noanswerclean --cleanafter --norebuild --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman  -Sc ; /usr/bin/sudo journalctl --vacuum-time=14d ; sudo find /tmp -type f -atime +10 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete; rm -fr $HOME/.local/share/Trash/* ; ccache -C'
+alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -fr $HOME/.local/share/Trash/* ; ccache -C'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
 
@@ -69,7 +69,6 @@ alias -s {jpg,jpeg,png,gif}='ristretto'
 alias cp='cp -vi'                                               # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes check
 alias free='free -h'                                            # Show sizes in MB
-alias np='nano -w PKGBUILD'
 alias whereami='echo $PWD'
 alias more='less'
 alias pacman-update='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
@@ -108,12 +107,12 @@ alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --fol
 alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
 
 alias wget='wget -c'              			  #web get #Commandline Homepage URL Download > index.html
-alias nvim='nvim'
-alias  vim='nvim'
-alias    n='nvim'
+alias nvim='nvim '
+alias  vim='nvim '
+alias    n='nvim '
 alias  env='env'                               #Startup memorie speicher Information
 alias htop='sudo htop'
-alias    f='nemo'
+alias    f='exec nemo'
 alias   rr='ranger'
 
 
@@ -127,8 +126,8 @@ alias diff='diff --color=auto'
 
 # These common commands are just too long! Abbreviate them.
 alias ka='killall'
-alias  e='vscodium '
-alias  v='$EDITOR'
+alias  e='$EDITOR '
+alias  v='$EDITOR '
 alias  p='sudo pacman '
 
 # Git
@@ -140,19 +139,20 @@ alias gl='git log'
 alias gs='git status'
 alias gd='git diff'
 alias gcm='git commit -m'
-alias gb='git branch'
-alias gc='git checkout'
+alias  gb='git branch'
+alias  gc='git checkout'
 alias gra='git remote add'
 alias grr='git remote rm'
 alias gpl='git pull'
 alias gcl='git clone'
 alias gta='git tag -a -m'
-alias gf='git reflog'
+alias  gf='git reflog'
 alias gdiscard='git checkout -- .'
 
 # Quick/fast access
-#alias i='.stignore && $HOME/aliasrc && $HOME/.zshrc'
-alias ee='$EDITOR $HOME/.stignore;$EDITOR $HOME/aliasrc;$EDITOR $HOME/.zshrc; exit'
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
+alias ee='$EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
 alias stignore='$EDITOR $HOME/.stignore; exit'
 alias zshrc='$EDITOR $HOME/.zshrc; exit'
 alias aliasrc='$EDITOR $HOME/aliasrc; exit'
@@ -171,7 +171,7 @@ alias D-link='$HOME/ownCloud/D-link ; ls'
 alias mount='mount |column -t'
 
 ## Get server cpu info ##
-alias cpuinfo='lscpu'
+alias  cpuinfo='lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 
 ## get GPU ram on desktop / laptop##
@@ -186,18 +186,20 @@ alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
 #Gets the total disk usage on your machine
-alias diskinfo='df -hl --total | grep total'
-#alias disk='    df -hTl'
+alias  diskinfo='df -hl --total | grep total'
+alias     fdisk='fdisk -x'                          #fdisk space / UUID etc
+alias disk-uuid='    df -hTl'
 
 #Gives you what is using the most space. Both directories and files. Varies on current directory
-alias most='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
+alias        most='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
 alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
 
 #shutdown
 #alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
 #alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
-alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
-alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
+#todo-test alias kk='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 11; sleep 1 & cmatrix"'
 
 
 #########  opensource ##########
