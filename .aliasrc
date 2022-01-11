@@ -24,19 +24,18 @@ sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journal
                 sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 
 alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/ ;
-     ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc &
-     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore &
-     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors &
-     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc &
-     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc &
-sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf &
-sudo ln -fv $HOME/ownCloud/dotfile/vconsole.conf       /etc/vconsole.conf &
-sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf &
+     ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
+     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
+     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
+     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
+     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
+sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
+sudo ln -fv $HOME/ownCloud/dotfile/vconsole.conf       /etc/vconsole.conf ;
+sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true &
 sudo systemctl enable --now auto-cpufreq.service &
 sudo systemctl enable --now NetworkManager &
 sudo systemctl enable lightdm &
-sudo mkinitcpio -P && sudo update-grub &
 sudo journalctl --vacuum-size=33M &
 sudo systemctl enable --now systemd-timesyncd &
 sudo fc-cache -vf'
@@ -56,7 +55,7 @@ alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/o
 alias pkglist-restor='yay -Syu --needed --noanswerclean --cleanafter --norebuild --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -fr $HOME/.local/share/Trash/* ; ccache -C'
+alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -fr $HOME/.local/share/Trash/info/* ; rm -fr $HOME/.local/share/Trash/files/* ; ccache -C'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
 
@@ -185,7 +184,7 @@ alias qq='xfce4-terminal --drop-down cmatric'
 alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
-#Gets the total disk usage on your machine
+#Gets the total disk usage on your machine  
 alias  diskinfo='df -hl --total | grep total'
 alias     fdisk='fdisk -x'                          #fdisk space / UUID etc
 alias disk-uuid='    df -hTl'

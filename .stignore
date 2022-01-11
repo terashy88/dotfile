@@ -48,6 +48,9 @@ diffuse
 !.config/Popcorn-Time/Default/Preferences
 !.config/Popcorn-Time/Default/data/settings.db
 
+## digikam
+!/home/shaderico/.config/digikam/*
+
 ## Microsoft
 *.wine
 *desktop.ini*
@@ -87,7 +90,6 @@ kglobalshortcutsrc
 *PlayOnLinux
 *BlackmagicDesign
 
-# Visual code / codium, vscode
 (?i)*vscod*
 #*vsliveshare*
 
@@ -134,7 +136,7 @@ VirtualBox VMs/
 
 
 ## Android
-thumbnails
+*thumbnails*
 *.android
 
 ##.ssh
