@@ -50,8 +50,13 @@ diffuse
 
 ## digikam
 !/home/shaderico/.config/digikam/*
+#don't delete '.dtrash/files' otherwise trash in digikam dosn't work
+(?d).dtrash
+#digikamrc has to be ignore to sync on other PC
+digikamrc
 
-## Microsoft
+
+## Microsoft    
 *.wine
 *desktop.ini*
 $RECYCLE.BIN
@@ -76,8 +81,8 @@ System Volume Information
 *.nch
 *..swp
 ~
-(?i)*.log*
-(?i)*logs.*
+(?d)(?i)*.log*
+(?d)(?i)*logs.*
 *.db*
 *_db*
 *.ds
