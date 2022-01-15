@@ -366,7 +366,7 @@ bash_prompt() {
 	local GRAY_BOLD="\[\033[1;90m\]"
 	local BLUE_BOLD="\[\033[1;38;5;74m\]"
 	
-	
+	bash on Richard
 	
 	
 	

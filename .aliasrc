@@ -55,7 +55,7 @@ alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/o
 alias pkglist-restor='yay -Syu --needed --noanswerclean --cleanafter --norebuild --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -fr $HOME/.local/share/Trash/info/* ; rm -fr $HOME/.local/share/Trash/files/* ; ccache -C'
+alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -rf $HOME/.dtrash ; rm -fr $HOME/Telegram\ Desktop/* ; rm -fr $HOME/.local/share/Trash/info/* ; rm -fr $HOME/.local/share/Trash/files/* ; ccache -C'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
 
@@ -63,8 +63,9 @@ alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-t
 # zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
 
 # Suffix alias
-alias -s pdf='xreader'
-alias -s {jpg,jpeg,png,gif}='ristretto'
+alias -s pdf='qpdfview'
+alias -s {jpg,jpeg,png,gif}='geeqie'
+#todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man 
 alias cp='cp -vi'                                               # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes check
 alias free='free -h'                                            # Show sizes in MB
@@ -75,8 +76,9 @@ alias update-pacman='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo    
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
-alias ping='ping -c 4'
+alias ping='ping -c 4  google.ch '
 alias mv='mv -iv'
+alias yy='paru'
 alias rm='sudo rm -rfv'
 alias rechner-bc='bc -ql'  								     		#Calculator
 alias calculator-bc='bc -ql'  										#Calculator
@@ -85,8 +87,8 @@ alias yt='youtube-dl --add-metadata -i'
 alias yta='yt -x -f bestaudio/best'
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias ffmpeg='ffmpeg -hide_banner'										 #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
-alias inxi-Fanzy='inxi -Fanzy'                                                   #Info System
-alias ip-c='ip -c a'                                                       #ip-coler
+alias inxi-Fanzy='inxi -Fanzy'  #Info System
+alias ip-c='ip -c a'    #ip-coler
 alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
 alias defenderscan-libredefender='libredefender scan'                             #Linux Antivierus/Defender programm
 alias antivirusscan-libredefender='libredefender scan'                           #Linux Antivierus/Defender programm
@@ -105,7 +107,7 @@ alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --fol
 ## open port check
 alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
 
-alias wget='wget -c'              			  #web get #Commandline Homepage URL Download > index.html
+alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
 alias nvim='nvim '
 alias  vim='nvim '
 alias    n='nvim '
@@ -114,6 +116,8 @@ alias htop='sudo htop'
 alias    f='exec nemo'
 alias   rr='ranger'
 
+#nvidia Proprietary
+alias nvidia0300='sudo mhwd -a pci nonfree 0300'
 
 # Colorize commands when possible.
 alias   ls='ls -thaNr  --color=auto --group-directories-first'
@@ -130,7 +134,6 @@ alias  v='$EDITOR '
 alias  p='sudo pacman '
 
 # Git
-alias gu='git update'
 alias gitu='git add . && git commit && git push'
 alias ga='git add'
 alias gp='git push'
@@ -158,7 +161,7 @@ alias aliasrc='$EDITOR $HOME/aliasrc; exit'
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
-alias ownCloud='$HOME/ownCloud ; ls'
+alias ownCloud/='$HOME/ownCloud ; ls'
 alias D-link='$HOME/ownCloud/D-link ; ls'
 alias S-link='$HOME/ownCloud/S-link ; ls'
 alias M-link='$HOME/ownCloud/M-link ; ls'
@@ -179,7 +182,7 @@ alias mem-psmc='ps -Ao "comm %cpu %mem"'
 
 #turn screen off
 alias screenoff="xset dpms force off"
-alias qq='xfce4-terminal --drop-down cmatric'
+#todo alias qq='xfce4-terminal --fullscreen ; cmatrix'
 # sort files in current directory by the number of words they contain
 alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'

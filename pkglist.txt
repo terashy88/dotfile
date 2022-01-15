@@ -34,7 +34,6 @@ boost
 bpf
 brave-browser
 broadcom-wl-dkms
-brother-dcpl2520dw
 brscan3
 brscan4
 btrfs-progs
@@ -70,6 +69,7 @@ dosfstools
 dotnet-sdk
 downgrade
 doxygen
+dupeguru
 e2fsprogs
 ecryptfs-utils
 efibootmgr
@@ -77,7 +77,6 @@ engrampa
 etcher
 exfat-utils
 exo
-extra-cmake-modules
 f2fs-tools
 fakeroot
 faucet-tool
@@ -175,6 +174,7 @@ kwindowsystem
 less
 lib32-nvidia-utils
 lib32-vulkan-icd-loader
+libayatana-appindicator
 libdvdcss
 libgsf
 libopenraw
@@ -210,8 +210,6 @@ manjaro-documentation-en
 manjaro-firmware
 manjaro-hello
 manjaro-hotfixes
-manjaro-pipewire
-manjaro-printer
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
@@ -228,7 +226,6 @@ mesa-demos
 mesa-utils
 meson
 mhwd
-midori
 mkinitcpio-openswap
 mlocate
 mobile-broadband-provider-info
@@ -240,17 +237,13 @@ mugshot
 mysql++
 nano
 nemo
-nemo-audio-tab
 nemo-bulk-rename
-nemo-emblems
 nemo-engrampa
 nemo-image-converter
 nemo-preview
 nemo-repairer
 nemo-run-with-nvidia-prime-run
 nemo-seahorse
-nemo-share
-nemo-terminal
 neovim
 nerd-fonts-terminus
 network-manager-applet
@@ -310,7 +303,6 @@ python-jedi
 python-typogrify
 qbittorrent
 qt5-translations
-rabbitvcs-nemo
 ranger
 rclone
 rclone-browser
