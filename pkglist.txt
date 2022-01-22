@@ -27,19 +27,16 @@ binutils
 bison
 bitwarden
 bleachbit
-blender
 blueman
 bluez-utils
 boost
 bpf
 brave-browser
 broadcom-wl-dkms
-brscan3
 brscan4
 btrfs-progs
 bzip2
 caprine
-catfish
 cawbird
 ccache
 celluloid
@@ -52,7 +49,6 @@ cpupower
 crda
 cronie
 cryptsetup
-darktable
 ddrescue
 device-mapper
 dhclient
@@ -69,7 +65,6 @@ dosfstools
 dotnet-sdk
 downgrade
 doxygen
-dupeguru
 e2fsprogs
 ecryptfs-utils
 efibootmgr
@@ -79,7 +74,6 @@ exfat-utils
 exo
 f2fs-tools
 fakeroot
-faucet-tool
 ffmpeg
 ffmpegthumbnailer
 file
@@ -88,9 +82,7 @@ filezilla
 findbrokenpkgs
 findutils
 flameshot
-flatpak
 flex
-folder-color-switcher
 freetype2
 fslint
 fzf
@@ -116,7 +108,6 @@ gnucash
 gnucash-docs
 google-webdesigner
 gparted
-gpodder
 grep
 groff
 grub
@@ -126,13 +117,10 @@ gst-plugins-bad
 gst-plugins-base
 gst-plugins-good
 gst-plugins-ugly
-gtkhash-nemo
 gufw
-guiscrcpy
 gvfs
 gvfs-afc
 gvfs-google
-gvfs-gphoto2
 gvfs-mtp
 gvfs-nfs
 gzip
@@ -148,7 +136,6 @@ hyphen-de
 hyphen-en
 imwheel
 inetutils
-inkscape
 intel-ucode
 inxi
 iproute2
@@ -168,7 +155,6 @@ kdenlive
 kernel-alive
 kmymoney
 kquickimageeditor
-krita
 kubectl
 kwindowsystem
 less
@@ -178,13 +164,13 @@ libayatana-appindicator
 libdvdcss
 libgsf
 libopenraw
-libpamac-flatpak-plugin
 libpamac-snap-plugin
 libredefender
 libreoffice-fresh
 libreoffice-fresh-de
 libtool
 libva-intel-driver
+libxnvctrl
 licenses
 light-locker
 lightdm
@@ -208,7 +194,6 @@ manjaro-bluetooth
 manjaro-browser-settings
 manjaro-documentation-en
 manjaro-firmware
-manjaro-hello
 manjaro-hotfixes
 manjaro-release
 manjaro-settings-manager
@@ -226,6 +211,7 @@ mesa-demos
 mesa-utils
 meson
 mhwd
+microsoft-office-web-jak
 mkinitcpio-openswap
 mlocate
 mobile-broadband-provider-info
@@ -237,13 +223,10 @@ mugshot
 mysql++
 nano
 nemo
-nemo-bulk-rename
 nemo-engrampa
-nemo-image-converter
-nemo-preview
-nemo-repairer
 nemo-run-with-nvidia-prime-run
 nemo-seahorse
+nemo-terminal
 neovim
 nerd-fonts-terminus
 network-manager-applet
@@ -263,12 +246,12 @@ nss-mdns
 ntfs-3g
 ntp
 numlockx
-nvidia-dkms
 nvidia-prime
 nvidia-utils
 obs-studio
 oh-my-zsh
 olive
+onlyoffice-desktopeditors
 opencl-headers
 openresolv
 openssh
@@ -277,6 +260,7 @@ owncloud-client
 p7zip
 pacman
 pamac-gtk
+paru-bin
 patch
 pavucontrol
 pciutils
@@ -302,6 +286,7 @@ python-click-completion
 python-jedi
 python-typogrify
 qbittorrent
+qpdfview
 qt5-translations
 ranger
 rclone
@@ -309,7 +294,6 @@ rclone-browser
 reiserfsprogs
 rhash
 rhythmbox
-ristretto
 rsync
 s-nail
 sayonara-player-git
@@ -319,13 +303,11 @@ shadow
 shairplay
 shiny-mirrors
 signal-desktop
-simplescreenrecorder
 skypeforlinux-stable-bin
 snapd
 snapd-glib
 spectre-meltdown-checker
 speedtest-cli
-spflashtool-bin
 stacer
 sudo
 syncthing
@@ -338,7 +320,6 @@ teams
 telegram-desktop
 termdown
 texinfo
-thunar
 thunderbird
 thunderbird-i18n-de
 thunderbird-i18n-en-us
@@ -361,9 +342,6 @@ unrar
 usb_modeswitch
 usbutils
 util-linux
-vim
-vim-spell-de
-vim-spell-en
 virtualbox
 virtualbox-ext-vnc
 virtualbox-guest-utils
@@ -387,7 +365,6 @@ xf86-input-elographics
 xf86-input-evdev
 xf86-input-libinput
 xf86-input-void
-xf86-video-intel
 xfce4-appfinder
 xfce4-artwork
 xfce4-battery-plugin
@@ -435,7 +412,6 @@ xorg-twm
 xorg-xinit
 xorg-xkill
 xz
-yay
 yelp
 zcash
 zenity

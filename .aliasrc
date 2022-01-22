@@ -1,10 +1,9 @@
 #!/bin/zsh
 
 
-############### Todo / TEST ###############
+############### Todo / TEST ###############--
 
-
-#alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
+#alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
 #alias please='sudo !!'
 ################ Todo ######################
 ############################################
@@ -20,7 +19,7 @@ sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journal
         ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore &
         ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors &
         ln -fv $HOME/aliasrc                      $HOME/ownCloud/dotfile/.aliasrc &
-        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashr &
+        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashrc &
                 sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 
 alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/ ;
@@ -55,7 +54,9 @@ alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/o
 alias pkglist-restor='yay -Syu --needed --noanswerclean --cleanafter --norebuild --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm -rf $HOME/.dtrash ; rm -fr $HOME/Telegram\ Desktop/* ; rm -fr $HOME/.local/share/Trash/info/* ; rm -fr $HOME/.local/share/Trash/files/* ; ccache -C'
+alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ & rm $HOME/.local/share/Trash/info/ & ccache -C'
+alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
+alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
 
@@ -64,25 +65,26 @@ alias cclean='sudo pacman  -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-t
 
 # Suffix alias
 alias -s pdf='qpdfview'
-alias -s {jpg,jpeg,png,gif}='geeqie'
+alias -s {jpg,jpeg,png,gif}='showfoto'
 #todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man 
-alias cp='cp -vi'                                               # Confirm before overwriting something
-alias df='df -h'                                                # Human-readable sizes check
-alias free='free -h'                                            # Show sizes in MB
+alias cp='cp -vi '                                               # Confirm before overwriting something
+alias df='df -h '                                                # Human-readable sizes check
+alias free='free -h '                                            # Show sizes in MB
 alias whereami='echo $PWD'
 alias more='less'
-alias pacman-update='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
-alias update-pacman='sudo pacman-mirrors --fasttrack ; sudo pacman -Syu;echo                   here we go Richard'
+alias update-pacman='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo                   here we go Richard'
+alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo                   here we go Richard'
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4  google.ch '
-alias mv='mv -iv'
-alias yy='paru'
-alias rm='sudo rm -rfv'
+alias mv='mv -iv '
+alias yy='paru '
+alias yay='paru '
+alias rm='sudo rm -rfv '
 alias rechner-bc='bc -ql'  								     		#Calculator
 alias calculator-bc='bc -ql'  										#Calculator
-alias mkdir='mkdir -pv'
+alias mkdir='mkdir -pv '
 alias yt='youtube-dl --add-metadata -i'
 alias yta='yt -x -f bestaudio/best'
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
@@ -98,9 +100,10 @@ alias antivirusscan-libredefender='libredefender scan'                          
 alias path='echo -e ${PATH//:/\\n}'
 
 # Network
-alias myip='curl http:/ipecho.net/plain; echo'
+alias whatismyip='curl http:/ipecho.net/plain; echo'
 alias traffic-jnettop='sudo jnettop'
-alias nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like
+#todo alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x & zsh -c "sudo jnettop "'
+alias ip-nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like
 alias traffic-nmap='sudo nmap -sS -v'                    #nmap -v google.ch  Network Ip scan programm like
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
 
@@ -126,7 +129,7 @@ alias   ln='ln -v'
 alias grep='grep --color=auto'
 alias    g='grep --color=auto'
 alias diff='diff --color=auto'
-
+alias pacman-grep='pacman -Qe | grep '
 # These common commands are just too long! Abbreviate them.
 alias ka='killall'
 alias  e='$EDITOR '
@@ -134,22 +137,23 @@ alias  v='$EDITOR '
 alias  p='sudo pacman '
 
 # Git
-alias gitu='git add . && git commit && git push'
-alias ga='git add'
-alias gp='git push'
-alias gl='git log'
-alias gs='git status'
-alias gd='git diff'
-alias gcm='git commit -m'
-alias  gb='git branch'
-alias  gc='git checkout'
-alias gra='git remote add'
-alias grr='git remote rm'
-alias gpl='git pull'
-alias gcl='git clone'
-alias gta='git tag -a -m'
-alias  gf='git reflog'
-alias gdiscard='git checkout -- .'
+alias gitup='git add . && git commit && git push'
+alias gitadd='git add '
+alias gitpush='git push'
+alias gitlog='git log'
+alias gitstatus='git status'
+alias gitdiff='git diff'
+alias gitcommitm='git commit -m'
+alias gitbranch='git branch'
+alias gitcheckout='git checkout'
+alias gitremoteadd='git remote add'
+alias gitremoterm='git remote rm'
+alias gitpull='git pull'
+alias gitclone='git clone'
+alias gittag='git tag -a -m'
+alias gitreflog='git reflog'
+alias gitl='git log --graph --oneline --decorate'
+alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; echo'
 
 # Quick/fast access
 alias np='$EDITOR -w PKGBUILD'
@@ -171,6 +175,12 @@ alias D-link='$HOME/ownCloud/D-link ; ls'
 
 ## mount
 alias mount='mount |column -t'
+
+## systemctl
+alias  enable='sudo systemctl enable --now '
+alias disable='sudo systemctl disable --now '
+alias  status='sudo systemctl status --now '
+alias  restart='sudo systemctl restart --now '
 
 ## Get server cpu info ##
 alias  cpuinfo='lscpu'
@@ -204,7 +214,7 @@ alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termd
 #todo-test alias kk='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 11; sleep 1 & cmatrix"'
 
 
-#########  opensource ##########
+#########  opensource / Cheatsheet ##########
 
 # alias phone-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    #android-screen
 # alias tablets-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    # android-screen
@@ -218,3 +228,5 @@ alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termd
 
 # rclone
 #alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'
+
+# Exec='prime-run' cmatrix                nvidia prime-run for nvidia properietary driver

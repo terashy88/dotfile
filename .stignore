@@ -2,59 +2,40 @@
 #/          ##Block all
 #.local                                ##Proxy Video Editor -- Notiz
 
-############### Todo / TEST ###############
-
-
-
+############### Todo / Test ################
+*BraveSoftware*
 
 
 ################## Todo ####################
 ############################################
 
-## allow
-#(?i)!Preferences
-(?i)!*setting*
-!.cfg
-!.conf
+
+################# allowed ##################
+!*Preferences*
 !*sync-conflict*
-#################
+!*trash*
 
-.config/flameshot/*
-.cargo/*
-Downloads/*
-.local/share/webkitgtk/*
-(?i)*Cookies*
-.config/balena-etcher/*
-.config/libreoffice/*
-*databases/
-.lesshst/*
-.config/TabNine/*
-.local/share/TabNine/*
-*/gce/*
-*obs-studio/*
-.config/ghb/*
-.config/deluge
-.config/bode
-gPodder
-/home/shaderico/.anydesk
-*Bitwarden
-diffuse
-(?i)*Session*
-(?i)*cache*
+!*.stignore*
+!*setting*
+############################################
+############################################
+
+
+
 (?i)*history*
+*databases*
+.anydesk
+*Bitwarden
+Downloads
+.config/TabNine/
+.gradle/
 
-## Popcorntime
-.config/Popcorn-Time/*
-!.config/Popcorn-Time/Default/Preferences
-!.config/Popcorn-Time/Default/data/settings.db
 
 ## digikam
-!/home/shaderico/.config/digikam/*
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
-(?d).dtrash
+#.dtrash
 #digikamrc has to be ignore to sync on other PC
 digikamrc
-
 
 ## Microsoft    
 *.wine
@@ -62,15 +43,12 @@ digikamrc
 $RECYCLE.BIN
 System Volume Information
 *.jak
-.config/Microsoft*
-.config/teams/*
-
-## qBittorrent
-.config/qBittorrent/*
+.config/Microsoft/
+.config/teams/
 
 ## tmp file
+(?i)*cache*
 *.tmp
-(?i)*temp*
 *._mp
 *.old
 *.syd
@@ -81,56 +59,36 @@ System Volume Information
 *.nch
 *..swp
 ~
-(?d)(?i)*.log*
-(?d)(?i)*logs.*
+(?i)*.log*
+(?i)*logs.*
 *.db*
 *_db*
 *.ds
 kglobalshortcutsrc
 *.list
+(?i)*cookies*
 *dconf
-(?i)sublime
-*.steam
-*lutris
-*PlayOnLinux
-*BlackmagicDesign
 
-(?i)*vscod*
+.config/VSCodium/
 #*vsliveshare*
 
 #.thunderbird
 .thunderbird/*
 
-.gnupg
-Schreibtisch
-(?i)*barrier*
-VBoxSVC
-selectorwindow
-(?i)kdenlive
-(?i)shotcut
-(?i)Thunar
-M-link*
+*.vdi
+Barrier.conf
+M-link-raw
 snap
-proxy
-showfoto
 .zcompdump
-(?i)*zeitgeist
-(?i)*Telegram*
-(?i)*metadata
-*keyring
-.npm
-recently-used.*
-evolution
-*maps*
+(?i)*metadata*
+
 
 ## ownCloud Ignorelist ##
-#.owncloudsync
-##.stfolder                                ## Don't delete
-!.stignore
-*.stversions*
-*.subversion*
-*.oscamerafaceu*
 owncloud.cfg
+##.stfolder                                ## Don't delete
+*.stversions
+*.subversion
+*.oscamerafaceu
 
 ## VirtualBox VMs
 VirtualBox VMs/
@@ -138,16 +96,28 @@ VirtualBox VMs/
 ## syncthing
 .config/syncthing/
 
-
-
 ## Android
 *thumbnails*
 *.android
 
-##.ssh
+##.ssh / security
 .ssr
+*.pem
 VM-share-rsx
-*nvidia*
+*.gpg
+
+# nvidia prime-run ignore
+prime-run
+.local/share/applications/
+.config/autostart/
+
+## Telegram
+.local/share/TelegramDesktop/
+Telegram Desktop
+
+# Popcorntime
+.config/Popcorn-Time/
+!.config/Popcorn-Time/Default/data
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -155,25 +125,31 @@ VM-share-rsx
 *.xsession*
 
 # xfce-panel
-.config/xfce4/*
-*.config/pavucontrol.ini
-!*notes*
-!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml
+        #todo *.config/pavucontrol.ini
+#Ignore 'xfce4-keyboard-shortcuts' if diffrent Keyboard layout
+xfce4-keyboard-shortcuts.xml
+.config/xfce4/
 
 # Signal
-.config/Signal/*
+.config/Signal/
 
 # whatsapp
-.config/skypeforlinux/
+.local/share/webkitgtk/
+
+# skype
+.config/skypeforlinux
 
 # Messenger
-(?i).config/Caprine/*
+(?i).config/Caprine/
 
 # GitHub Desktop
-GitHub*
+(?i)GitHub*
 
 ## Brave #don't delete
-.config/BraveSoftware/*
+.config/BraveSoftware/
 
 ## Sound Pipewire
-.local/state/*
+.local/state/
+
+/home/shaderico/.local/share/keyrings/
+.local/share/recently-used.xbel

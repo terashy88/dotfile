@@ -12,12 +12,8 @@ export PATH=$PATH:~/ownCloud/.bin
 #  if cmatrix; then nemo; 
 #  fi
 
-
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"   #TODO no funktion
+HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"   #TODO not function
 HISTCONTROL="ignoreboth:erasedups"
-
-#Exec=prime-run cmatrix
-
 #########################TODO###########################
 ########################################################
 
