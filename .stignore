@@ -3,7 +3,7 @@
 #.local                                ##Proxy Video Editor -- Notiz
 
 ############### Todo / Test ################
-*BraveSoftware*
+
 
 
 ################## Todo ####################
@@ -12,7 +12,7 @@
 
 ################# allowed ##################
 !*Preferences*
-!*sync-conflict*
+!sync-conflict*
 !*trash*
 
 !*.stignore*
@@ -92,6 +92,7 @@ owncloud.cfg
 
 ## VirtualBox VMs
 VirtualBox VMs/
+VM-share-rsx
 
 ## syncthing
 .config/syncthing/
@@ -103,11 +104,10 @@ VirtualBox VMs/
 ##.ssh / security
 .ssr
 *.pem
-VM-share-rsx
 *.gpg
 
 # nvidia prime-run ignore
-prime-run
+prime-run22
 .local/share/applications/
 .config/autostart/
 
@@ -117,7 +117,7 @@ Telegram Desktop
 
 # Popcorntime
 .config/Popcorn-Time/
-!.config/Popcorn-Time/Default/data
+!.config/Popcorn-Time/Default/data/*
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -125,19 +125,19 @@ Telegram Desktop
 *.xsession*
 
 # xfce-panel
-        #todo *.config/pavucontrol.ini
+.config/pavucontrol.ini
 #Ignore 'xfce4-keyboard-shortcuts' if diffrent Keyboard layout
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
-
+							 		    			
 # Signal
 .config/Signal/
-
+							 		    			
 # whatsapp
 .local/share/webkitgtk/
-
+							 								 		    									 		    					    			
 # skype
-.config/skypeforlinux
+.config/skypeforlinux/
 
 # Messenger
 (?i).config/Caprine/
@@ -146,10 +146,14 @@ xfce4-keyboard-shortcuts.xml
 (?i)GitHub*
 
 ## Brave #don't delete
-.config/BraveSoftware/
+*BraveSoftware*
 
 ## Sound Pipewire
 .local/state/
 
-/home/shaderico/.local/share/keyrings/
+# no catergory???
+.local/share/keyrings/
 .local/share/recently-used.xbel
+.local/share/kite/
+.lesshst
+.gnupg/

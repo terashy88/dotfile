@@ -51,7 +51,7 @@ ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.conf
 
 # sudo pacman -Qqe > pkglist.txt
 alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
-alias pkglist-restor='yay -Syu --needed --noanswerclean --cleanafter --norebuild --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
+alias pkglist-restor='paru -Syu --needed --cleanafter --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
 alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ & rm $HOME/.local/share/Trash/info/ & ccache -C'
@@ -64,9 +64,9 @@ alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq)
 # zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
 
 # Suffix alias
-alias -s pdf='qpdfview'
-alias -s {jpg,jpeg,png,gif}='showfoto'
-#todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man 
+alias -s pdf='qpdfview '
+alias -s {jpg,jpeg,png,gif}='ristretto '
+#todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man
 alias cp='cp -vi '                                               # Confirm before overwriting something
 alias df='df -h '                                                # Human-readable sizes check
 alias free='free -h '                                            # Show sizes in MB
@@ -80,7 +80,7 @@ alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4  google.ch '
 alias mv='mv -iv '
 alias yy='paru '
-alias yay='paru '
+# alias yay='paru '
 alias rm='sudo rm -rfv '
 alias rechner-bc='bc -ql'  								     		#Calculator
 alias calculator-bc='bc -ql'  										#Calculator
@@ -100,6 +100,7 @@ alias antivirusscan-libredefender='libredefender scan'                          
 alias path='echo -e ${PATH//:/\\n}'
 
 # Network
+alias       myip='curl http:/ipecho.net/plain; echo'
 alias whatismyip='curl http:/ipecho.net/plain; echo'
 alias traffic-jnettop='sudo jnettop'
 #todo alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x & zsh -c "sudo jnettop "'
@@ -197,7 +198,7 @@ alias screenoff="xset dpms force off"
 alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
-#Gets the total disk usage on your machine  
+#Gets the total disk usage on your machine
 alias  diskinfo='df -hl --total | grep total'
 alias     fdisk='fdisk -x'                          #fdisk space / UUID etc
 alias disk-uuid='    df -hTl'

@@ -109,6 +109,7 @@ gnucash-docs
 google-webdesigner
 gparted
 grep
+grisbi
 groff
 grub
 grub-theme-manjaro
@@ -177,11 +178,11 @@ lightdm
 lightdm-gtk-greeter-settings
 lightdm-slick-greeter
 linssid
-linux515
-linux515-acpi_call
-linux515-headers
-linux515-nvidia
-linux515-virtualbox-host-modules
+linux516
+linux516-acpi_call
+linux516-headers
+linux516-nvidia
+linux516-virtualbox-host-modules
 logrotate
 lvm2
 m4
@@ -412,6 +413,7 @@ xorg-twm
 xorg-xinit
 xorg-xkill
 xz
+yay
 yelp
 zcash
 zenity
