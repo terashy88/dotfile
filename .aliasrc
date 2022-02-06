@@ -22,8 +22,8 @@ sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journal
         ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashrc &
                 sudo pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 
-alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/ ;
-     ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
+alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/  ;
+ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
      ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
      ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
      ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
@@ -54,7 +54,7 @@ alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/o
 alias pkglist-restor='paru -Syu --needed --cleanafter --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ & rm $HOME/.local/share/Trash/info/ & ccache -C'
+alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
 alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 
@@ -72,14 +72,15 @@ alias df='df -h '                                                # Human-readabl
 alias free='free -h '                                            # Show sizes in MB
 alias whereami='echo $PWD'
 alias more='less'
-alias update-pacman='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo                   here we go Richard'
-alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo                   here we go Richard'
+alias update-pacman='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4  google.ch '
 alias mv='mv -iv '
 alias yy='paru '
+alias zz='paru '
 # alias yay='paru '
 alias rm='sudo rm -rfv '
 alias rechner-bc='bc -ql'  								     		#Calculator
@@ -87,7 +88,6 @@ alias calculator-bc='bc -ql'  										#Calculator
 alias mkdir='mkdir -pv '
 alias yt='youtube-dl --add-metadata -i'
 alias yta='yt -x -f bestaudio/best'
-alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias ffmpeg='ffmpeg -hide_banner'										 #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 alias inxi-Fanzy='inxi -Fanzy'  #Info System
 alias ip-c='ip -c a'    #ip-coler
@@ -156,13 +156,17 @@ alias gitreflog='git reflog'
 alias gitl='git log --graph --oneline --decorate'
 alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; echo'
 
+## Arch
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+
 # Quick/fast access
 alias np='$EDITOR -w PKGBUILD'
 alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 alias ee='$EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
 alias stignore='$EDITOR $HOME/.stignore; exit'
 alias zshrc='$EDITOR $HOME/.zshrc; exit'
-alias aliasrc='$EDITOR $HOME/aliasrc; exit'
+# alias aliasrc='$EDITOR $HOME/aliasrc; exit'
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
