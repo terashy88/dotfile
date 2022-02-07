@@ -1,9 +1,8 @@
 #!/bin/bash
 #/          ##Block all
-#.local                                ##Proxy Video Editor -- Notiz
+#.local                                ##Proxy Video Editor -- Notice
 
 ############### Todo / Test ################
-
 
 
 ################## Todo ####################
@@ -14,6 +13,7 @@
 !*Preferences*
 !sync-conflict*
 !*trash*
+!*Trash*
 
 !*.stignore*
 !*setting*
@@ -37,7 +37,7 @@ Downloads
 #digikamrc has to be ignore to sync on other PC
 digikamrc
 
-## Microsoft    
+## Microsoft
 *.wine
 *desktop.ini*
 $RECYCLE.BIN
@@ -69,11 +69,13 @@ kglobalshortcutsrc
 (?i)*cookies*
 *dconf
 
-.config/VSCodium/
+#.config/VSCodium/
 #*vsliveshare*
+#(?i)*vscod*
 
 #.thunderbird
 .thunderbird/*
+
 
 *.vdi
 Barrier.conf
@@ -85,7 +87,7 @@ snap
 
 ## ownCloud Ignorelist ##
 owncloud.cfg
-##.stfolder                                ## Don't delete
+##!.stfolder                                ## Don't delete
 *.stversions
 *.subversion
 *.oscamerafaceu
@@ -107,7 +109,7 @@ VM-share-rsx
 *.gpg
 
 # nvidia prime-run ignore
-prime-run22
+prime-run
 .local/share/applications/
 .config/autostart/
 
@@ -117,7 +119,7 @@ Telegram Desktop
 
 # Popcorntime
 .config/Popcorn-Time/
-!.config/Popcorn-Time/Default/data/*
+!.config/Popcorn-Time/Default/*
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -126,16 +128,16 @@ Telegram Desktop
 
 # xfce-panel
 .config/pavucontrol.ini
-#Ignore 'xfce4-keyboard-shortcuts' if diffrent Keyboard layout
+#Ignore 'xfce4-keyboard-shortcuts' if different Keyboard layout
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
-							 		    			
+
 # Signal
 .config/Signal/
-							 		    			
+
 # whatsapp
 .local/share/webkitgtk/
-							 								 		    									 		    					    			
+
 # skype
 .config/skypeforlinux/
 
@@ -157,3 +159,7 @@ xfce4-keyboard-shortcuts.xml
 .local/share/kite/
 .lesshst
 .gnupg/
+
+## Game
+*steam*
+lutris

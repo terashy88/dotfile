@@ -199,6 +199,7 @@ manjaro-hotfixes
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
+manjaro-settings-samba
 manjaro-system
 manjaro-wallpapers-18.0
 manjaro-xfce-settings
@@ -282,6 +283,7 @@ powertop
 preload
 procps-ng
 psmisc
+pycharm-community-edition
 python-adblock
 python-click-completion
 python-jedi
@@ -295,8 +297,10 @@ rclone-browser
 reiserfsprogs
 rhash
 rhythmbox
+ristretto
 rsync
 s-nail
+samba
 sayonara-player-git
 scrcpy
 sed
@@ -304,7 +308,9 @@ shadow
 shairplay
 shiny-mirrors
 signal-desktop
-skypeforlinux-stable-bin
+skypeforlinux-preview-bin
+smb4k
+smbclient
 snapd
 snapd-glib
 spectre-meltdown-checker

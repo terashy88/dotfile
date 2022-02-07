@@ -3,15 +3,15 @@
 
 # Pfetch, Neofetch Terminal CPU info
 pfetch
-echo '                     Yes Richard '
+echo '                      Yes Richard '
 
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
 
 ##################### TODO / Test ######################
+
 #  if cmatrix; then nemo;
 #  fi
-
 HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"   #TODO not function
 HISTCONTROL="ignoreboth:erasedups"
 #########################TODO###########################
@@ -710,3 +710,8 @@ USE_POWERLINE="true"
 #echo '                          /#####h**``       `**%@####@                                 '
 #echo '                         @H@*`                    `*%#@                                '
 #echo '                        *`                            `*                               '
+
+
+#########  opensource / Cheatsheet ##########
+
+# rrrrr='ls'        #command: $rrrrr
