@@ -1,7 +1,7 @@
-#!/bin/zsh
+# !/bin/zsh
 ### By the way if it ain't broke, break it then fix it. ###
 
-# Pfetch, Neofetch Terminal CPU info
+# Pfetch, Neofetch Terminal System info
 pfetch
 echo '                      Yes Richard '
 
@@ -9,9 +9,19 @@ export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
 
 ##################### TODO / Test ######################
+# if [[ ! nemo ]]; then
+# thunar;
+# fi
+#
+#  if [ "nemo" != "" ]
+#   then
+#   [ "thnuar" != "" ]
+    # [ "thunar" != "" ]
+    # else
+    #   termdown
+    # fi
 
-#  if cmatrix; then nemo;
-#  fi
+
 HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"   #TODO not function
 HISTCONTROL="ignoreboth:erasedups"
 #########################TODO###########################
@@ -206,29 +216,23 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
+## source ##
 ## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
 
 ## profile
 source /etc/profile
-
 ## aliasrc
 [[ -f $HOME/aliasrc ]] && source "$HOME/aliasrc"
-
 ## private-alias
 [[ -f $HOME/ownCloud/private-git/p-aliasrc ]] && source $HOME/ownCloud/private-git/p-aliasrc
-
 ## oh-my-zsh
 [[ -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
-
 ## dir-colors
 [[ -f ~/.config/.dir_colors ]] &&  eval `dircolors ~/.config/.dir_colors`
-
 ## zsh-autosuggestions
 [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 ## Use syntax highlighting
 [[  -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 ## Use history substring search
 [[  -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] ; source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 
@@ -240,10 +244,14 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 ##TEST powerlevel10k
-[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+#![[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+#![[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] ; source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
-[[  -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
+[[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh
+
+#![[  -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
+#![[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
 
 ## Date Zeit
 # date
@@ -397,8 +405,6 @@ bash_prompt_command() {
 }
 
 
-
-
 ##
 ##	GENERATE A FORMAT SEQUENCE
 ##
@@ -406,7 +412,6 @@ format_font()
 {
     ## FIRST ARGUMENT TO RETURN FORMAT STRING
     local output=$1
-
 
     case $# in
         2)
@@ -423,8 +428,6 @@ format_font()
         ;;
     esac
 }
-
-
 
 ##
 ## COLORIZE BASH PROMT
@@ -465,13 +468,11 @@ bash_prompt() {
     local    L_CYAN='66'
     local     WHITE='67'
 
-
     ## TYPE
     local     RESET='0'
     local    EFFECT='0'
     local     COLOR='30'
     local        BG='40'
-
 
     ## 256 COLOR CODES
     local NO_FORMAT="\[\033[0m\]"
@@ -485,18 +486,11 @@ bash_prompt() {
     local BLUE_BOLD="\[\033[1;38;5;74m\]"
 
 
-
-
-
     ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
     ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
     ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-
-
 
     ##                          CONFIGURE HERE                                ##
-
-
 
     ############################################################################
     ## CONFIGURATION                                                          ##
@@ -515,7 +509,6 @@ bash_prompt() {
     local TEXTEFFECT_3=$BOLD
 
     local PROMT_FORMAT=$BLUE_BOLD
-
 
     ############################################################################
     ## EXAMPLE CONFIGURATIONS                                                 ##
@@ -649,8 +642,6 @@ bash_prompt() {
     local SEPARATOR_2=$SEPARATOR_FORMAT_2$TRIANGLE
     local SEPARATOR_3=$SEPARATOR_FORMAT_3$TRIANGLE
 
-
-
     ############################################################################
     ## WINDOW TITLE                                                           ##
     ## Prevent messed up terminal-window titles                               ##
@@ -678,8 +669,6 @@ bash_prompt() {
     none="$(tput sgr0)"
     trap 'echo -ne "${none}"' DEBUG
 }
-
-
 
 
 ################################################################################

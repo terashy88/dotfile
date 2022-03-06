@@ -14,7 +14,6 @@
 alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
 ln -fv $HOME/.zshrc                               $HOME/ownCloud/dotfile/.zshrc &
 sudo    ln -fv /etc/lightdm/lightdm.conf          $HOME/ownCloud/dotfile/lightdm.conf &
-sudo    ln -fv /etc/vconsole.conf                 $HOME/ownCloud/dotfile/vconsole.conf &
 sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journald.conf &
         ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore &
         ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors &
@@ -29,7 +28,7 @@ ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
      ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
      ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
-sudo ln -fv $HOME/ownCloud/dotfile/vconsole.conf       /etc/vconsole.conf ;
+echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true &
 sudo systemctl enable --now auto-cpufreq.service &
@@ -41,8 +40,8 @@ sudo fc-cache -vf'
 
 ## xfce4-backup
 alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list &
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml &
+ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ;
 xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
 
 alias xfce-restore='mkdir -pv                                        $HOME/ownCloud/dotfile/ ;
@@ -58,13 +57,13 @@ alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-ti
 alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 
-# yay -Rc -noconfirm --needed pidgin hexchat mousepad xfce4-screensaver samba
+# yay -Rc -noconfirm --needed pidgin hexchat mousepad samba
 
 ## Block any Website
 # zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
 
 # Suffix alias
-alias -s pdf='qpdfview '
+alias -s pdf=' qpdfview '
 alias -s {jpg,jpeg,png,gif}='ristretto '
 #todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man
 alias cp='cp -vi '                                               # Confirm before overwriting something
@@ -83,13 +82,10 @@ alias yy='paru '
 alias zz='paru '
 # alias yay='paru '
 alias rm='sudo rm -rfv '
-alias rechner-bc='bc -ql'  								     		#Calculator
-alias calculator-bc='bc -ql'  										#Calculator
+alias rechner-bc='   bc -ql'  		#Calculator
+alias calculator-bc='bc -ql'  	        #Calculator
 alias mkdir='mkdir -pv '
-alias yt='youtube-dl --add-metadata -i'
-alias yta='yt -x -f bestaudio/best'
-alias ffmpeg='ffmpeg -hide_banner'										 #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
-alias inxi-Fanzy='inxi -Fanzy'  #Info System
+alias inxi-Fnzy='inxi -Fnzy'  #Info System      #-a uuid info
 alias ip-c='ip -c a'    #ip-coler
 alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
 alias defenderscan-libredefender='libredefender scan'                             #Linux Antivierus/Defender programm
@@ -99,19 +95,27 @@ alias antivirusscan-libredefender='libredefender scan'                          
 #alias  path='echo $PATH | tr -s ':' '\n''
 alias path='echo -e ${PATH//:/\\n}'
 
-# Network
+## open port check
+alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+
+## Network
 alias       myip='curl http:/ipecho.net/plain; echo'
 alias whatismyip='curl http:/ipecho.net/plain; echo'
 alias traffic-jnettop='sudo jnettop'
 #todo alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x & zsh -c "sudo jnettop "'
+alias nmap='sudo nmap -sS -v'                               #nmap -v google.ch  Network Ip scan programm like
 alias ip-nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like
-alias traffic-nmap='sudo nmap -sS -v'                    #nmap -v google.ch  Network Ip scan programm like
+alias traffic-nmap='sudo nmap -sS -v'                       #nmap -v google.ch  Network Ip scan programm like
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
 
-## open port check
-alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+## Convert
+alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 
+## Downloads
+alias yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
+alias yta='yt -x -f bestaudio/best'
 alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
+
 alias nvim='nvim '
 alias  vim='nvim '
 alias    n='nvim '
@@ -182,17 +186,20 @@ alias D-link='$HOME/ownCloud/D-link ; ls'
 alias mount='mount |column -t'
 
 ## systemctl
-alias  enable='sudo systemctl enable --now '
-alias disable='sudo systemctl disable --now '
-alias  status='sudo systemctl status --now '
+alias   enable='sudo systemctl enable  --now '
+alias  disable='sudo systemctl disable --now '
+alias   status='sudo systemctl status f --now '
 alias  restart='sudo systemctl restart --now '
+
+#swappiness    #old /etc/sysctl.d/swappiness.conf#Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
+#Todo alias swappiness-restore=sudo echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > /etc/sysctl.d/99-swappiness.conf
 
 ## Get server cpu info ##
 alias  cpuinfo='lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 
 ## get GPU ram on desktop / laptop##
-alias meminfo='grep -i --color memory /var/log/Xorg.0.log'
+alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
 alias mem-psmc='ps -Ao "comm %cpu %mem"'
 
 #turn screen off
@@ -235,3 +242,6 @@ alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termd
 #alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'
 
 # Exec='prime-run' cmatrix                nvidia prime-run for nvidia properietary driver
+
+## System Information
+#systemd-analyze blame

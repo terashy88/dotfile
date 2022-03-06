@@ -10,13 +10,11 @@
 
 
 ################# allowed ##################
-!*Preferences*
 !sync-conflict*
-!*trash*
-!*Trash*
-
 !*.stignore*
-!*setting*
+#!*setting*
+#!*Preferences*
+
 ############################################
 ############################################
 
@@ -27,13 +25,13 @@
 .anydesk
 *Bitwarden
 Downloads
-.config/TabNine/
 .gradle/
 
 
 ## digikam
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 #.dtrash
+(?i)*trash/*
 #digikamrc has to be ignore to sync on other PC
 digikamrc
 
@@ -60,6 +58,7 @@ System Volume Information
 *..swp
 ~
 (?i)*.log*
+(?i)*log.*
 (?i)*logs.*
 *.db*
 *_db*
@@ -69,13 +68,16 @@ kglobalshortcutsrc
 (?i)*cookies*
 *dconf
 
+## vscodium
 #.config/VSCodium/
 #*vsliveshare*
 #(?i)*vscod*
+.config/TabNine
+.local/share/kite/
+.kite/
 
 #.thunderbird
-.thunderbird/*
-
+.thunderbird/
 
 *.vdi
 Barrier.conf
@@ -92,8 +94,11 @@ owncloud.cfg
 *.subversion
 *.oscamerafaceu
 
+## rclone
+rclone
+
 ## VirtualBox VMs
-VirtualBox VMs/
+*VirtualBox*
 VM-share-rsx
 
 ## syncthing
@@ -118,8 +123,8 @@ prime-run
 Telegram Desktop
 
 # Popcorntime
-.config/Popcorn-Time/
-!.config/Popcorn-Time/Default/*
+# .config/Popcorn-Time/
+# !.config/Popcorn-Time/Default/
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -154,12 +159,16 @@ xfce4-keyboard-shortcuts.xml
 .local/state/
 
 # no catergory???
-.local/share/keyrings/
+.local/share/keyrings
 .local/share/recently-used.xbel
-.local/share/kite/
 .lesshst
 .gnupg/
+.config/lbry
+.config/deluge/
+.local/share/qBittorrent
+*QtProject*
 
 ## Game
-*steam*
+(?i)*steam*
 lutris
+*PlayOnLinux*

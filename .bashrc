@@ -4,7 +4,7 @@ export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
 
 
-# Pfetch, Neofetch Terminal CPU info 
+# Pfetch, Neofetch Terminal CPU info
 pfetch
 
 echo '                     bash on Richard'
@@ -13,8 +13,8 @@ echo '                     bash on Richard'
 
 
 
-#if pfetch ; then pfetch ; else neofetch 
-#fi 
+#if pfetch ; then pfetch ; else neofetch
+#fi
 #Exec=prime-run cmatrix
 
 ################ Todo ######################
@@ -113,10 +113,10 @@ parse_git_state() {
 
 git_prompt_string() {
   local git_where="$(parse_git_branch)"
-  
+
   # If inside a Git repository, print its branch and state
   [ -n "$git_where" ] && echo "$GIT_PROMPT_SYMBOL$(parse_git_state)$GIT_PROMPT_PREFIX%{$fg[yellow]%}${git_where#(refs/heads/|tags/)}$GIT_PROMPT_SUFFIX"
-  
+
   # If not inside the Git repo, print exit codes of last command (only if it failed)
   [ ! -n "$git_where" ] && echo "%{$fg[red]%} %(?..[%?])"
 }
@@ -267,7 +267,7 @@ bash_prompt_command() {
 	pwdmaxlen=$(( ( pwdmaxlen < ${#dir} ) ? ${#dir} : pwdmaxlen ))
 
 	NEW_PWD=${PWD/#$HOME/\~}
-	
+
 	local pwdoffset=$(( ${#NEW_PWD} - pwdmaxlen ))
 
 	# Generate name
@@ -317,7 +317,7 @@ bash_prompt() {
 	## COLOR CODES                                                            ##
 	## These can be used in the configuration below                           ##
 	############################################################################
-	
+
 	## FONT EFFECT
 	local      NONE='0'
 	local      BOLD='1'
@@ -326,8 +326,8 @@ bash_prompt() {
 	local     BLINK='5'
 	local    INVERT='7'
 	local    HIDDEN='8'
-	
-	
+
+
 	## COLORS
 	local   DEFAULT='9'
 	local     BLACK='0'
@@ -346,15 +346,15 @@ bash_prompt() {
 	local L_MAGENTA='65'
 	local    L_CYAN='66'
 	local     WHITE='67'
-	
-	
+
+
 	## TYPE
 	local     RESET='0'
 	local    EFFECT='0'
 	local     COLOR='30'
 	local        BG='40'
-	
-	
+
+
 	## 256 COLOR CODES
 	local NO_FORMAT="\[\033[0m\]"
 	local ORANGE_BOLD="\[\033[1;38;5;208m\]"
@@ -365,21 +365,18 @@ bash_prompt() {
 	local WHITE_BOLD="\[\033[1;38;5;15m\]"
 	local GRAY_BOLD="\[\033[1;90m\]"
 	local BLUE_BOLD="\[\033[1;38;5;74m\]"
-	
-	bash on Richard
-	
-	
-	
-	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  
-	  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ## 
 
-	
-	
+
+	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+	  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+
+
+
 	##                          CONFIGURE HERE                                ##
 
-	
-	
+
+
 	############################################################################
 	## CONFIGURATION                                                          ##
 	## Choose your color combination here                                     ##
@@ -387,31 +384,31 @@ bash_prompt() {
 	local FONT_COLOR_1=$WHITE
 	local BACKGROUND_1=$BLUE
 	local TEXTEFFECT_1=$BOLD
-	
+
 	local FONT_COLOR_2=$WHITE
 	local BACKGROUND_2=$L_BLUE
 	local TEXTEFFECT_2=$BOLD
-	
+
 	local FONT_COLOR_3=$D_GRAY
 	local BACKGROUND_3=$WHITE
 	local TEXTEFFECT_3=$BOLD
-	
+
 	local PROMT_FORMAT=$BLUE_BOLD
 
-	
+
 	############################################################################
 	## EXAMPLE CONFIGURATIONS                                                 ##
 	## I use them for different hosts. Test them out ;)                       ##
 	############################################################################
-	
+
 	## CONFIGURATION: BLUE-WHITE
 	if [ "$HOSTNAME" = dell ]; then
 		FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLUE; TEXTEFFECT_1=$BOLD
-		FONT_COLOR_2=$WHITE; BACKGROUND_2=$L_BLUE; TEXTEFFECT_2=$BOLD	
-		FONT_COLOR_3=$D_GRAY; BACKGROUND_3=$WHITE; TEXTEFFECT_3=$BOLD	
+		FONT_COLOR_2=$WHITE; BACKGROUND_2=$L_BLUE; TEXTEFFECT_2=$BOLD
+		FONT_COLOR_3=$D_GRAY; BACKGROUND_3=$WHITE; TEXTEFFECT_3=$BOLD
 		PROMT_FORMAT=$CYAN_BOLD
 	fi
-	
+
 	## CONFIGURATION: BLACK-RED
 	if [ "$HOSTNAME" = giraff6 ]; then
 		FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLACK; TEXTEFFECT_1=$BOLD
@@ -419,7 +416,7 @@ bash_prompt() {
 		FONT_COLOR_3=$WHITE; BACKGROUND_3=$RED; TEXTEFFECT_3=$BOLD
 		PROMT_FORMAT=$RED_BOLD
 	fi
-	
+
 	## CONFIGURATION: RED-BLACK
 	#FONT_COLOR_1=$WHITE; BACKGROUND_1=$RED; TEXTEFFECT_1=$BOLD
 	#FONT_COLOR_2=$WHITE; BACKGROUND_2=$D_GRAY; TEXTEFFECT_2=$BOLD
@@ -433,7 +430,7 @@ bash_prompt() {
 		FONT_COLOR_3=$WHITE; BACKGROUND_3=$BLUE; TEXTEFFECT_3=$BOLD
 		PROMT_FORMAT=$CYAN_BOLD
 	fi
-	
+
 	## CONFIGURATION: GRAY-SCALE
 	if [ "$HOSTNAME" = giraff ]; then
 		FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLACK; TEXTEFFECT_1=$BOLD
@@ -441,7 +438,7 @@ bash_prompt() {
 		FONT_COLOR_3=$WHITE; BACKGROUND_3=$L_GRAY; TEXTEFFECT_3=$BOLD
 		PROMT_FORMAT=$BLACK_BOLD
 	fi
-	
+
 	## CONFIGURATION: GRAY-CYAN
 	if [ "$HOSTNAME" = light ]; then
 		FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLACK; TEXTEFFECT_1=$BOLD
@@ -449,49 +446,49 @@ bash_prompt() {
 		FONT_COLOR_3=$BLACK; BACKGROUND_3=$L_CYAN; TEXTEFFECT_3=$BOLD
 		PROMT_FORMAT=$CYAN_BOLD
 	fi
-	
-	
-	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  
-	  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ## 	
 
-	
-	
-	
+
+	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+	  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+	##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
+
+
+
+
 	############################################################################
 	## TEXT FORMATING                                                         ##
 	## Generate the text formating according to configuration                 ##
 	############################################################################
-	
+
 	## CONVERT CODES: add offset
 	FC1=$(($FONT_COLOR_1+$COLOR))
 	BG1=$(($BACKGROUND_1+$BG))
 	FE1=$(($TEXTEFFECT_1+$EFFECT))
-	
+
 	FC2=$(($FONT_COLOR_2+$COLOR))
 	BG2=$(($BACKGROUND_2+$BG))
 	FE2=$(($TEXTEFFECT_2+$EFFECT))
-	
+
 	FC3=$(($FONT_COLOR_3+$COLOR))
 	BG3=$(($BACKGROUND_3+$BG))
 	FE3=$(($TEXTEFFECT_3+$EFFECT))
-	
+
 	FC4=$(($FONT_COLOR_4+$COLOR))
 	BG4=$(($BACKGROUND_4+$BG))
 	FE4=$(($TEXTEFFECT_4+$EFFECT))
-	
+
 
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
 	local TEXT_FORMAT_1
 	local TEXT_FORMAT_2
 	local TEXT_FORMAT_3
-	local TEXT_FORMAT_4	
+	local TEXT_FORMAT_4
 	format_font TEXT_FORMAT_1 $FE1 $FC1 $BG1
 	format_font TEXT_FORMAT_2 $FE2 $FC2 $BG2
 	format_font TEXT_FORMAT_3 $FC3 $FE3 $BG3
 	format_font TEXT_FORMAT_4 $FC4 $FE4 $BG4
-	
-	
+
+
 	# GENERATE PROMT SECTIONS
 	local PROMT_USER=$"$TEXT_FORMAT_1 \u "
 	local PROMT_HOST=$"$TEXT_FORMAT_2 \h "
@@ -504,17 +501,17 @@ bash_prompt() {
 	## Generate the separators between sections                               ##
 	## Uses background colors of the sections                                 ##
 	############################################################################
-	
+
 	## CONVERT CODES
 	TSFC1=$(($BACKGROUND_1+$COLOR))
 	TSBG1=$(($BACKGROUND_2+$BG))
-	
+
 	TSFC2=$(($BACKGROUND_2+$COLOR))
 	TSBG2=$(($BACKGROUND_3+$BG))
-	
+
 	TSFC3=$(($BACKGROUND_3+$COLOR))
 	TSBG3=$(($DEFAULT+$BG))
-	
+
 
 	## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
 	local SEPARATOR_FORMAT_1
@@ -523,10 +520,10 @@ bash_prompt() {
 	format_font SEPARATOR_FORMAT_1 $TSFC1 $TSBG1
 	format_font SEPARATOR_FORMAT_2 $TSFC2 $TSBG2
 	format_font SEPARATOR_FORMAT_3 $TSFC3 $TSBG3
-	
+
 
 	# GENERATE SEPARATORS WITH FANCY TRIANGLE
-	local TRIANGLE=$'\uE0B0'	
+	local TRIANGLE=$'\uE0B0'
 	local SEPARATOR_1=$SEPARATOR_FORMAT_1$TRIANGLE
 	local SEPARATOR_2=$SEPARATOR_FORMAT_2$TRIANGLE
 	local SEPARATOR_3=$SEPARATOR_FORMAT_3$TRIANGLE
@@ -554,7 +551,7 @@ bash_prompt() {
 	############################################################################
 	PS1="$TITLEBAR\n${PROMT_USER}${SEPARATOR_1}${PROMT_HOST}${SEPARATOR_2}${PROMT_PWD}${SEPARATOR_3}${PROMT_INPUT}"
 
-	
+
 
 	## For terminal line coloring, leaving the rest standard
 	none="$(tput sgr0)"
@@ -568,14 +565,14 @@ bash_prompt() {
 ##  MAIN                                                                      ##
 ################################################################################
 
-##	Bash provides an environment variable called PROMPT_COMMAND. 
-##	The contents of this variable are executed as a regular Bash command 
-##	just before Bash displays a prompt. 
+##	Bash provides an environment variable called PROMPT_COMMAND.
+##	The contents of this variable are executed as a regular Bash command
+##	just before Bash displays a prompt.
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
 
 ##	Call bash_promnt only once, then unset it (not needed any more)
-##	It will set $PS1 with colors and relative to $NEW_PWD, 
+##	It will set $PS1 with colors and relative to $NEW_PWD,
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
 bash_prompt
 unset bash_prompt
@@ -624,10 +621,10 @@ sudo          ln -fv /etc/systemd/journald.conf            $HOME/ownCloud/dotfil
 
 alias backup-restore='ln -fv $HOME/ownCloud/dotfile/.zshrc $HOME/.zshrc
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf             /etc/lightdm/lightdm.conf
-     ln -fv $HOME/ownCloud/dotfile/.stignore                $HOME/.stignore 
+     ln -fv $HOME/ownCloud/dotfile/.stignore                $HOME/.stignore
      ln -fv $HOME/ownCloud/dotfile/.dir_colors              $HOME/.config/.dir_colors
-     ln -fv $HOME/ownCloud/dotfile/aliasrc                  $HOME/aliasrc 
-     ln -fv $HOME/ownCloud/dotfile/.bashrc                  $HOME/.bashrc 
+     ln -fv $HOME/ownCloud/dotfile/aliasrc                  $HOME/aliasrc
+     ln -fv $HOME/ownCloud/dotfile/.bashrc                  $HOME/.bashrc
      sudo ln -fv  $HOME/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf
      sudo ln -fv  $HOME/ownCloud/dotfile/journald.conf /etc/journald.conf
 sudo timedatectl set-ntp true
@@ -637,25 +634,25 @@ sudo systemctl enable lightdm
 sudo mkinitcpio -P && sudo update-grub
 sudo journalctl --vacuum-size=33M
 sudo systemctl enable --now systemd-timesyncd
-sudo fc-cache -vf 
+sudo fc-cache -vf
 ;echo                   here we go Richard'
 
 ## xfce4-backup
 alias xfce4-backup='
-ln -fv $HOME/.config/mimeapps.list $HOME/ownCloud/dotfile/xfce4/mimeapps.list; 
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/ownCloud/dotfile/xfce4/xfce-perchannel-xml; 
+ln -fv $HOME/.config/mimeapps.list $HOME/ownCloud/dotfile/xfce4/mimeapps.list;
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/ownCloud/dotfile/xfce4/xfce-perchannel-xml;
 xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles
 ;echo                  here we go Richard'
 
 alias xfce4-restore='
-ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list $HOME/.config/mimeapps.list; 
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list $HOME/.config/mimeapps.list;
 ln -fv $HOME/ownCloud/dotfile/xfce-perchannel-xml $HOME/.config/xfce4/xfconf/xfce-perchannel-xml;
 xfce4-panel-profiles load $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles
 ;echo                   here we go Richard'
 
 # sudo pacman -Qqe > pkglist.txt
 alias pkglist-backup='pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
-alias pkglist-restore='sudo pacman --needed --noconfirm -Syu && yay --needed --noanswerclean --nocleanmenu --cleanafter --norebuild --batchinstall --combinedupgrade --useask --noredownload --topdown --sudoloop -Syv < $HOME/ownCloud/dotfile/pkglist.txt 
+alias pkglist-restore='sudo pacman --needed --noconfirm -Syu && yay --needed --noanswerclean --nocleanmenu --cleanafter --norebuild --batchinstall --combinedupgrade --useask --noredownload --topdown --sudoloop -Syv < $HOME/ownCloud/dotfile/pkglist.txt
 ;echo                   here we go Richard'
 
 ## Systemclean
@@ -682,13 +679,13 @@ alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4'
-alias mv='mv -iv' 
-alias rm='sudo rm -rfv' 
+alias mv='mv -iv'
+alias rm='sudo rm -rfv'
 alias rechner-bc='bc -ql'  								     		#Calculator
 alias calculator-bc='bc -ql'  										#Calculator
-alias mkdir='mkdir -pv' 
-alias yt='youtube-dl --add-metadata -i' 
-alias yta='yt -x -f bestaudio/best' 
+alias mkdir='mkdir -pv'
+alias yt='youtube-dl --add-metadata -i'
+alias yta='yt -x -f bestaudio/best'
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias ffmpeg='ffmpeg -hide_banner'										 #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 alias inxi-Fanzy='inxi -Fanzy'                                                   #Info System
@@ -704,35 +701,35 @@ alias path='echo -e ${PATH//:/\\n}'
 # Network
 alias myip='curl http:/ipecho.net/plain; echo'
 alias traffic-jnettop='sudo jnettop'
-alias nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like 
-alias traffic-nmap='sudo nmap -sS -v'                    #nmap -v google.ch  Network Ip scan programm like 
+alias nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like
+alias traffic-nmap='sudo nmap -sS -v'                    #nmap -v google.ch  Network Ip scan programm like
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
 
 ## open port check
 alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
 
 alias wget='wget -c'              			  #web get #Commandline Homepage URL Download > index.html
-alias nvim='nvim'                                                          
+alias nvim='nvim'
 alias  vim='nvim'
-alias    n='nvim'                                                              
-alias  env='env'                               #Startup memorie speicher Information  
+alias    n='nvim'
+alias  env='env'                               #Startup memorie speicher Information
 alias htop='sudo htop'
 alias    f='nemo'
 alias   rr='ranger'
 
 
 # Colorize commands when possible.
-alias ls='ls -thaNr  --color=auto --group-directories-first' 
-alias ll='ls -thaNrl --color=auto --group-directories-first' 
+alias ls='ls -thaNr  --color=auto --group-directories-first'
+alias ll='ls -thaNrl --color=auto --group-directories-first'
 alias ln='ln -v'
-alias grep='grep --color=auto' 
+alias grep='grep --color=auto'
 alias    g='grep --color=auto'
-alias diff='diff --color=auto' 
+alias diff='diff --color=auto'
 
 # These common commands are just too long! Abbreviate them.
-alias ka='killall' 
-alias  e='vscodium ' 
-alias  v='$EDITOR' 
+alias ka='killall'
+alias  e='vscodium '
+alias  v='$EDITOR'
 alias  p='sudo pacman '
 
 # Git
@@ -755,13 +752,13 @@ alias gf='git reflog'
 alias gdiscard='git checkout -- .'
 
 # Quick/fast access
-#alias i='.stignore && $HOME/aliasrc && $HOME/.zshrc' 
-alias ee='$EDITOR $HOME/.stignore;$EDITOR $HOME/aliasrc;$EDITOR $HOME/.zshrc; exit' 
+#alias i='.stignore && $HOME/aliasrc && $HOME/.zshrc'
+alias ee='$EDITOR $HOME/.stignore;$EDITOR $HOME/aliasrc;$EDITOR $HOME/.zshrc; exit'
 alias stignore='$EDITOR $HOME/.stignore; exit'
 alias zshrc='$EDITOR $HOME/.zshrc; exit'
 alias aliasrc='$EDITOR $HOME/aliasrc; exit'
-alias t='mkdir -p ~/Downloads/test && cd ~/Downloads/test && ls'  
-alias dl='~/Downloads/ && cd ~/Downloads/ && ls'  
+alias t='mkdir -p ~/Downloads/test && cd ~/Downloads/test && ls'
+alias dl='~/Downloads/ && cd ~/Downloads/ && ls'
 alias cd..='cd .. && ls'
 alias ownCloud='$HOME/ownCloud ; ls'
 alias D-link='$HOME/ownCloud/D-link ; ls'
@@ -778,7 +775,7 @@ alias mount='mount |column -t'
 alias cpuinfo='lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 
-## get GPU ram on desktop / laptop## 
+## get GPU ram on desktop / laptop##
 alias meminfo='grep -i --color memory /var/log/Xorg.0.log'
 alias mem-psmc='ps -Ao "comm %cpu %mem"'
 
@@ -798,7 +795,7 @@ alias most='du -hsx * | sort -rh | head -15'                     # Bigest files 
 alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
 
 #shutdown
-alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"' 
+alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias gg=' xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdown 88; sleep 1 ; poweroff"'
@@ -818,3 +815,104 @@ alias gg=' xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdo
 
 # rclone
 #alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'
+
+
+## open port check
+alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+
+alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
+alias nvim='nvim '
+alias  vim='nvim '
+alias    n='nvim '
+alias  env='env'                               #Startup memorie speicher Information
+alias htop='sudo htop'
+alias    f='exec nemo'
+alias   rr='ranger'
+
+#nvidia Proprietary
+alias nvidia0300='sudo mhwd -a pci nonfree 0300'
+
+# Colorize commands when possible.
+alias   ls='ls -thaNr  --color=auto --group-directories-first'
+alias   ll='ls -thaNrl --color=auto --group-directories-first'
+alias   ln='ln -v'
+alias grep='grep --color=auto'
+alias    g='grep --color=auto'
+alias diff='diff --color=auto'
+alias pacman-grep='pacman -Qe | grep '
+# These common commands are just too long! Abbreviate them.
+alias ka='killall'
+alias  e='$EDITOR '
+alias  v='$EDITOR '
+alias  p='sudo pacman '
+
+# Git
+alias gitup='git add . && git commit && git push'
+alias gitadd='git add '
+alias gitpush='git push'
+alias gitlog='git log'
+alias gitstatus='git status'
+alias gitdiff='git diff'
+alias gitcommitm='git commit -m'
+alias gitbranch='git branch'
+alias gitcheckout='git checkout'
+alias gitremoteadd='git remote add'
+alias gitremoterm='git remote rm'
+alias gitpull='git pull'
+alias gitclone='git clone'
+alias gittag='git tag -a -m'
+alias gitreflog='git reflog'
+alias gitl='git log --graph --oneline --decorate'
+alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; echo'
+
+## Arch
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+
+# Quick/fast access
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
+alias ee='$EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
+alias stignore='$EDITOR $HOME/.stignore; exit'
+alias zshrc='$EDITOR $HOME/.zshrc; exit'
+# alias aliasrc='$EDITOR $HOME/aliasrc; exit'
+alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
+alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
+alias cd..='cd .. ; ls'
+alias ownCloud='$HOME/ownCloud ; ls'
+alias D-link='$HOME/ownCloud/D-link ; ls'
+alias S-link='$HOME/ownCloud/S-link ; ls'
+alias M-link='$HOME/ownCloud/M-link ; ls'
+alias W-link='$HOME/ownCloud/W-link ; ls'
+alias P-link='$HOME/ownCloud/P-link ; ls'
+alias D-link='$HOME/ownCloud/D-link ; ls'
+
+## mount
+alias mount='mount |column -t'
+
+## systemctl
+alias   enable='sudo systemctl enable  --now '
+alias  disable='sudo systemctl disable --now '
+alias   status='sudo systemctl status f --now '
+alias  restart='sudo systemctl restart --now '
+#'systemctl'    list all running units
+
+# Suffix alias
+alias pdf='qpdfview '
+alias {jpg,jpeg,png,gif}='ristretto '
+#todo alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man
+alias cp='cp -vi '                                               # Confirm before overwriting something
+alias df='df -h '                                                # Human-readable sizes check
+alias free='free -h '                                            # Show sizes in MB
+alias whereami='echo $PWD'
+alias more='less'
+alias update-pacman='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias errors='sudo systemctl --failed'
+alias failed='sudo systemctl --failed'
+alias grub-update='sudo mkinitcpio -P && sudo update-grub'
+alias ping='ping -c 4  google.ch '
+alias mv='mv -iv '
+alias yy='paru '
+alias zz='paru '
+alias pp='pycharm '
