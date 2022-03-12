@@ -893,7 +893,7 @@ alias mount='mount |column -t'
 ## systemctl
 alias   enable='sudo systemctl enable  --now '
 alias  disable='sudo systemctl disable --now '
-alias   status='sudo systemctl status f --now '
+alias   status='sudo systemctl status  --now '
 alias  restart='sudo systemctl restart --now '
 #'systemctl'    list all running units
 
