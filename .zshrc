@@ -1,9 +1,8 @@
-# !/bin/zsh
+#!/bin/zsh
 ### By the way if it ain't broke, break it then fix it. ###
 
-# Pfetch, Neofetch Terminal System info
+# pfetch, neofetch Terminal System info
 pfetch
-echo '                      Yes Richard '
 
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
@@ -15,7 +14,7 @@ export PATH=$PATH:~/ownCloud/.bin
 #
 #  if [ "nemo" != "" ]
 #   then
-#   [ "thnuar" != "" ]
+#   [ "thunar" != "" ]
     # [ "thunar" != "" ]
     # else
     #   termdown
@@ -237,9 +236,6 @@ source /etc/profile
 [[  -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]] ; source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 ## bind UP and DOWN arrow keys to history substring search
-#zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -524,7 +520,7 @@ bash_prompt() {
     fi
 
     ## CONFIGURATION: BLACK-RED
-    if [ "$HOSTNAME" = giraff6 ]; then
+    if [ "$HOSTNAME" = shaderico ]; then
         FONT_COLOR_1=$WHITE; BACKGROUND_1=$BLACK; TEXTEFFECT_1=$BOLD
         FONT_COLOR_2=$WHITE; BACKGROUND_2=$D_GRAY; TEXTEFFECT_2=$BOLD
         FONT_COLOR_3=$WHITE; BACKGROUND_3=$RED; TEXTEFFECT_3=$BOLD

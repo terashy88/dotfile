@@ -87,7 +87,6 @@ filesystem
 filezilla
 findbrokenpkgs
 findutils
-firestorm-bin
 flameshot
 flex
 folder-color-switcher
@@ -198,6 +197,7 @@ linux516-headers
 linux516-nvidia
 linux516-virtualbox-host-modules
 logrotate
+lutris
 lvm2
 m4
 make
@@ -216,7 +216,6 @@ manjaro-settings-manager
 manjaro-settings-manager-notifier
 manjaro-settings-samba
 manjaro-system
-manjaro-wallpapers-18.0
 manjaro-xfce-settings
 manjaro-zsh-config
 matcha-gtk-theme
@@ -296,7 +295,6 @@ pkgconf
 popcorntime
 poppler-data
 poppler-glib
-porntime
 pound
 powerline-go
 powertop
@@ -309,6 +307,7 @@ python-click-completion
 python-docutils
 python-jedi
 python-pytorch
+python-tenacity
 python-typogrify
 qpdfview
 qt5-translations
@@ -335,6 +334,7 @@ snapd-glib
 spectre-meltdown-checker
 speedtest-cli
 stacer
+steam-manjaro
 sudo
 syncthing
 sysfsutils
@@ -375,9 +375,9 @@ virtualbox-guest-utils
 vscodium-bin
 vscodium-bin-features
 vscodium-bin-marketplace
+vulkan-intel
 vulscan
 wallpapers-2018
-wallpapers-juhraya
 wget
 whatsapp-for-linux
 which

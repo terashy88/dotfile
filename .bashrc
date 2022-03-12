@@ -807,11 +807,11 @@ alias gg=' xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "termdo
 # alias tablets-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    # android-screen
 # alias scp-up='  scp -rv'     #-P22                                             #scp -P 1234 file user@remote.host:/remote/location/
 # alias scp-down='scp -rv'     #-P22                                             #scp -P 1234 user@remote.host:/remote/location/file ./
-# manuel alias  rsync-up='rsync -e'ssh   -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/           --exclude
-# manuel alias  rsync-down='rsync -e'ssh -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/
-# manuel alias  rsyncvm='rsync -e 'ssh -p22'  $HOME/VirtualBox\ VMs/ 172.20.10.6:$HOME/VirtualBox\ VMs/ -r --force -avz'
+## manuel alias  rsync-up='rsync -e'ssh   -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/           --exclude
+## manuel alias  rsync-down='rsync -e'ssh -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/
+## manuel alias  rsyncvm='rsync -e 'ssh -p22'  $HOME/VirtualBox\ VMs/ 172.20.10.6:$HOME/VirtualBox\ VMs/ -r --force -avz'
 
-# alias .config-update='rsync -e'ssh -p 22' --force -Rravuz --delete-before --exclude gnupg --exclude VirtualBox --exclude Barrier --exclude syncthing --exclude BraveSoftware --exclude .ssh --exclude ownCloud --exclude .stversions --exclude .xsession-errors .config/'   ## 172.0.0.1:
+## alias .config-update='rsync -e'ssh -p 22' --force -Rravuz --delete-before --exclude gnupg --exclude VirtualBox --exclude Barrier --exclude syncthing --exclude BraveSoftware --exclude .ssh --exclude ownCloud --exclude .stversions --exclude .xsession-errors .config/'   ## 172.0.0.1:
 
 # rclone
 #alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'

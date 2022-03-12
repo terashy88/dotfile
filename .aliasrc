@@ -143,12 +143,12 @@ alias  p='sudo pacman '
 
 # Git
 alias gitup='git add . && git commit && git push'
-alias gitadd='git add '
+alias gitadd='git add .'
+alias gitcommitm='git commit -m'
 alias gitpush='git push'
 alias gitlog='git log'
 alias gitstatus='git status'
 alias gitdiff='git diff'
-alias gitcommitm='git commit -m'
 alias gitbranch='git branch'
 alias gitcheckout='git checkout'
 alias gitremoteadd='git remote add'
@@ -168,8 +168,8 @@ alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirr
 alias np='$EDITOR -w PKGBUILD'
 alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 alias ee='$EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
-alias stignore='$EDITOR $HOME/.stignore; exit'
-alias zshrc='$EDITOR $HOME/.zshrc; exit'
+# alias stignore='$EDITOR $HOME/.stignore; exit'
+# alias zshrc='$EDITOR $HOME/.zshrc; exit'
 # alias aliasrc='$EDITOR $HOME/aliasrc; exit'
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
@@ -181,6 +181,7 @@ alias M-link='$HOME/ownCloud/M-link ; ls'
 alias W-link='$HOME/ownCloud/W-link ; ls'
 alias P-link='$HOME/ownCloud/P-link ; ls'
 alias D-link='$HOME/ownCloud/D-link ; ls'
+alias bin='$HOME/ownCloud/.bin ; ls'
 
 ## mount
 alias mount='mount |column -t'
@@ -191,7 +192,8 @@ alias  disable='sudo systemctl disable --now '
 alias   status='sudo systemctl status f --now '
 alias  restart='sudo systemctl restart --now '
 
-#swappiness    #old /etc/sysctl.d/swappiness.conf#Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
+## swappiness
+#Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
 #Todo alias swappiness-restore=sudo echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > /etc/sysctl.d/99-swappiness.conf
 
 ## Get server cpu info ##
@@ -199,7 +201,7 @@ alias  cpuinfo='lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 
 ## get GPU ram on desktop / laptop##
-alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
+# alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
 alias mem-psmc='ps -Ao "comm %cpu %mem"'
 
 #turn screen off

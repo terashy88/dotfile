@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #/          ##Block all
 #.local                                ##Proxy Video Editor -- Notice
 
@@ -10,10 +10,8 @@
 
 
 ################# allowed ##################
-!sync-conflict*
-!*.stignore*
-#!*setting*
-#!*Preferences*
+
+#! allowed list
 
 ############################################
 ############################################
@@ -56,11 +54,12 @@ System Volume Information
 *.dmp
 *.nch
 *..swp
-~
+#~
 (?i)*.log*
 (?i)*log.*
 (?i)*logs.*
 *.db*
+*db.*
 *_db*
 *.ds
 kglobalshortcutsrc
@@ -71,7 +70,7 @@ kglobalshortcutsrc
 ## vscodium
 #.config/VSCodium/
 #*vsliveshare*
-#(?i)*vscod*
+(?i)*vscod*
 .config/TabNine
 .local/share/kite/
 .kite/
@@ -123,7 +122,7 @@ prime-run
 Telegram Desktop
 
 # Popcorntime
-# .config/Popcorn-Time/
+.config/Popcorn-Time/
 # !.config/Popcorn-Time/Default/
 
 ## .Xauthority programm opener if delete false
@@ -134,6 +133,7 @@ Telegram Desktop
 # xfce-panel
 .config/pavucontrol.ini
 #Ignore 'xfce4-keyboard-shortcuts' if different Keyboard layout
+!~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
 
