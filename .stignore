@@ -10,13 +10,13 @@
 
 
 ################# allowed ##################
-
-#! allowed list
+!sync-conflict*
+!*.stignore*
+(?i)!*setting*
+(?i)!*Preferences*
 
 ############################################
 ############################################
-
-
 
 (?i)*history*
 *databases*
@@ -57,7 +57,7 @@ System Volume Information
 #~
 (?i)*.log*
 (?i)*log.*
-(?i)*logs.*
+(?i)*logs.ccl*
 *.db*
 *db.*
 *_db*
@@ -70,10 +70,10 @@ kglobalshortcutsrc
 ## vscodium
 #.config/VSCodium/
 #*vsliveshare*
-(?i)*vscod*
-.config/TabNine
-.local/share/kite/
-.kite/
+# (?i)*vscod*
+# .config/TabNine
+# .local/share/kite/
+# .kite/
 
 #.thunderbird
 .thunderbird/
