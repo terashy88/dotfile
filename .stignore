@@ -4,7 +4,7 @@
 
 ############### Todo / Test ################
 
-#
+
 ################## Todo ####################
 ############################################
 
@@ -13,7 +13,9 @@
 !sync-conflict*
 !*.stignore*
 (?i)!*setting*
-(?i)!*Preferences*
+(?i)!*Preferences
+!.conf
+
 
 ############################################
 ############################################
@@ -164,9 +166,11 @@ xfce4-keyboard-shortcuts.xml
 .lesshst
 .gnupg/
 .config/lbry
-.config/deluge/
-.local/share/qBittorrent
 *QtProject*
+
+## torrent
+.config/deluge/
+qBittorrent
 
 ## Game
 (?i)*steam*
