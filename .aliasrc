@@ -254,4 +254,5 @@ alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termd
 # Exec='prime-run' cmatrix                nvidia prime-run for nvidia properietary driver
 
 ## System Information
-#systemd-analyze blame
+#systemd-analyze blame  #*startup-speedinfo
+#systemd-analyze        #*startup-loadtime
