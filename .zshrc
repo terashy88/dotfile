@@ -19,10 +19,6 @@ export PATH=$PATH:~/ownCloud/.bin
     # else
     #   termdown
     # fi
-
-
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"   #TODO not function
-HISTCONTROL="ignoreboth:erasedups"
 #########################TODO###########################
 ########################################################
 
@@ -30,6 +26,8 @@ HISTCONTROL="ignoreboth:erasedups"
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
+HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"
+HISTCONTROL="ignoreboth:erasedups"
 setopt autocd extendedglob nomatch
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
@@ -48,7 +46,7 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
-#Editor
+# Editor
 export EDITOR=vscodium
 export VISUAL=EDITOR
 
@@ -216,8 +214,6 @@ export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
 ## source ##
-## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
-
 ## profile
 source /etc/profile
 ## aliasrc
@@ -239,15 +235,15 @@ source /etc/profile
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-##TEST powerlevel10k
-#![[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-#![[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] ; source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-
 # To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
 [[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh
 
-#![[  -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
-#![[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
+## powerlevel10k
+#[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+#[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] ; source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+#[[  -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
+#[[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
+## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
 
 ## Date Zeit
 # date
@@ -271,7 +267,7 @@ unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
 unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor.
 
 # Group matches and describe.
-#zstyle ':completion:*:default' menu select=2
+# zstyle ':completion:*:default' menu select=2
 
 # Completing Groping
 zstyle ':completion:*:options' description 'yes'
@@ -288,6 +284,15 @@ zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _
 zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
 # Directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
@@ -296,6 +301,17 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' file-list all
 
 #####################  FUNCTIONS  ########################
+
+## Another method for quick change directories. Add this to your ~/.zshrc, then just enter “cd …./dir”
+rationalise-dot() {
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+=/..
+  else
+    LBUFFER+=.
+  fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
 
 # Easy extract
 extract () {
@@ -363,7 +379,6 @@ fi;
 ################################################################################
 ##  FUNCTIONS                                                                 ##
 ################################################################################
-
 ##
 ##	ARRANGE $PWD AND STORE IT IN $NEW_PWD
 ##	* The home directory (HOME) is replaced with a ~
@@ -482,9 +497,6 @@ bash_prompt() {
     local BLUE_BOLD="\[\033[1;38;5;74m\]"
 
 
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
 
     ##                          CONFIGURE HERE                                ##
 
@@ -556,12 +568,6 @@ bash_prompt() {
         FONT_COLOR_3=$BLACK; BACKGROUND_3=$L_CYAN; TEXTEFFECT_3=$BOLD
         PROMT_FORMAT=$CYAN_BOLD
     fi
-
-
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-    ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##  ##
-
 
 
 
@@ -677,8 +683,6 @@ bash_prompt() {
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
 
-# Use powerline
-USE_POWERLINE="true"
 
 #echo '                                       -@                                              '
 #echo '                                      .##@                                             '
@@ -699,4 +703,4 @@ USE_POWERLINE="true"
 
 #########  opensource / Cheatsheet ##########
 
-# rrrrr='ls'        #command: $rrrrr
+#todo checkout script's at /usr/share/*

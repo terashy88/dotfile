@@ -4,7 +4,7 @@
 
 ############### Todo / Test ################
 
-
+#
 ################## Todo ####################
 ############################################
 
@@ -149,7 +149,7 @@ xfce4-keyboard-shortcuts.xml
 # Messenger
 (?i).config/Caprine/
 
-# GitHub Desktop
+# GitHub Desktop #! use IDE
 (?i)GitHub*
 
 ## Brave #don't delete
