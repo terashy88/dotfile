@@ -1,11 +1,5 @@
-#!/bin/zsh
+#!/bin/sh
 ### By the way if it ain't broke, break it then fix it. ###
-
-# pfetch, neofetch Terminal System info
-pfetch
-
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/ownCloud/.bin
 
 ##################### TODO / Test ######################
 # if [[ ! nemo ]]; then
@@ -21,6 +15,13 @@ export PATH=$PATH:~/ownCloud/.bin
     # fi
 #########################TODO###########################
 ########################################################
+
+# pfetch, neofetch Terminal System info
+pfetch
+
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/ownCloud/.bin
+export PATH=~/bin:$PATH     #python environment
 
 # History - config
 HISTFILE=$HOME/.config/.zshistory
@@ -245,16 +246,6 @@ bindkey '^[[B' history-substring-search-down
 #[[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
 ## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
 
-## Date Zeit
-# date
-
-## Calender Wetter
-# cal
-
-# apropos            ## Comandline input helper zb. 'apropos vpn'
-
-###########################################
-
 #fpath+=(~/.zsh/completion/)
 
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
@@ -299,6 +290,7 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 zstyle ':completion:*' file-list all
+
 
 #####################  FUNCTIONS  ########################
 
@@ -682,25 +674,3 @@ bash_prompt() {
 ##	just before Bash displays a prompt.
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
-
-
-#echo '                                       -@                                              '
-#echo '                                      .##@                                             '
-#echo '                                     .####@                                            '
-#echo '                                     @#####@                                           '
-#echo '                                   . *######@                                          '
-#echo '                                  .##@o@#####@                                         '
-#echo '                                 /############@                                        '
-#echo '                                /##############@                                       '
-#echo '                               @######@**%######@                                      '
-#echo '                              @######`     %#####o                                     '
-#echo '                             @######@       ######%                                    '
-#echo '                           -@#######h       ######@.`                                  '
-#echo '                          /#####h**``       `**%@####@                                 '
-#echo '                         @H@*`                    `*%#@                                '
-#echo '                        *`                            `*                               '
-
-
-#########  opensource / Cheatsheet ##########
-
-#todo checkout script's at /usr/share/*

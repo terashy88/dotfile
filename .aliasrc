@@ -1,5 +1,4 @@
 #!/bin/sh
-
 ############### Todo / TEST ###############--
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
@@ -52,9 +51,10 @@ alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/o
 alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman -Sc --noconfirm & /usr/bin/sudo journalctl --vacuum-time=14d & sudo find /tmp -type f -atime +10 -delete & pamac clean --no-confirm & sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
+alias cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
 alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 # alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
+alias pamacclean='pamac clean --no-confirm '
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad samba
 
@@ -97,6 +97,10 @@ alias path='echo -e ${PATH//:/\\n}'
 
 ## open port check
 alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+alias port-no-ping-input-ip='nmap -T4 -A -v -Pn '       #nmap -T4 -A -v -Pn 172.0.0.1
+alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A -v 172.0.0.1
+# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '        #nmap -sS -sU -T4 -A -v 172.0.0.1
+# alias port-nmap-input-ip='nmap -T4 -A -v '       #nmap -T4 -A -v 172.0.0.1
 
 ## Network
 alias       myip='curl http:/ipecho.net/plain; echo'
@@ -173,21 +177,21 @@ alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirr
 #! alias please='sudo !!'
 alias np='$EDITOR -w PKGBUILD'
 alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
-alias ee='$EDITOR $HOME/ownCloud/private-git/todo ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
+alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
 # alias stignore='$EDITOR $HOME/.stignore; exit'
 # alias zshrc='$EDITOR $HOME/.zshrc; exit'
 # alias aliasrc='$EDITOR $HOME/aliasrc; exit'
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
-alias ownCloud/='$HOME/ownCloud ; ls'
-alias D-link='$HOME/ownCloud/D-link ; ls'
-alias S-link='$HOME/ownCloud/S-link ; ls'
-alias M-link='$HOME/ownCloud/M-link ; ls'
-alias W-link='$HOME/ownCloud/W-link ; ls'
-alias P-link='$HOME/ownCloud/P-link ; ls'
-alias D-link='$HOME/ownCloud/D-link ; ls'
-alias bin='$HOME/ownCloud/.bin ; ls'
+alias ownCloud/='$HOME/ownCloud        ; ls'
+alias D-link='   $HOME/ownCloud/D-link ; ls'
+alias S-link='   $HOME/ownCloud/S-link ; ls'
+alias M-link='   $HOME/ownCloud/M-link ; ls'
+alias W-link='   $HOME/ownCloud/W-link ; ls'
+alias P-link='   $HOME/ownCloud/P-link ; ls'
+alias D-link='   $HOME/ownCloud/D-link ; ls'
+alias bin='      $HOME/ownCloud/.bin   ; ls'
 
 ## mount
 alias mount='mount |column -t'
@@ -195,8 +199,9 @@ alias mount='mount |column -t'
 ## systemctl
 alias   enable='sudo systemctl enable  --now '
 alias  disable='sudo systemctl disable --now '
-alias   status='sudo systemctl status f --now '
+alias   status='sudo systemctl status  --now '
 alias  restart='sudo systemctl restart --now '
+alias  stop='   sudo systemctl stop    --now '
 
 ## swappiness
 #Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
@@ -234,25 +239,3 @@ alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest
 alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
 #todo-test alias kk='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 11; sleep 1 & cmatrix"'
-
-
-#########  opensource / Cheatsheet ##########
-
-# alias phone-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    #android-screen
-# alias tablets-scrcpy='scrcpy -s 'your-adb-devices-id' -m 2110 -b 20m'                    # android-screen
-# alias scp-up='  scp -rv'     #-P22                                             #scp -P 1234 file user@remote.host:/remote/location/
-# alias scp-down='scp -rv'     #-P22                                             #scp -P 1234 user@remote.host:/remote/location/file ./
-# manuel alias  rsync-up='rsync -e'ssh   -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/           --exclude
-# manuel alias  rsync-down='rsync -e'ssh -p22' --force -Rravuz --delete-before' #pkglist user@remotesystem:/path/
-# manuel alias  rsyncvm='rsync -e 'ssh -p22'  $HOME/VirtualBox\ VMs/ 172.20.10.6:$HOME/VirtualBox\ VMs/ -r --force -avz'
-
-# alias .config-update='rsync -e'ssh -p 22' --force -Rravuz --delete-before --exclude gnupg --exclude VirtualBox --exclude Barrier --exclude syncthing --exclude BraveSoftware --exclude .ssh --exclude ownCloud --exclude .stversions --exclude .xsession-errors .config/'   ## 172.0.0.1:
-
-# rclone
-#alias owncloud-encrypt='rclone --attr-timeout 3s --vfs-cache-mode full --vfs-read-chunk-size 100M       mount owncloud-encrypt crypt: $HOME/owncloud crypt   --allow-non-empty'
-
-# Exec='prime-run' cmatrix                nvidia prime-run for nvidia properietary driver
-
-## System Information
-#systemd-analyze blame  #*startup-speedinfo
-#systemd-analyze        #*startup-loadtime

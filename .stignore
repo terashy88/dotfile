@@ -16,7 +16,6 @@
 (?i)!*Preferences
 !.conf
 
-
 ############################################
 ############################################
 
@@ -59,7 +58,7 @@ System Volume Information
 #~
 (?i)*.log*
 (?i)*log.*
-(?i)*logs.ccl*
+(?i)*logs.*
 *.db*
 *db.*
 *_db*
@@ -73,9 +72,10 @@ kglobalshortcutsrc
 #.config/VSCodium/
 #*vsliveshare*
 # (?i)*vscod*
-# .config/TabNine
-# .local/share/kite/
-# .kite/
+.config/VSCodium/Backups/
+.config/TabNine
+.local/share/kite/
+.kite/
 
 #.thunderbird
 .thunderbird/
@@ -153,6 +153,7 @@ xfce4-keyboard-shortcuts.xml
 
 # GitHub Desktop #! use IDE
 (?i)GitHub*
+*.git*
 
 ## Brave #don't delete
 *BraveSoftware*
@@ -171,8 +172,9 @@ xfce4-keyboard-shortcuts.xml
 ## torrent
 .config/deluge/
 qBittorrent
+*torrent*
 
 ## Game
 (?i)*steam*
-lutris
+*lutris*
 *PlayOnLinux*
