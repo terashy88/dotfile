@@ -1,4 +1,5 @@
-#!/bin/sh
+﻿#!/bin/sh
+
 ############### Todo / TEST ###############--
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
@@ -35,7 +36,6 @@ sudo systemctl enable --now systemd-timesyncd &
 sudo fc-cache -vf'
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
-
 ## xfce4-backup
 alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
 ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
@@ -70,11 +70,8 @@ alias cp='cp -vi '                                               # Confirm befor
 alias df='df -h '                                                # Human-readable sizes check
 alias free='free -h '                                            # Show sizes in MB
 alias whereami='echo $PWD'
-alias more='less'
-alias update-pacman='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias more='less --use-color'
 alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
-alias errors='sudo systemctl --failed'
-alias failed='sudo systemctl --failed'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 4  google.ch '
 alias mv='mv -iv '
@@ -88,42 +85,41 @@ alias mkdir='mkdir -pv '
 alias inxi-Fnzy='inxi -Fnzy'  #Info System      #-a uuid info
 alias ip-c='ip -c a'    #ip-coler
 alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
-alias defenderscan-libredefender='libredefender scan'                             #Linux Antivierus/Defender programm
-alias antivirusscan-libredefender='libredefender scan'                           #Linux Antivierus/Defender programm
+alias defenderscan-libredefender='sudo libredefender scan'                             #Linux Antivierus/Defender programm
 
 # Pretty print the path
-#alias  path='echo $PATH | tr -s ':' '\n''
+# alias  path='echo $PATH | tr -s ':' '\n''
 alias path='echo -e ${PATH//:/\\n}'
 
 ## open port check
 alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
-alias port-no-ping-input-ip='nmap -T4 -A -v -Pn '       #nmap -T4 -A -v -Pn 172.0.0.1
-alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A -v 172.0.0.1
-# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '        #nmap -sS -sU -T4 -A -v 172.0.0.1
-# alias port-nmap-input-ip='nmap -T4 -A -v '       #nmap -T4 -A -v 172.0.0.1
+alias port-no-ping-input-ip='nmap -T4 -A -v -Pn '       #nmap -T4 -A -v -Pn 127.0.0.1
+alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A -v 127.0.0.1
+# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '        #nmap -sS -sU -T4 -A -v 127.0.0.1
+# alias port-nmap-input-ip='nmap -T4 -A -v '       #nmap -T4 -A -v 127.0.0.1
 
 ## Network
-alias       myip='curl http:/ipecho.net/plain; echo'
-alias whatismyip='curl http:/ipecho.net/plain; echo'
-alias traffic-jnettop='sudo jnettop'
-#todo alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x & zsh -c "sudo jnettop "'
-alias nmap='sudo nmap -sS -v'                               #nmap -v google.ch  Network Ip scan programm like
-alias ip-nmap='sudo nmap -sS -v'                            #nmap -v google.ch  Network Ip scan programm like
-alias traffic-nmap='sudo nmap -sS -v'                       #nmap -v google.ch  Network Ip scan programm like
+alias              myip='curl http:/ipecho.net/plain; echo'
+alias        whatismyip='curl http:/ipecho.net/plain; echo'
+alias   traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
+alias whois='whois '               #whois input-ip 127.0.0.1
+alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
+alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
+alias network-sniffer-monitoring='sudo  sniffer'       #network-monitoring     live-scan
 
 ## Convert
 alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 
 ## Downloads
-alias yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
-alias yta='yt -x -f bestaudio/best'
+alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
+alias  yta='yt -x -f bestaudio/best'
 alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
 
 alias nvim='nvim '
 alias  vim='nvim '
 alias    n='nvim '
-alias  env='env'                               #Startup memorie speicher Information
+alias  env='env  '                         #Startup memorie speicher Information
 alias htop='sudo htop'
 alias    f='exec nemo'
 alias   rr='ranger'
@@ -168,6 +164,8 @@ alias gittag='git tag -a -m'
 alias gitreflog='git reflog'
 alias gitl='git log --graph --oneline --decorate'
 alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; echo'
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 
 ## Arch
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
@@ -175,8 +173,6 @@ alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirr
 
 # Quick/fast access
 #! alias please='sudo !!'
-alias np='$EDITOR -w PKGBUILD'
-alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
 # alias stignore='$EDITOR $HOME/.stignore; exit'
 # alias zshrc='$EDITOR $HOME/.zshrc; exit'
@@ -202,6 +198,10 @@ alias  disable='sudo systemctl disable --now '
 alias   status='sudo systemctl status  --now '
 alias  restart='sudo systemctl restart --now '
 alias  stop='   sudo systemctl stop    --now '
+alias sys-port='systemctl status|less --use-color'
+alias sys-status='systemctl list-unit-files|less'
+alias errors='sudo systemctl --failed'
+alias failed='sudo systemctl --failed'
 
 ## swappiness
 #Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
@@ -238,4 +238,3 @@ alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest
 #alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
 alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
-#todo-test alias kk='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 11; sleep 1 & cmatrix"'

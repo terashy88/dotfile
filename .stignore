@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 #/          ##Block all
 #.local                                ##Proxy Video Editor -- Notice
 
@@ -91,9 +91,9 @@ snap
 ## ownCloud Ignorelist ##
 owncloud.cfg
 ##!.stfolder                                ## Don't delete
-*.stversions
-*.subversion
-*.oscamerafaceu
+*.stversions*
+*.subversion*
+*.oscamerafaceu*
 
 ## rclone
 rclone
@@ -126,6 +126,10 @@ Telegram Desktop
 # Popcorntime
 .config/Popcorn-Time/
 # !.config/Popcorn-Time/Default/
+
+## office
+.config/libreoffice
+.local/share/onlyoffice/
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -173,6 +177,9 @@ xfce4-keyboard-shortcuts.xml
 .config/deluge/
 qBittorrent
 *torrent*
+
+## kde-connect
+.config/kdeconnect
 
 ## Game
 (?i)*steam*

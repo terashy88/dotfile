@@ -54,10 +54,10 @@ export VISUAL=EDITOR
 # Use powerline
 USE_POWERLINE="true"
 
-#powerlevel10k prompt
+# powerlevel10k prompt
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-#powerline-go
+# powerline-go
 function powerline_precmd() {
     PS1="$($GOPATH/bin/powerline-go -error $? -jobs ${${(%):%j}:-0})"
 
@@ -99,7 +99,7 @@ setopt histignorealldups                                        # If a new comma
 setopt autocd
 # if only directory path is entered, cd there.
 
-#zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
@@ -148,7 +148,7 @@ autoload -Uz compinit -i colors zcalc
 compinit -d
 colors
 
-#Modify the colors and symbols in these variables as desired.
+# Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo
 GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$reset_color%}"
 GIT_PROMPT_SUFFIX="%{$fg[green]%}]%{$reset_color%}"
@@ -288,9 +288,7 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 # Directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 zstyle ':completion:*' file-list all
-
 
 #####################  FUNCTIONS  ########################
 
@@ -367,7 +365,6 @@ fi;
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
-
 ################################################################################
 ##  FUNCTIONS                                                                 ##
 ################################################################################
@@ -406,7 +403,6 @@ bash_prompt_command() {
         NEW_PWD=${trunc_symbol}/${NEW_PWD#*/}
     fi
 }
-
 
 ##
 ##	GENERATE A FORMAT SEQUENCE
@@ -450,7 +446,6 @@ bash_prompt() {
     local     BLINK='5'
     local    INVERT='7'
     local    HIDDEN='8'
-
 
     ## COLORS
     local   DEFAULT='9'
@@ -499,15 +494,12 @@ bash_prompt() {
     local FONT_COLOR_1=$WHITE
     local BACKGROUND_1=$BLUE
     local TEXTEFFECT_1=$BOLD
-
     local FONT_COLOR_2=$WHITE
     local BACKGROUND_2=$L_BLUE
     local TEXTEFFECT_2=$BOLD
-
     local FONT_COLOR_3=$D_GRAY
     local BACKGROUND_3=$WHITE
     local TEXTEFFECT_3=$BOLD
-
     local PROMT_FORMAT=$BLUE_BOLD
 
     ############################################################################
@@ -561,8 +553,6 @@ bash_prompt() {
         PROMT_FORMAT=$CYAN_BOLD
     fi
 
-
-
     ############################################################################
     ## TEXT FORMATING                                                         ##
     ## Generate the text formating according to configuration                 ##
@@ -585,7 +575,6 @@ bash_prompt() {
     BG4=$(($BACKGROUND_4+$BG))
     FE4=$(($TEXTEFFECT_4+$EFFECT))
 
-
     ## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
     local TEXT_FORMAT_1
     local TEXT_FORMAT_2
@@ -595,7 +584,6 @@ bash_prompt() {
     format_font TEXT_FORMAT_2 $FE2 $FC2 $BG2
     format_font TEXT_FORMAT_3 $FC3 $FE3 $BG3
     format_font TEXT_FORMAT_4 $FC4 $FE4 $BG4
-
 
     # GENERATE PROMT SECTIONS
     local PROMT_USER=$"$TEXT_FORMAT_1 \u "
@@ -620,7 +608,6 @@ bash_prompt() {
     TSFC3=$(($BACKGROUND_3+$COLOR))
     TSBG3=$(($DEFAULT+$BG))
 
-
     ## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
     local SEPARATOR_FORMAT_1
     local SEPARATOR_FORMAT_2
@@ -628,7 +615,6 @@ bash_prompt() {
     format_font SEPARATOR_FORMAT_1 $TSFC1 $TSBG1
     format_font SEPARATOR_FORMAT_2 $TSFC2 $TSBG2
     format_font SEPARATOR_FORMAT_3 $TSFC3 $TSBG3
-
 
     # GENERATE SEPARATORS WITH FANCY TRIANGLE
     local TRIANGLE=$'\uE0B0'
@@ -649,8 +635,6 @@ bash_prompt() {
         ;;
     esac
 
-
-
     ############################################################################
     ## BASH PROMT                                                             ##
     ## Generate promt and remove format from the rest                         ##
@@ -664,7 +648,6 @@ bash_prompt() {
     trap 'echo -ne "${none}"' DEBUG
 }
 
-
 ################################################################################
 ##  MAIN                                                                      ##
 ################################################################################
@@ -674,3 +657,257 @@ bash_prompt() {
 ##	just before Bash displays a prompt.
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
+
+
+
+
+
+
+
+
+
+
+
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+#!/bin/sh
+############### Todo / TEST ###############
+
+#alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
+################ Todo ######################
+############################################
+
+# shortcut=
+
+## Ln Links herstellen
+alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
+ln -fv $HOME/.zshrc                               $HOME/ownCloud/dotfile/.zshrc &
+sudo    ln -fv /etc/lightdm/lightdm.conf          $HOME/ownCloud/dotfile/lightdm.conf &
+sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journald.conf &
+        ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore &
+        ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors &
+        ln -fv $HOME/aliasrc                      $HOME/ownCloud/dotfile/.aliasrc &
+        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashrc &
+sudo pacman -Qqe >                                $HOME/ownCloud/dotfile/pkglist.txt'
+
+alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/  ;
+ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
+     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
+     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
+     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
+     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
+sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
+sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
+sudo timedatectl set-ntp true &
+sudo systemctl enable --now auto-cpufreq.service &
+sudo systemctl enable --now NetworkManager &
+sudo systemctl enable lightdm &
+sudo journalctl --vacuum-size=33M &
+sudo systemctl enable --now systemd-timesyncd &
+sudo fc-cache -vf'
+#! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
+
+## xfce4-backup
+alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
+ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ;
+xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
+
+alias xfce-restore='mkdir -pv                                        $HOME/ownCloud/dotfile/ ;
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list &
+ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml'
+
+# sudo pacman -Qqe > pkglist.txt
+alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
+
+## Systemclean
+alias cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
+alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
+# alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
+alias pamacclean='pamac clean --no-confirm '
+
+# yay -Rc -noconfirm --needed pidgin hexchat mousepad samba
+
+## Block any Website
+# zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
+
+# Suffix alias
+alias -s pdf='qpdfview '
+alias -s {jpg,jpeg,png,gif}='ristretto '
+
+#! alias imagemagick=                #image convert in to pdf   #man gmic #man convert #man
+alias cp='cp -vi '                                               # Confirm before overwriting something
+alias df='df -h '                                                # Human-readable sizes check
+alias free='free -h '                                            # Show sizes in MB
+alias whereami='echo $PWD'
+alias more='less --use-color'
+alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias grub-update='sudo mkinitcpio -P && sudo update-grub'
+alias ping='ping -c 4  google.ch '
+alias mv='mv -iv '
+alias yy='paru '
+alias zz='paru '
+# alias yay='paru '
+alias rm='sudo rm -rfv '
+alias rechner-bc='   bc -ql'  		#Calculator
+alias calculator-bc='bc -ql'  	        #Calculator
+alias mkdir='mkdir -pv '
+alias inxi-Fnzy='inxi -Fnzy'  #Info System      #-a uuid info
+alias ip-c='ip -c a'    #ip-coler
+alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
+alias defenderscan-libredefender='sudo libredefender scan'                             #Linux Antivierus/Defender programm
+
+# Pretty print the path
+# alias  path='echo $PATH | tr -s ':' '\n''
+alias path='echo -e ${PATH//:/\\n}'
+
+## open port check
+alias port-open='sudo lsof -i -P -n | grep LISTEN'          #port open-list
+alias port-no-ping-input-ip='nmap -T4 -A -v -Pn '       #nmap -T4 -A -v -Pn 127.0.0.1
+alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A -v 127.0.0.1
+# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '        #nmap -sS -sU -T4 -A -v 127.0.0.1
+# alias port-nmap-input-ip='nmap -T4 -A -v '       #nmap -T4 -A -v 127.0.0.1
+
+## Network
+alias              myip='curl http:/ipecho.net/plain; echo'
+alias        whatismyip='curl http:/ipecho.net/plain; echo'
+alias   traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
+alias whois='whois '               #whois input-ip 127.0.0.1
+alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
+alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
+alias network-sniffer-monitoring='sudo  sniffer'       #network-monitoring     live-scan
+
+## Convert
+alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
+
+## Downloads
+alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
+alias  yta='yt -x -f bestaudio/best'
+alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
+
+alias nvim='nvim '
+alias  vim='nvim '
+alias    n='nvim '
+alias  env='env  '                         #Startup memorie speicher Information
+alias htop='sudo htop'
+alias    f='exec nemo'
+alias   rr='ranger'
+
+#nvidia Proprietary
+alias nvidia0300='sudo mhwd -a pci nonfree 0300'
+
+## Sound
+alias sound-info='aplay -L'
+
+# Colorize commands when possible.
+alias   ls='ls -thaNr  --color=auto --group-directories-first'
+alias   ll='ls -thaNrl --color=auto --group-directories-first'
+alias   ln='ln -v'
+alias chown='chown -c '
+alias chmod='chmod -c '
+alias grep='grep --color=auto'
+alias    g='grep --color=auto'
+alias diff='diff --color=auto'
+alias pacman-grep='pacman -Qe | grep '
+# These common commands are just too long! Abbreviate them.
+alias ka='killall'
+alias  e='$EDITOR '
+alias  v='$EDITOR '
+alias  p='sudo pacman '
+
+# Git
+alias gitup='git add . ; git commit -m update ; git push'
+alias gitadd='git add .'
+alias gitcommitm='git commit -m update'
+alias gitpush='git push'
+alias gitlog='git log'
+alias gitstatus='git status'
+alias gitdiff='git diff'
+alias gitbranch='git branch'
+alias gitcheckout='git checkout'
+alias gitremoteadd='git remote add'
+alias gitremoterm='git remote rm'
+alias gitpull='git pull'
+alias gitclone='git clone'
+alias gittag='git tag -a -m'
+alias gitreflog='git reflog'
+alias gitl='git log --graph --oneline --decorate'
+alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; echo'
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
+
+## Arch
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+
+# Quick/fast access
+#! alias please='sudo !!'
+alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
+# alias stignore='$EDITOR $HOME/.stignore; exit'
+# alias zshrc='$EDITOR $HOME/.zshrc; exit'
+# alias aliasrc='$EDITOR $HOME/aliasrc; exit'
+alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
+alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
+alias cd..='cd .. ; ls'
+alias ownCloud/='$HOME/ownCloud        ; ls'
+alias D-link='   $HOME/ownCloud/D-link ; ls'
+alias S-link='   $HOME/ownCloud/S-link ; ls'
+alias M-link='   $HOME/ownCloud/M-link ; ls'
+alias W-link='   $HOME/ownCloud/W-link ; ls'
+alias P-link='   $HOME/ownCloud/P-link ; ls'
+alias D-link='   $HOME/ownCloud/D-link ; ls'
+alias bin='      $HOME/ownCloud/.bin   ; ls'
+
+## mount
+alias mount='mount |column -t'
+
+## systemctl
+alias   enable='sudo systemctl enable  --now '
+alias  disable='sudo systemctl disable --now '
+alias   status='sudo systemctl status  --now '
+alias  restart='sudo systemctl restart --now '
+alias  stop='   sudo systemctl stop    --now '
+alias sys-port='systemctl status|less --use-color'
+alias sys-status='systemctl list-unit-files|less'
+alias errors='sudo systemctl --failed'
+alias failed='sudo systemctl --failed'
+
+## swappiness
+#Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
+#Todo alias swappiness-restore=sudo echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > /etc/sysctl.d/99-swappiness.conf
+#sudo sysctl vm.swappiness=10
+
+## Get server cpu info ##
+alias  cpuinfo='lscpu'
+alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
+
+## get GPU ram on desktop / laptop##
+# alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
+alias mem-psmc='ps -Ao "comm %cpu %mem"'
+
+#turn screen off
+alias screenoff="xset dpms force off"
+#todo alias qq='xfce4-terminal --fullscreen ; cmatrix'
+# sort files in current directory by the number of words they contain
+alias wordy='wc -w * | sort | tail -n10'
+alias filecount='sudo ls -aRF | wc -l'
+
+#Gets the total disk usage on your machine
+alias  diskinfo='df -hl --total | grep total'
+alias     fdisk='fdisk -x'                          #fdisk space / UUID etc
+alias uuid-info='    lsblk -fa'
+# alias disk-uuid='    df -hTl'
+
+#Gives you what is using the most space. Both directories and files. Varies on current directory
+alias        most='du -hsx * | sort -rh | head -15'                     # Biggest files in folder
+alias biggest-file='du -hsx * | sort -rh | head -15'                     # Biggest files in folder
+
+#shutdown
+#alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
+#alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
+alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
+alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'

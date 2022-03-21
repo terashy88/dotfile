@@ -1,7 +1,16 @@
 #!/bin/sh
 #########  opensource / Cheatsheet ##########
 
+
+cat /etc/hosts
+127.0.0.1  localhost
+::1        localhost
+127.0.1.1  xps.localdomain	xps
+
 #todo checkout script's at /usr/share/*
+
+cups
+http://localhost:631/
 
 ## Date Zeit
 # date

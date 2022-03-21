@@ -4,8 +4,6 @@ acpid
 aircrack-ng
 alsa-utils
 amd-ucode
-anbox-git
-anbox-image
 ansible
 anydesk-bin
 apparmor
@@ -16,7 +14,6 @@ asciidoc
 aspell-de
 aspell-en
 audacity-git
-aur-auto-vote-git
 auto-auto-complete
 auto-cpufreq
 autoconf
@@ -27,6 +24,7 @@ barrier
 barrier-headless
 base
 bash
+bettercap
 binutils
 bison
 bitwarden
@@ -48,6 +46,7 @@ celluloid
 certbot-nginx
 chrpath
 cinnamon-translations
+clamtk
 cmatrix
 coreutils
 cpupower
@@ -57,7 +56,6 @@ cryptsetup
 ddrescue
 deluge
 deluge-gtk
-deutex
 device-mapper
 dhclient
 dialog
@@ -76,7 +74,6 @@ doxygen
 e2fsprogs
 ecryptfs-utils
 efibootmgr
-enemy-territory-data
 etcher
 exfat-utils
 exo
@@ -111,7 +108,6 @@ gimp-help-en
 glibc
 gnome-icon-theme
 gnome-keyring
-gnome-maps
 gnome-themes-extra
 gnucash
 gnucash-docs
@@ -131,10 +127,8 @@ gtkhash-nemo
 gufw
 gvfs
 gvfs-afc
-gvfs-google
 gvfs-mtp
 gvfs-nfs
-gvfs-smb
 gzip
 handbrake
 haproxy
@@ -151,23 +145,20 @@ inetutils
 intel-ucode
 inxi
 iproute2
-ipscan
 iputils
 istio
 itstool
 iucode-tool
-jack2
 jbigkit
-jdk8-openjdk
 jfsutils
 jnettop
-jre8-openjdk
-jre8-openjdk-headless
 kconfig
 kcoreaddons
+kdeconnect
 kdenlive
 kernel-alive
 kmymoney
+kpeoplevcard
 kquickimageeditor
 kubectl
 kwindowsystem
@@ -178,7 +169,6 @@ libayatana-appindicator
 libdvdcss
 libgsf
 libopenraw
-libpamac-flatpak-plugin
 libpamac-snap-plugin
 libredefender
 libreoffice-fresh
@@ -191,7 +181,6 @@ light-locker
 lightdm
 lightdm-gtk-greeter-settings
 lightdm-slick-greeter
-linssid
 linux-firmware-qlogic
 linux516
 linux516-acpi_call
@@ -199,7 +188,6 @@ linux516-headers
 linux516-nvidia
 linux516-virtualbox-host-modules
 logrotate
-lutris
 lvm2
 m4
 make
@@ -216,7 +204,6 @@ manjaro-pipewire
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
-manjaro-settings-samba
 manjaro-system
 manjaro-xfce-settings
 matcha-gtk-theme
@@ -240,13 +227,11 @@ mysql++
 nasm
 nemo
 nemo-audio-tab
-nemo-bulk-rename
 nemo-emblems
 nemo-fileroller
 nemo-image-converter
 nemo-preview
 nemo-seahorse
-nemo-share
 nemo-terminal
 neovim
 nerd-fonts-terminus
@@ -290,7 +275,7 @@ perf
 perl
 perl-file-mimeinfo
 pfetch
-phonon-qt4
+pipewire-jack
 pipewire-media-session
 pkgconf
 popcorntime
@@ -310,7 +295,6 @@ python-tenacity
 python-typogrify
 qpdfview
 qt5-translations
-ranger
 rclone
 rclone-browser
 reiserfsprogs
@@ -326,10 +310,9 @@ shadow
 shairplay
 shiny-mirrors
 signal-desktop
-skypeforlinux-preview-bin
-smbclient
 snapd
 snapd-glib
+sniffer
 spectre-meltdown-checker
 speedtest-cli
 stacer
@@ -351,6 +334,7 @@ thunderbird-i18n-de
 thunderbird-i18n-en-us
 timeshift
 tlp
+traceroute
 ts-node
 ttf-dejavu
 ttf-droid
@@ -380,6 +364,7 @@ wallpapers-2018
 wget
 whatsapp-for-linux
 which
+whois
 wireshark-cli
 wireshark-qt
 wordpress
@@ -432,7 +417,7 @@ xorg-twm
 xorg-xinit
 xorg-xkill
 xz
-yay-bin
+yay
 yelp
 zcash
 zenity
