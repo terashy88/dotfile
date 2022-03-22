@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 #/          ##Block all
 #.local                                ##Proxy Video Editor -- Notice
 
@@ -142,6 +142,9 @@ Telegram Desktop
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
+
+##linux
+pkglist.txt
 
 # Signal
 .config/Signal/

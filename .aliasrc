@@ -1,6 +1,5 @@
-﻿#!/bin/sh
-
-############### Todo / TEST ###############--
+#!/bin/sh
+############### Todo / TEST ###############
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
 ################ Todo ######################
@@ -102,7 +101,7 @@ alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A 
 alias              myip='curl http:/ipecho.net/plain; echo'
 alias        whatismyip='curl http:/ipecho.net/plain; echo'
 alias   traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
-alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow'   #NetworkManager info scan
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' #NetworkManager info scan
 alias whois='whois '               #whois input-ip 127.0.0.1
 alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
 alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
@@ -238,3 +237,6 @@ alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest
 #alias shutdown='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
 alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
 alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
+
+## htop
+alias   htop='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "sudo htop"'
