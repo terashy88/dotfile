@@ -5,7 +5,12 @@
 ################ Todo ######################
 ############################################
 
-# shortcut=
+## systemctl enable
+alias systemctl-enable='sudo systemctl enable --now systemd-timesyncd &
+sudo systemctl enable --now auto-cpufreq.service &
+sudo systemctl enable --now NetworkManager &
+sudo systemctl enable       lightdm &
+sudo systemctl enable --now ufw.service'
 
 ## Ln Links herstellen
 alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
@@ -27,12 +32,9 @@ ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
 sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true &
-sudo systemctl enable --now auto-cpufreq.service &
-sudo systemctl enable --now NetworkManager &
-sudo systemctl enable lightdm &
 sudo journalctl --vacuum-size=33M &
-sudo systemctl enable --now systemd-timesyncd &
 sudo fc-cache -vf'
+
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
 ## xfce4-backup
@@ -45,9 +47,9 @@ alias xfce-restore='mkdir -pv                                        $HOME/ownCl
 ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list &
 ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml'
 
-# sudo pacman -Qqe > pkglist.txt
-alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/  ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
-alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall  --useask --noredownload --topdown --combinedupgrade --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
+# sudo pacman -Qqe > pkglist.txt        #! not use --combinedupgrade
+alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall --useask --noredownload --topdown --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
 alias cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
@@ -72,7 +74,7 @@ alias whereami='echo $PWD'
 alias more='less --use-color'
 alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
-alias ping='ping -c 4  google.ch '
+alias ping='ping -c 3 '
 alias mv='mv -iv '
 alias yy='paru '
 alias zz='paru '
@@ -97,7 +99,7 @@ alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v '    #nmap -p 1-65535 -T4 -A 
 # alias port-all-and-udp='nmap -sS -sU -T4 -A -v '        #nmap -sS -sU -T4 -A -v 127.0.0.1
 # alias port-nmap-input-ip='nmap -T4 -A -v '       #nmap -T4 -A -v 127.0.0.1
 
-## Network
+## Network   #* Network Mapping status 'rpcbind'
 alias              myip='curl http:/ipecho.net/plain; echo'
 alias        whatismyip='curl http:/ipecho.net/plain; echo'
 alias   traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
@@ -105,7 +107,7 @@ alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --fol
 alias whois='whois '               #whois input-ip 127.0.0.1
 alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
 alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
-alias network-sniffer-monitoring='sudo  sniffer'       #network-monitoring     live-scan
+alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"'       #network-monitoring     live-scan
 
 ## Convert
 alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
@@ -172,7 +174,7 @@ alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirr
 
 # Quick/fast access
 #! alias please='sudo !!'
-alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc; exit'
+alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc;$EDITOR $HOME/ownCloud/.bin/pytest; exit'
 # alias stignore='$EDITOR $HOME/.stignore; exit'
 # alias zshrc='$EDITOR $HOME/.zshrc; exit'
 # alias aliasrc='$EDITOR $HOME/aliasrc; exit'
@@ -240,3 +242,43 @@ alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termd
 
 ## htop
 alias   htop='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "sudo htop"'
+
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g CA="2>&1 | cat -A"
+alias -g C='| wc -l'
+alias -g D="DISPLAY=:0.0"
+alias -g DN=/dev/null
+alias -g ED="export DISPLAY=:0.0"
+alias -g EG='|& egrep'
+alias -g EH='|& head'
+alias -g EL='|& less'
+alias -g ELS='|& less -S'
+alias -g ETL='|& tail -20'
+alias -g ET='|& tail'
+alias -g F=' | fmt -'
+alias -g G='| egrep'
+alias -g H='| head'
+alias -g HL='|& head -20'
+alias -g Sk="*~(*.bz2|*.gz|*.tgz|*.zip|*.z)"
+alias -g LL="2>&1 | less"
+alias -g L="| less"
+alias -g LS='| less -S'
+alias -g MM='| most'
+alias -g M='| more'
+alias -g NE="2> /dev/null"
+alias -g NS='| sort -n'
+alias -g NUL="> /dev/null 2>&1"
+alias -g PIPE='|'
+alias -g R=' > /c/aaa/tee.txt '
+alias -g RNS='| sort -nr'
+alias -g S='| sort'
+alias -g TL='| tail -20'
+alias -g T='| tail'
+alias -g US='| sort -u'
+alias -g VM=/var/log/messages
+alias -g X0G='| xargs -0 egrep'
+alias -g X0='| xargs -0'
+alias -g XG='| xargs egrep'
+alias -g X='| xargs'

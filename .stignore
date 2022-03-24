@@ -69,9 +69,8 @@ kglobalshortcutsrc
 *dconf
 
 ## vscodium
-#.config/VSCodium/
 #*vsliveshare*
-# (?i)*vscod*
+(?i)*vscod*
 .config/VSCodium/Backups/
 .config/TabNine
 .local/share/kite/
@@ -188,3 +187,7 @@ qBittorrent
 (?i)*steam*
 *lutris*
 *PlayOnLinux*
+
+## PackagesManager
+.conan
+.go

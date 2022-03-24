@@ -2,33 +2,22 @@
 ### By the way if it ain't broke, break it then fix it. ###
 
 ##################### TODO / Test ######################
-# if [[ ! nemo ]]; then
-# thunar;
-# fi
-#
-#  if [ "nemo" != "" ]
-#   then
-#   [ "thunar" != "" ]
-    # [ "thunar" != "" ]
-    # else
-    #   termdown
-    # fi
+
+
+
 #########################TODO###########################
 ########################################################
 
 # pfetch, neofetch Terminal System info
 pfetch
 
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/ownCloud/.bin
-export PATH=~/bin:$PATH     #python environment
-
 # History - config
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"
+HISTIGNORE="ls:bg:fg:exit:reset:clear:cd:ll"
 HISTCONTROL="ignoreboth:erasedups"
+
 setopt autocd extendedglob nomatch
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
@@ -42,20 +31,20 @@ setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 unsetopt beep
-bindkey -e
-export ERL_AFLAGS="-kernel shell_history enabled"
-
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 # Editor
 export EDITOR=vscodium
 export VISUAL=EDITOR
 
+# PATH 'short form "-P"'
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/ownCloud/.bin
+
+export ERL_AFLAGS="-kernel shell_history enabled"
+WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
+
 # Use powerline
 USE_POWERLINE="true"
-
-# powerlevel10k prompt
-ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # powerline-go
 function powerline_precmd() {
@@ -81,11 +70,6 @@ function install_powerline_precmd() {
 if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
     install_powerline_precmd
 fi
-
-# Use manjaro zsh prompt
-#if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-#  source /usr/share/zsh/manjaro-zsh-prompt
-#fi
 
 ## Options section
 setopt correct                                                  # Auto correct mistakes
@@ -236,9 +220,6 @@ source /etc/profile
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
-[[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh
-
 ## powerlevel10k
 #[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 #[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] ; source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
@@ -283,12 +264,27 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*'   force-list always
 zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle -e ':completion:*:approximate:*' \
+                   max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+           xdvi() { command xdvi ${*:-*.dvi(om[1])} }
+rationalise-dot() {
+             if [[ $LBUFFER = *.. ]]; then
+               LBUFFER+=/..
+             else
+               LBUFFER+=.
+             fi
+           }
+           zle -N rationalise-dot
+           bindkey . rationalise-dot
 
 # Directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' file-list all
+zstyle ':completion:*:*:xdvi:*' menu yes select
+           zstyle ':completion:*:*:xdvi:*' file-sort time
 
 #####################  FUNCTIONS  ########################
 
@@ -302,6 +298,7 @@ rationalise-dot() {
 }
 zle -N rationalise-dot
 bindkey . rationalise-dot
+
 
 # Easy extract
 extract () {
@@ -648,12 +645,11 @@ bash_prompt() {
     trap 'echo -ne "${none}"' DEBUG
 }
 
-################################################################################
-##  MAIN                                                                      ##
-################################################################################
-
 ##	Bash provides an environment variable called PROMPT_COMMAND.
 ##	The contents of this variable are executed as a regular Bash command
 ##	just before Bash displays a prompt.
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
+
+# To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
+[[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh

@@ -24,6 +24,7 @@ barrier
 barrier-headless
 base
 bash
+bettercap
 binutils
 bison
 bitwarden
@@ -35,8 +36,6 @@ boost
 bpf
 brave-browser
 broadcom-wl-dkms
-brother-dcpl2520dw
-brscan4
 btrfs-progs
 bzip2
 caprine
@@ -155,7 +154,6 @@ jfsutils
 jnettop
 kconfig
 kcoreaddons
-kdeconnect
 kdenlive
 kernel-alive
 kmymoney
@@ -205,7 +203,6 @@ manjaro-pipewire
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
-manjaro-settings-samba
 manjaro-system
 manjaro-xfce-settings
 matcha-gtk-theme
@@ -234,7 +231,6 @@ nemo-fileroller
 nemo-image-converter
 nemo-preview
 nemo-seahorse
-nemo-share
 nemo-terminal
 neovim
 nerd-fonts-terminus
@@ -253,7 +249,6 @@ noto-fonts-cjk
 noto-fonts-emoji
 nss-mdns
 ntfs-3g
-ntp
 numlockx
 nvidia-prime
 nvidia-utils
@@ -285,6 +280,7 @@ popcorntime
 poppler-data
 poppler-glib
 pound
+powerline
 powerline-go
 powertop
 preload
@@ -306,7 +302,6 @@ rhythmbox
 ristretto
 rsync
 s-nail
-samba
 sayonara-player-git
 scrcpy
 sed
@@ -315,9 +310,9 @@ shairplay
 shiny-mirrors
 signal-desktop
 skypeforlinux-preview-bin
-smb4k
 snapd
 snapd-glib
+sniffer
 spectre-meltdown-checker
 speedtest-cli
 stacer
@@ -332,13 +327,13 @@ tar
 telegram-desktop
 termdown
 texinfo
-thunar-shares-plugin
 thunar-volman
 thunderbird
 thunderbird-i18n-de
 thunderbird-i18n-en-us
 timeshift
 tlp
+traceroute
 ts-node
 ttf-dejavu
 ttf-droid
@@ -363,8 +358,8 @@ vscodium-bin-features
 vscodium-bin-marketplace
 vuescan-bin
 vulkan-intel
-vulscan
 wallpapers-2018
+warzone2100
 wget
 which
 wireshark-cli
@@ -391,6 +386,7 @@ xfce4-genmon-plugin
 xfce4-mailwatch-plugin
 xfce4-mount-plugin
 xfce4-netload-plugin
+xfce4-notes-plugin
 xfce4-panel
 xfce4-panel-profiles
 xfce4-power-manager
