@@ -1,33 +1,23 @@
-#!/bin/zsh
+#!/bin/sh
 ### By the way if it ain't broke, break it then fix it. ###
+
+##################### TODO / Test ######################
+
+
+
+#########################TODO###########################
+########################################################
 
 # pfetch, neofetch Terminal System info
 pfetch
-
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/ownCloud/.bin
-
-##################### TODO / Test ######################
-# if [[ ! nemo ]]; then
-# thunar;
-# fi
-#
-#  if [ "nemo" != "" ]
-#   then
-#   [ "thunar" != "" ]
-    # [ "thunar" != "" ]
-    # else
-    #   termdown
-    # fi
-#########################TODO###########################
-########################################################
 
 # History - config
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd"
+HISTIGNORE="ls:bg:fg:exit:reset:clear:cd:ll"
 HISTCONTROL="ignoreboth:erasedups"
+
 setopt autocd extendedglob nomatch
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
@@ -41,22 +31,22 @@ setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 unsetopt beep
-bindkey -e
-export ERL_AFLAGS="-kernel shell_history enabled"
-
-WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
 
 # Editor
 export EDITOR=vscodium
 export VISUAL=EDITOR
 
+# PATH 'short form "-P"'
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/ownCloud/.bin
+
+export ERL_AFLAGS="-kernel shell_history enabled"
+WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
+
 # Use powerline
 USE_POWERLINE="true"
 
-#powerlevel10k prompt
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-#powerline-go
+# powerline-go
 function powerline_precmd() {
     PS1="$($GOPATH/bin/powerline-go -error $? -jobs ${${(%):%j}:-0})"
 
@@ -81,11 +71,6 @@ if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
     install_powerline_precmd
 fi
 
-# Use manjaro zsh prompt
-#if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-#  source /usr/share/zsh/manjaro-zsh-prompt
-#fi
-
 ## Options section
 setopt correct                                                  # Auto correct mistakes
 setopt extendedglob                                             # Extended globbing. Allows using regular expressions with *
@@ -98,7 +83,7 @@ setopt histignorealldups                                        # If a new comma
 setopt autocd
 # if only directory path is entered, cd there.
 
-#zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
@@ -147,7 +132,7 @@ autoload -Uz compinit -i colors zcalc
 compinit -d
 colors
 
-#Modify the colors and symbols in these variables as desired.
+# Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo
 GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$reset_color%}"
 GIT_PROMPT_SUFFIX="%{$fg[green]%}]%{$reset_color%}"
@@ -235,25 +220,12 @@ source /etc/profile
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
-[[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh
-
 ## powerlevel10k
 #[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 #[[  -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] ; source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 #[[  -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
 #[[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
 ## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
-
-## Date Zeit
-# date
-
-## Calender Wetter
-# cal
-
-# apropos            ## Comandline input helper zb. 'apropos vpn'
-
-###########################################
 
 #fpath+=(~/.zsh/completion/)
 
@@ -292,13 +264,27 @@ zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*'   force-list always
 zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle -e ':completion:*:approximate:*' \
+                   max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+           xdvi() { command xdvi ${*:-*.dvi(om[1])} }
+rationalise-dot() {
+             if [[ $LBUFFER = *.. ]]; then
+               LBUFFER+=/..
+             else
+               LBUFFER+=.
+             fi
+           }
+           zle -N rationalise-dot
+           bindkey . rationalise-dot
 
 # Directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 zstyle ':completion:*' file-list all
+zstyle ':completion:*:*:xdvi:*' menu yes select
+           zstyle ':completion:*:*:xdvi:*' file-sort time
 
 #####################  FUNCTIONS  ########################
 
@@ -312,6 +298,7 @@ rationalise-dot() {
 }
 zle -N rationalise-dot
 bindkey . rationalise-dot
+
 
 # Easy extract
 extract () {
@@ -375,7 +362,6 @@ fi;
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
-
 ################################################################################
 ##  FUNCTIONS                                                                 ##
 ################################################################################
@@ -414,7 +400,6 @@ bash_prompt_command() {
         NEW_PWD=${trunc_symbol}/${NEW_PWD#*/}
     fi
 }
-
 
 ##
 ##	GENERATE A FORMAT SEQUENCE
@@ -458,7 +443,6 @@ bash_prompt() {
     local     BLINK='5'
     local    INVERT='7'
     local    HIDDEN='8'
-
 
     ## COLORS
     local   DEFAULT='9'
@@ -507,15 +491,12 @@ bash_prompt() {
     local FONT_COLOR_1=$WHITE
     local BACKGROUND_1=$BLUE
     local TEXTEFFECT_1=$BOLD
-
     local FONT_COLOR_2=$WHITE
     local BACKGROUND_2=$L_BLUE
     local TEXTEFFECT_2=$BOLD
-
     local FONT_COLOR_3=$D_GRAY
     local BACKGROUND_3=$WHITE
     local TEXTEFFECT_3=$BOLD
-
     local PROMT_FORMAT=$BLUE_BOLD
 
     ############################################################################
@@ -569,8 +550,6 @@ bash_prompt() {
         PROMT_FORMAT=$CYAN_BOLD
     fi
 
-
-
     ############################################################################
     ## TEXT FORMATING                                                         ##
     ## Generate the text formating according to configuration                 ##
@@ -593,7 +572,6 @@ bash_prompt() {
     BG4=$(($BACKGROUND_4+$BG))
     FE4=$(($TEXTEFFECT_4+$EFFECT))
 
-
     ## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
     local TEXT_FORMAT_1
     local TEXT_FORMAT_2
@@ -603,7 +581,6 @@ bash_prompt() {
     format_font TEXT_FORMAT_2 $FE2 $FC2 $BG2
     format_font TEXT_FORMAT_3 $FC3 $FE3 $BG3
     format_font TEXT_FORMAT_4 $FC4 $FE4 $BG4
-
 
     # GENERATE PROMT SECTIONS
     local PROMT_USER=$"$TEXT_FORMAT_1 \u "
@@ -628,7 +605,6 @@ bash_prompt() {
     TSFC3=$(($BACKGROUND_3+$COLOR))
     TSBG3=$(($DEFAULT+$BG))
 
-
     ## CALL FORMATING HELPER FUNCTION: effect + font color + BG color
     local SEPARATOR_FORMAT_1
     local SEPARATOR_FORMAT_2
@@ -636,7 +612,6 @@ bash_prompt() {
     format_font SEPARATOR_FORMAT_1 $TSFC1 $TSBG1
     format_font SEPARATOR_FORMAT_2 $TSFC2 $TSBG2
     format_font SEPARATOR_FORMAT_3 $TSFC3 $TSBG3
-
 
     # GENERATE SEPARATORS WITH FANCY TRIANGLE
     local TRIANGLE=$'\uE0B0'
@@ -657,8 +632,6 @@ bash_prompt() {
         ;;
     esac
 
-
-
     ############################################################################
     ## BASH PROMT                                                             ##
     ## Generate promt and remove format from the rest                         ##
@@ -672,35 +645,11 @@ bash_prompt() {
     trap 'echo -ne "${none}"' DEBUG
 }
 
-
-################################################################################
-##  MAIN                                                                      ##
-################################################################################
-
 ##	Bash provides an environment variable called PROMPT_COMMAND.
 ##	The contents of this variable are executed as a regular Bash command
 ##	just before Bash displays a prompt.
 ##	We want it to call our own command to truncate PWD and store it in NEW_PWD
 PROMPT_COMMAND=bash_prompt_command
 
-
-#echo '                                       -@                                              '
-#echo '                                      .##@                                             '
-#echo '                                     .####@                                            '
-#echo '                                     @#####@                                           '
-#echo '                                   . *######@                                          '
-#echo '                                  .##@o@#####@                                         '
-#echo '                                 /############@                                        '
-#echo '                                /##############@                                       '
-#echo '                               @######@**%######@                                      '
-#echo '                              @######`     %#####o                                     '
-#echo '                             @######@       ######%                                    '
-#echo '                           -@#######h       ######@.`                                  '
-#echo '                          /#####h**``       `**%@####@                                 '
-#echo '                         @H@*`                    `*%#@                                '
-#echo '                        *`                            `*                               '
-
-
-#########  opensource / Cheatsheet ##########
-
-#todo checkout script's at /usr/share/*
+# To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
+[[  -f ~/.config/.p10k.zsh ]] ; source ~/.config/.p10k.zsh
