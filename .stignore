@@ -10,13 +10,11 @@
 
 
 ################# allowed ##################
-!sync-conflict*
+!*sync-conflict*
 !*.stignore*
-(?i)!*setting*
-(?i)!*Preferences
-!.conf
-
-
+# (?i)!*setting*
+# (?i)!*Preferences
+# !*.conf
 ############################################
 ############################################
 
@@ -59,7 +57,7 @@ System Volume Information
 #~
 (?i)*.log*
 (?i)*log.*
-(?i)*logs.ccl*
+(?i)*logs.*
 *.db*
 *db.*
 *_db*
@@ -70,30 +68,29 @@ kglobalshortcutsrc
 *dconf
 
 ## vscodium
-#.config/VSCodium/
 #*vsliveshare*
-# (?i)*vscod*
-# .config/TabNine
-# .local/share/kite/
-# .kite/
+(?i)*vscod*
+.config/VSCodium/Backups/
+.config/TabNine
+.local/share/kite/
+.kite/
 
 #.thunderbird
 .thunderbird/
 
 *.vdi
-Barrier.conf
+(?i)*Barrier*
 M-link-raw
 snap
 .zcompdump
 (?i)*metadata*
 
-
 ## ownCloud Ignorelist ##
 owncloud.cfg
 ##!.stfolder                                ## Don't delete
-*.stversions
-*.subversion
-*.oscamerafaceu
+*.stversions*
+*.subversion*
+*.oscamerafaceu*
 
 ## rclone
 rclone
@@ -113,6 +110,8 @@ VM-share-rsx
 .ssr
 *.pem
 *.gpg
+.key
+.ssl
 
 # nvidia prime-run ignore
 prime-run
@@ -120,12 +119,15 @@ prime-run
 .config/autostart/
 
 ## Telegram
-.local/share/TelegramDesktop/
-Telegram Desktop
+*Telegram
 
 # Popcorntime
-.config/Popcorn-Time/
+#.config/Popcorn-Time/
 # !.config/Popcorn-Time/Default/
+
+## office
+.config/libreoffice
+.local/share/onlyoffice/
 
 ## .Xauthority programm opener if delete false
 *.xinitrc*
@@ -138,6 +140,9 @@ Telegram Desktop
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
+
+##linux
+pkglist.txt
 
 # Signal
 .config/Signal/
@@ -153,6 +158,7 @@ xfce4-keyboard-shortcuts.xml
 
 # GitHub Desktop #! use IDE
 (?i)GitHub*
+*.git*
 
 ## Brave #don't delete
 *BraveSoftware*
@@ -171,8 +177,17 @@ xfce4-keyboard-shortcuts.xml
 ## torrent
 .config/deluge/
 qBittorrent
+*torrent*
+
+## kde-connect
+.config/kdeconnect
 
 ## Game
 (?i)*steam*
-lutris
+*lutris*
 *PlayOnLinux*
+(?!)game
+
+## PackagesManager
+# .conan
+# .go
