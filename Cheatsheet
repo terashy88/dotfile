@@ -1,10 +1,8 @@
 #!/bin/sh
 #########  opensource / Cheatsheet ##########
 
-
-
-
 #todo checkout script's at /usr/share/*
+
 
 ## cups Printer/Drucker
 http://localhost:631/

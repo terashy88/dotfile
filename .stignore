@@ -10,12 +10,11 @@
 
 
 ################# allowed ##################
-!sync-conflict*
+!*sync-conflict*
 !*.stignore*
-(?i)!*setting*
-(?i)!*Preferences
-!.conf
-
+# (?i)!*setting*
+# (?i)!*Preferences
+# !*.conf
 ############################################
 ############################################
 
@@ -80,12 +79,11 @@ kglobalshortcutsrc
 .thunderbird/
 
 *.vdi
-Barrier.conf
+(?i)*Barrier*
 M-link-raw
 snap
 .zcompdump
 (?i)*metadata*
-
 
 ## ownCloud Ignorelist ##
 owncloud.cfg
@@ -112,6 +110,8 @@ VM-share-rsx
 .ssr
 *.pem
 *.gpg
+.key
+.ssl
 
 # nvidia prime-run ignore
 prime-run
@@ -119,11 +119,10 @@ prime-run
 .config/autostart/
 
 ## Telegram
-.local/share/TelegramDesktop/
-Telegram Desktop
+*Telegram
 
 # Popcorntime
-.config/Popcorn-Time/
+#.config/Popcorn-Time/
 # !.config/Popcorn-Time/Default/
 
 ## office
@@ -187,7 +186,8 @@ qBittorrent
 (?i)*steam*
 *lutris*
 *PlayOnLinux*
+(?!)game
 
 ## PackagesManager
-.conan
-.go
+# .conan
+# .go
