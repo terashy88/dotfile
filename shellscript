@@ -1,8 +1,0 @@
-#!/bin/sh
-#shellscript test
-
-if nemo ; then
-	thunar
-	else
-	htop
-fi

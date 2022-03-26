@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 #########  opensource / Cheatsheet ##########
 
 #todo checkout script's at /usr/share/*
