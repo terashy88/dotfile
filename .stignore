@@ -1,4 +1,3 @@
-#!/bin/sh
 #/          ##Block all
 #.local                                ##Proxy Video Editor -- Notice
 
@@ -8,13 +7,12 @@
 ################## Todo ####################
 ############################################
 
-
 ################# allowed ##################
 !*sync-conflict*
 !*.stignore*
 # (?i)!*setting*
 # (?i)!*Preferences
-# !*.conf
+#!.conf		--will brake barrier--
 ############################################
 ############################################
 
@@ -24,12 +22,11 @@
 *Bitwarden
 Downloads
 .gradle/
-
-
+Thunar
 ## digikam
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 #.dtrash
-(?i)*trash/*
+(?i)*trash*
 #digikamrc has to be ignore to sync on other PC
 digikamrc
 
@@ -186,7 +183,7 @@ qBittorrent
 (?i)*steam*
 *lutris*
 *PlayOnLinux*
-(?!)game
+(?!)game*
 
 ## PackagesManager
 # .conan

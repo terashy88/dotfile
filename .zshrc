@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ### By the way if it ain't broke, break it then fix it. ###
 
 ##################### TODO / Test ######################
@@ -15,7 +15,7 @@ pfetch
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd:ll"
+HISTIGNORE=" ls:bg:fg:exit:reset:clear:cd:ll"
 HISTCONTROL="ignoreboth:erasedups"
 
 setopt autocd extendedglob nomatch
@@ -37,8 +37,8 @@ export EDITOR=vscodium
 export VISUAL=EDITOR
 
 # PATH 'short form "-P"'
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/ownCloud/.bin
+export PATH=$PATH:~/.local/bin:~/ownCloud/.bin
+#! 'test combine with line 40' export PATH=$PATH:~/ownCloud/.bin
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
