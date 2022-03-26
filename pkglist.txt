@@ -24,6 +24,7 @@ barrier
 barrier-headless
 base
 bash
+bettercap
 binutils
 bison
 bitwarden
@@ -84,6 +85,7 @@ filezilla
 findbrokenpkgs
 findutils
 flameshot
+flatpak
 flex
 folder-color-switcher
 freetype2
@@ -226,7 +228,6 @@ nemo-fileroller
 nemo-image-converter
 nemo-preview
 nemo-seahorse
-nemo-share
 nemo-terminal
 neovim
 nerd-fonts-terminus
@@ -245,7 +246,6 @@ noto-fonts-cjk
 noto-fonts-emoji
 nss-mdns
 ntfs-3g
-ntp
 numlockx
 obs-studio
 oh-my-zsh
@@ -307,6 +307,7 @@ signal-desktop
 skypeforlinux-preview-bin
 snapd
 snapd-glib
+sniffer
 spectre-meltdown-checker
 speedtest-cli
 stacer
@@ -327,6 +328,7 @@ thunderbird-i18n-de
 thunderbird-i18n-en-us
 timeshift
 tlp
+traceroute
 ts-node
 ttf-dejavu
 ttf-droid
@@ -349,8 +351,10 @@ virtualbox-guest-utils
 vscodium-bin
 vscodium-bin-features
 vscodium-bin-marketplace
+vuescan-bin
 vulkan-intel
 wallpapers-2018
+warzone2100
 wget
 which
 wireshark-cli
@@ -377,6 +381,7 @@ xfce4-genmon-plugin
 xfce4-mailwatch-plugin
 xfce4-mount-plugin
 xfce4-netload-plugin
+xfce4-notes-plugin
 xfce4-panel
 xfce4-panel-profiles
 xfce4-power-manager
