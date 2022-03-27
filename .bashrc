@@ -1,8 +1,8 @@
 #!/bin/bash
-                           ### By the way if it ain't broke, break it then fix it. ###
+encoding="UTF-8"
+### By the way if it ain't broke, break it then fix it. ###
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
-
 
 # Pfetch, Neofetch Terminal CPU info
 pfetch

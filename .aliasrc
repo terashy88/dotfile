@@ -1,4 +1,6 @@
 #!/bin/zsh
+encoding="UTF-8"
+
 ############### Todo / TEST ###############
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''

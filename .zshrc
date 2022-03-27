@@ -1,6 +1,6 @@
 #!/bin/zsh
+encoding="UTF-8"
 ### By the way if it ain't broke, break it then fix it. ###
-
 ##################### TODO / Test ######################
 
 
