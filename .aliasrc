@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ############### Todo / TEST ###############
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
@@ -181,7 +181,7 @@ alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfil
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
-alias ownCloud/='$HOME/ownCloud        ; ls'
+alias own-Claud='$HOME/ownCloud        ; ls'
 alias D-link='   $HOME/ownCloud/D-link ; ls'
 alias S-link='   $HOME/ownCloud/S-link ; ls'
 alias M-link='   $HOME/ownCloud/M-link ; ls'
