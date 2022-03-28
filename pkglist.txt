@@ -358,8 +358,6 @@ virtualbox
 virtualbox-ext-vnc
 virtualbox-guest-utils
 vscodium-bin
-vscodium-bin-features
-vscodium-bin-marketplace
 vuescan-bin
 vulkan-intel
 wallpapers-2018

@@ -91,7 +91,7 @@ zstyle ':completion:*' rehash true                              # automatically 
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.config/.zsh/cache
+zstyle ':completion:*' cache-path ~/.cache/.zsh/cache
 
 ## Keybindings section
 bindkey -e
@@ -206,11 +206,11 @@ source /etc/profile
 ## private-alias
 [[ -f $HOME/ownCloud/private-git/p-aliasrc ]] && source $HOME/ownCloud/private-git/p-aliasrc
 ## oh-my-zsh
-[[ -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
+# [[ -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
 ## dir-colors
 [[ -f ~/.config/.dir_colors ]] &&  eval `dircolors ~/.config/.dir_colors`
-## zsh-autosuggestions
-[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+## zsh-autosuggestions #! auto-search bug
+ [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ## Use syntax highlighting
 [[  -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ## Use history substring search
