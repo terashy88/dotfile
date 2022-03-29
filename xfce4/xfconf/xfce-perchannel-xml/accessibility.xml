@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="accessibility" version="1.0">
+  <property name="MouseKeys" type="bool" value="true">
+    <property name="Curve" type="int" value="11"/>
+    <property name="MaxSpeed" type="int" value="3333"/>
+    <property name="TimeToMax" type="int" value="3333"/>
+  </property>
+  <property name="FindCursor" type="bool" value="false"/>
+</channel>

@@ -27,10 +27,10 @@ sudo pacman -Qqe >                                $HOME/ownCloud/dotfile/pkglist
 
 alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/  ;
 ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
-     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
-     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
-     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
-     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
+ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
+ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
+ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
+ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
 sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true &
@@ -40,14 +40,16 @@ sudo fc-cache -vf'
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
 ## xfce4-backup
-alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ;
+alias xfce-backup='mkdir -pv    $HOME/ownCloud/dotfile/ ;mkdir -pv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv $HOME/.config/mimeapps.list      $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/*  $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/ ;
 xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
 
-alias xfce-restore='mkdir -pv                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list &
-ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml'
+alias xfce-restore='mkdir -pv   $HOME/ownCloud/dotfile/ ; $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list       $HOME/.config/mimeapps.list &
+ln -fv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/*     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/;
+sudo ln -fv ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list;
+'
 
 # sudo pacman -Qqe > pkglist.txt        #! not use --combinedupgrade
 alias  pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'

@@ -1,5 +1,4 @@
-#/          ##Block all
-#.local                                ##Proxy Video Editor -- Notice
+##      #! only '/' will Block all    	  ##
 
 ############### Todo / Test ################
 
@@ -116,11 +115,7 @@ prime-run
 .config/autostart/
 
 ## Telegram
-*Telegram
-
-# Popcorntime
-#.config/Popcorn-Time/
-# !.config/Popcorn-Time/Default/
+*Telegram*
 
 ## office
 .config/libreoffice
@@ -138,7 +133,7 @@ prime-run
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
 
-##linux
+## linux
 pkglist.txt
 
 # Signal
@@ -188,3 +183,11 @@ qBittorrent
 ## PackagesManager
 # .conan
 # .go
+
+## Popcorntime
+Popcorn-Time
+#.config/Popcorn-Time/
+# !.config/Popcorn-Time/Default/
+Popcorntime
+!.config/Popcorn-Time/Default/Preferences
+!/home/shaderico/.config/Popcorn-Time/Default/Current Session

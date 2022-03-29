@@ -85,7 +85,6 @@ filezilla
 findbrokenpkgs
 findutils
 flameshot
-flatpak
 flex
 folder-color-switcher
 freetype2
@@ -168,7 +167,6 @@ lib32-vulkan-icd-loader
 libdvdcss
 libgsf
 libopenraw
-libpamac-flatpak-plugin
 libpamac-snap-plugin
 libredefender
 libreoffice-fresh
@@ -188,7 +186,6 @@ linux516-headers
 linux516-nvidia
 linux516-virtualbox-host-modules
 logrotate
-lutris
 lvm2
 m4
 make
@@ -287,8 +284,6 @@ powerline-go
 powertop
 preload
 procps-ng
-proton
-proton-ge-custom-bin
 psmisc
 python-adblock
 python-docutils
@@ -296,6 +291,7 @@ python-jedi
 python-pytorch
 python-tenacity
 python-typogrify
+qbittorrent
 qpdfview
 qt5-translations
 rclone
@@ -320,7 +316,6 @@ sniffer
 spectre-meltdown-checker
 speedtest-cli
 stacer
-steam-manjaro
 sudo
 syncthing
 sysfsutils
@@ -362,10 +357,9 @@ vuescan-bin
 vulkan-intel
 wallpapers-2018
 wget
+whatsapp-for-linux
 which
 whois
-wine-gecko
-winetricks
 wireshark-cli
 wireshark-qt
 wordpress
