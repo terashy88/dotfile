@@ -132,6 +132,7 @@ prime-run
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
+.local/share/notes/Notizen/
 
 ## linux
 pkglist.txt

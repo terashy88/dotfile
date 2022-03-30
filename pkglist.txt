@@ -112,7 +112,6 @@ gnucash-docs
 google-webdesigner
 gparted
 grep
-grisbi
 groff
 grub
 grub-theme-manjaro
@@ -153,6 +152,7 @@ jfsutils
 jnettop
 kconfig
 kcoreaddons
+kdeconnect
 kdenlive
 kernel-alive
 keycloak
@@ -162,7 +162,6 @@ kquickimageeditor
 kubectl
 kwindowsystem
 less
-lib32-nvidia-utils
 lib32-vulkan-icd-loader
 libdvdcss
 libgsf
@@ -183,7 +182,6 @@ linux-firmware-qlogic
 linux516
 linux516-acpi_call
 linux516-headers
-linux516-nvidia
 linux516-virtualbox-host-modules
 logrotate
 lvm2
@@ -249,8 +247,6 @@ noto-fonts-emoji
 nss-mdns
 ntfs-3g
 numlockx
-nvidia-prime
-nvidia-utils
 obs-studio
 oh-my-zsh
 olive
@@ -326,6 +322,7 @@ tar
 telegram-desktop
 termdown
 texinfo
+thunar-shares-plugin
 thunar-volman
 thunderbird
 thunderbird-i18n-de
@@ -357,7 +354,6 @@ vuescan-bin
 vulkan-intel
 wallpapers-2018
 wget
-whatsapp-for-linux
 which
 whois
 wireshark-cli
