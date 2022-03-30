@@ -1,8 +1,8 @@
 #!/bin/bash
-                           ### By the way if it ain't broke, break it then fix it. ###
+encoding="UTF-8"
+### By the way if it ain't broke, break it then fix it. ###
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/ownCloud/.bin
-
 
 # Pfetch, Neofetch Terminal CPU info
 pfetch
@@ -145,7 +145,7 @@ export LESS=-r
 
 
 ##TEST powerlevel10k
-[[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+# [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] || source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.config/.p10k.zsh. at the bottom
 [[ -f ~/.config/.p10k.zsh ]] || source ~/.config/.p10k.zsh
@@ -574,7 +574,6 @@ PROMPT_COMMAND=bash_prompt_command
 ##	Call bash_promnt only once, then unset it (not needed any more)
 ##	It will set $PS1 with colors and relative to $NEW_PWD,
 ##	which gets updated by $PROMT_COMMAND on behalf of the terminal
-bash_prompt
 unset bash_prompt
 
 # Use powerline

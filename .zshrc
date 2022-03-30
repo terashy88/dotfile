@@ -1,8 +1,7 @@
-#!/bin/sh
+#!/bin/zsh
+encoding="UTF-8"
 ### By the way if it ain't broke, break it then fix it. ###
-
 ##################### TODO / Test ######################
-
 
 
 #########################TODO###########################
@@ -15,7 +14,7 @@ pfetch
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-HISTIGNORE="ls:bg:fg:exit:reset:clear:cd:ll"
+HISTIGNORE=" ls:bg:fg:exit:reset:clear:cd:ll"
 HISTCONTROL="ignoreboth:erasedups"
 
 setopt autocd extendedglob nomatch
@@ -37,8 +36,8 @@ export EDITOR=vscodium
 export VISUAL=EDITOR
 
 # PATH 'short form "-P"'
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/ownCloud/.bin
+export PATH=$PATH:~/.local/bin:~/ownCloud/.bin
+#! 'test combine with line 40' export PATH=$PATH:~/ownCloud/.bin
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
@@ -83,15 +82,28 @@ setopt histignorealldups                                        # If a new comma
 setopt autocd
 # if only directory path is entered, cd there.
 
-# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
 zstyle ':completion:*' rehash true                              # automatically find new executables in path
 # Speed up completions
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.config/.zsh/cache
+zstyle ':completion:*' cache-path ~/.cache/.zsh/cache
+
+# The following lines were added by compinstall
+zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' completions 1
+zstyle ':completion:*' format '0 %d'
+zstyle ':completion:*:*:*:*:descriptions' format '%F{green}-- %d --%f'
+zstyle ':completion:*:*:*:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+zstyle ':completion:*' glob 1
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' max-errors 2
+zstyle ':completion:*' substitute 1
+zstyle :compinstall filename '/home/shaderico/.zshrc'
+
+# To format messages or warnings (for example when no match is found), you can add the following:
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
 
 ## Keybindings section
 bindkey -e
@@ -130,7 +142,6 @@ bindkey -M menuselect '^l' vi-forward-char
 # Theming section
 autoload -Uz compinit -i colors zcalc
 compinit -d
-colors
 
 # Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo
@@ -209,8 +220,9 @@ source /etc/profile
 [[ -f /usr/share/oh-my-zsh/ ]] ; source /usr/share/oh-my-zsh/
 ## dir-colors
 [[ -f ~/.config/.dir_colors ]] &&  eval `dircolors ~/.config/.dir_colors`
-## zsh-autosuggestions
-[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+## zsh-autosuggestions  #! auto-search bug
+ [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] ; source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ plugins=(zsh-autosuggestions)
 ## Use syntax highlighting
 [[  -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] ; source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ## Use history substring search
@@ -248,9 +260,9 @@ zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
 
 # Completing misc
+zstyle ':completion:*:*:cp:*' file-sort modification reverse
 zstyle ':completion:*' complete-options true
 zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list
 zstyle ':completion:*:*files' ignored-patterns '*?.o' '*?~' '*\#'
@@ -263,7 +275,6 @@ zstyle ':completion:*:match:*' original only
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*'   force-list always
-zstyle ':completion:*' squeeze-slashes true
 zstyle -e ':completion:*:approximate:*' \
                    max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 zstyle ':completion:*:functions' ignored-patterns '_*'
@@ -284,7 +295,7 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' file-list all
 zstyle ':completion:*:*:xdvi:*' menu yes select
-           zstyle ':completion:*:*:xdvi:*' file-sort time
+zstyle ':completion:*:*:xdvi:*' file-sort time
 
 #####################  FUNCTIONS  ########################
 
@@ -298,7 +309,6 @@ rationalise-dot() {
 }
 zle -N rationalise-dot
 bindkey . rationalise-dot
-
 
 # Easy extract
 extract () {
@@ -480,8 +490,6 @@ bash_prompt() {
     local GRAY_BOLD="\[\033[1;90m\]"
     local BLUE_BOLD="\[\033[1;38;5;74m\]"
 
-
-
     ##                          CONFIGURE HERE                                ##
 
     ############################################################################
@@ -588,7 +596,6 @@ bash_prompt() {
     local PROMT_PWD=$"$TEXT_FORMAT_3 \${NEW_PWD} "
     local PROMT_INPUT=$"$PROMT_FORMAT "
 
-
     ############################################################################
     ## SEPARATOR FORMATING                                                    ##
     ## Generate the separators between sections                               ##
@@ -637,8 +644,6 @@ bash_prompt() {
     ## Generate promt and remove format from the rest                         ##
     ############################################################################
     PS1="$TITLEBAR\n${PROMT_USER}${SEPARATOR_1}${PROMT_HOST}${SEPARATOR_2}${PROMT_PWD}${SEPARATOR_3}${PROMT_INPUT}"
-
-
 
     ## For terminal line coloring, leaving the rest standard
     none="$(tput sgr0)"

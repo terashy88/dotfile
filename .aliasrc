@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/zsh
+encoding="UTF-8"
+
 ############### Todo / TEST ###############
 
 #alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
@@ -25,10 +27,10 @@ sudo pacman -Qqe >                                $HOME/ownCloud/dotfile/pkglist
 
 alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/  ;
 ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
-     ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
-     ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
-     ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
-     ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
+ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
+ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
+ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
+ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
 sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true &
@@ -38,21 +40,23 @@ sudo fc-cache -vf'
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
 ## xfce4-backup
-alias xfce-backup='mkdir -pv                                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/.config/mimeapps.list                                                  $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml  $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ;
+alias xfce-backup='mkdir -pv    $HOME/ownCloud/dotfile/ ;mkdir -pv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv $HOME/.config/mimeapps.list      $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
+ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/*  $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/ ;
 xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
 
-alias xfce-restore='mkdir -pv                                        $HOME/ownCloud/dotfile/ ;
-ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list                    $HOME/.config/mimeapps.list &
-ln -fv $HOME/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml'
+alias xfce-restore='mkdir -pv   $HOME/ownCloud/dotfile/ ; $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list       $HOME/.config/mimeapps.list &
+ln -fv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/*     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/;
+sudo ln -fv ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list;
+'
 
 # sudo pacman -Qqe > pkglist.txt        #! not use --combinedupgrade
-alias pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
+alias  pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
 alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall --useask --noredownload --topdown --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
+alias  cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
 alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 # alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 alias pamacclean='pamac clean --no-confirm '
@@ -181,7 +185,7 @@ alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfil
 alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
 alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
-alias ownCloud/='$HOME/ownCloud        ; ls'
+alias own-Claud='$HOME/ownCloud        ; ls'
 alias D-link='   $HOME/ownCloud/D-link ; ls'
 alias S-link='   $HOME/ownCloud/S-link ; ls'
 alias M-link='   $HOME/ownCloud/M-link ; ls'

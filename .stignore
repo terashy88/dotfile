@@ -1,6 +1,4 @@
-#!/bin/sh
-#/          ##Block all
-#.local                                ##Proxy Video Editor -- Notice
+##      #! only '/' will Block all    	  ##
 
 ############### Todo / Test ################
 
@@ -8,13 +6,12 @@
 ################## Todo ####################
 ############################################
 
-
 ################# allowed ##################
 !*sync-conflict*
 !*.stignore*
 # (?i)!*setting*
 # (?i)!*Preferences
-# !*.conf
+#!.conf		--will brake barrier--
 ############################################
 ############################################
 
@@ -24,12 +21,11 @@
 *Bitwarden
 Downloads
 .gradle/
-
-
+Thunar
 ## digikam
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 #.dtrash
-(?i)*trash/*
+(?i)*trash*
 #digikamrc has to be ignore to sync on other PC
 digikamrc
 
@@ -119,11 +115,7 @@ prime-run
 .config/autostart/
 
 ## Telegram
-*Telegram
-
-# Popcorntime
-#.config/Popcorn-Time/
-# !.config/Popcorn-Time/Default/
+*Telegram*
 
 ## office
 .config/libreoffice
@@ -140,8 +132,9 @@ prime-run
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
+.local/share/notes/Notizen/
 
-##linux
+## linux
 pkglist.txt
 
 # Signal
@@ -186,8 +179,16 @@ qBittorrent
 (?i)*steam*
 *lutris*
 *PlayOnLinux*
-(?!)game
+(?!)game*
 
 ## PackagesManager
 # .conan
 # .go
+
+## Popcorntime
+Popcorn-Time
+#.config/Popcorn-Time/
+# !.config/Popcorn-Time/Default/
+Popcorntime
+!.config/Popcorn-Time/Default/Preferences
+!/home/shaderico/.config/Popcorn-Time/Default/Current Session
