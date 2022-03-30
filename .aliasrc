@@ -287,6 +287,6 @@ alias -g X0='| xargs -0'
 alias -g XG='| xargs egrep'
 alias -g X='| xargs'
 
-## barrier
+## barrier new barrier key gen
 alias barrier-keygen='openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout $HOME/.local/share/barrier/SSL/Barrier.pem -out $HOME/.local/share/barrier/SSL/Barrier.pem
 '

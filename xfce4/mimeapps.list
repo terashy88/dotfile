@@ -26,11 +26,7 @@ image/jpeg=io.github.celluloid_player.Celluloid.desktop;gimp.desktop;org.kde.dig
 video/x-ms-wmv=mpv.desktop;io.github.celluloid_player.Celluloid.desktop;
 application/pdf=brave-browser.desktop;gimp.desktop;libreoffice-startcenter.desktop;libreoffice7.0-draw.desktop;firefox.desktop;freeoffice-textmaker.desktop;freeoffice-planmaker.desktop;libreoffice-draw.desktop;com.github.jeromerobert.pdfarranger.desktop;org.inkscape.Inkscape.desktop;qpdfview.desktop;org.pwmt.zathura.desktop;xreader.desktop;
 video/mpeg=vlc.desktop;mpv.desktop;io.github.celluloid_player.Celluloid.desktop;
-<<<<<<< HEAD
 video/mp4=org.gnome.Totem.desktop;org.avidemux.Avidemux.desktop;io.github.celluloid_player.Celluloid.desktop;mpv.desktop;
-=======
-video/mp4=mpv.desktop;io.github.celluloid_player.Celluloid.desktop;vlc.desktop;QMLPlayer.desktop;Player.desktop;org.gnome.Totem.desktop;org.avidemux.Avidemux.desktop;
->>>>>>> origin/main
 video/x-msvideo=io.github.celluloid_player.Celluloid.desktop;mpv.desktop;
 image/bmp=org.kde.gwenview.desktop;
 application/x-raw-disk-image-xz-compressed=org.gnome.FileRoller.desktop;engrampa.desktop;xarchiver.desktop;org.gnome.Nautilus.desktop;org.kde.ark.desktop;7zFM.desktop;
@@ -136,8 +132,6 @@ application/x-genesis-rom=nvim.desktop;
 text/x-python=sublime-text2.desktop;
 application/x-perl=sublime-text2.desktop;
 application/x-shellscript=io.github.mightycreak.Diffuse.desktop;nvim.desktop;brave-browser.desktop;codium.desktop;visual-studio-code.desktop;
-<<<<<<< HEAD
-=======
 inode/directory=xfce4-file-manager.desktop;
 image/x-adobe-dng=gimp.desktop;
 application/x-bzpdf=qpdfview.desktop;
@@ -156,7 +150,6 @@ application/wps-office.dotx=wps-office-wps.desktop;
 application/wps-office.wpss=wps-office-wps.desktop;
 application/wps-office.wpso=wps-office-wps.desktop;
 text/x.gcode=nvim.desktop;codium.desktop;
->>>>>>> origin/main
 
 [Default Applications]
 application/pdf=xreader.desktop
@@ -302,8 +295,6 @@ application/x-perl=sublime-text2.desktop
 x-scheme-handler/postman=Postman.desktop
 application/x-shellscript=codium.desktop
 x-scheme-handler/kite=kite-copilot.desktop
-<<<<<<< HEAD
-=======
 inode/directory=xfce4-file-manager.desktop
 image/x-adobe-dng=gimp.desktop
 application/x-bzpdf=qpdfview.desktop
@@ -335,7 +326,6 @@ application/wps-office.wpss=wps-office-wps.desktop
 application/wps-office.wpso=wps-office-wps.desktop
 application/wps-office.wpt=wps-office-wps.desktop
 text/x.gcode=codium.desktop
->>>>>>> origin/main
 
 [Removed Associations]
 inode/directory=exo-file-manager.desktop;ktelnetservice5.desktop;
@@ -344,10 +334,6 @@ text/plain=wine-extension-txt.desktop;userapp-code-2N1AB1.desktop;userapp-code-H
 application/pdf=wine-extension-pdf.desktop;
 image/jpeg=wine-extension-jpe.desktop;wine-extension-jfif.desktop;
 application/vnd.ms-publisher=userapp-nvim-IVAAA1.desktop;
-<<<<<<< HEAD
-=======
 image/png=userapp-digikam-JYB2F1.desktop;org.kde.showfoto.desktop;wine-extension-png.desktop;
 video/mp4=userapp-prime-run-6VAJG1.desktop;
 image/jpeg=wine-extension-jpe.desktop;
->>>>>>> origin/main
-
