@@ -9,7 +9,7 @@ encoding="UTF-8"
 
 # pfetch, neofetch Terminal System info
 pfetch
-    
+
 # History - config
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
