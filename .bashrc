@@ -153,6 +153,7 @@ else
 	LBUFFER+=.
 fi
 }
+
 # Easy extract
 extract () {
 	if [ -f $1 ] ; then
@@ -480,14 +481,6 @@ bash_prompt_command() {
 		trap 'echo -ne "${none}"' DEBUG
 	}
 
-
-
-
-
-
-
-#!/bin/zsh
-encoding="UTF-8"
 ############### Todo / TEST ###############
 
 
