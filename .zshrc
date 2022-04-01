@@ -239,8 +239,6 @@ bindkey '^[[B' history-substring-search-down
 #[[  -f /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh]] || source /usr/share/zsh-theme-powerlevel10k/internal/worker.zsh
 ## pluggin          #[[ -n $PS1 ]] && source ~/.bash_profile;     ##[[ ! -n $PS1 ]]=deaktivate
 
-#fpath+=(~/.zsh/completion/)
-
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
 setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
 setopt PATH_DIRS           # Perform path search even on command names with slashes.
