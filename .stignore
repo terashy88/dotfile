@@ -134,8 +134,8 @@ xfce4-keyboard-shortcuts.xml
 .config/xfce4/
 .local/share/notes/Notizen/
 
-## linux
-pkglist.txt
+## linux	#! don't ignore 'pkglist.txt' for GitHub
+#pkglist.txt
 
 # Signal
 .config/Signal/
