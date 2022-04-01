@@ -112,7 +112,6 @@ gnucash-docs
 google-webdesigner
 gparted
 grep
-grisbi
 groff
 grub
 grub-theme-manjaro
@@ -156,7 +155,6 @@ kcoreaddons
 kdenlive
 kernel-alive
 keycloak
-kmymoney
 kpeoplevcard
 kquickimageeditor
 kubectl
@@ -227,10 +225,8 @@ nemo
 nemo-audio-tab
 nemo-emblems
 nemo-fileroller
-nemo-image-converter
 nemo-preview
 nemo-seahorse
-nemo-terminal
 neovim
 nerd-fonts-terminus
 network-manager-applet

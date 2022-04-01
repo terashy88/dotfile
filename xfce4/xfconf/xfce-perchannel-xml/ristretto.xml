@@ -5,25 +5,13 @@
     <property name="navigationbar" type="empty">
       <property name="position" type="string" value="left"/>
     </property>
-    <property name="height" type="uint" value="791"/>
-    <property name="width" type="uint" value="924"/>
-    <property name="thumbnails" type="empty">
-      <property name="show" type="bool" value="true"/>
-      <property name="size" type="uint" value="4"/>
-      <property name="hide-fullscreen" type="bool" value="true"/>
-    </property>
-    <property name="maximize-on-startup" type="bool" value="false"/>
-    <property name="show-clock" type="bool" value="true"/>
-    <property name="bgcolor-override" type="bool" value="true"/>
+    <property name="show-clock" type="bool" value="false"/>
+    <property name="bgcolor-override" type="bool" value="false"/>
   </property>
   <property name="slideshow" type="empty">
     <property name="timeout" type="uint" value="3"/>
   </property>
-  <property name="file" type="empty">
-    <property name="current-uri" type="string" value="file:///home/shaderico/Downloads/test"/>
-  </property>
   <property name="image" type="empty">
-    <property name="wrap" type="bool" value="true"/>
-    <property name="limit-quality" type="bool" value="true"/>
+    <property name="limit-quality" type="bool" value="false"/>
   </property>
 </channel>

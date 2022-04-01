@@ -8,7 +8,8 @@ encoding="UTF-8"
 ############################################
 
 ## systemctl enable
-alias systemctl-enable='sudo systemctl enable --now systemd-timesyncd &
+alias systemctl-enable='sudo hwclock --systohc --utc;
+sudo systemctl enable --now systemd-timesyncd &
 sudo systemctl enable --now auto-cpufreq.service &
 sudo systemctl enable --now NetworkManager &
 sudo systemctl enable       lightdm &
