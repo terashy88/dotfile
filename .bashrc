@@ -28,6 +28,17 @@ export PATH=$PATH:~/.local/bin:~/ownCloud/.bin
 export ERL_AFLAGS="-kernel shell_history enabled"
 WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
 
+##	Bash provides an environment variable called PROMPT_COMMAND.
+	##	The contents of this variable are executed as a regular Bash command
+	##	just before Bash displays a prompt.
+	##	We want it to call our own command to truncate PWD and store it in NEW_PWD
+	PROMPT_COMMAND=bash_prompt_command
+
+##	Call bash_promnt only once, then unset it (not needed any more)
+##	It will set $PS1 with colors and relative to $NEW_PWD,
+##	which gets updated by $PROMT_COMMAND on behalf of the terminal
+bash_prompt
+
 # Use powerline
 USE_POWERLINE="true"
 
@@ -728,28 +739,3 @@ alias   htop='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "sudo htop
 ## barrier new barrier key gen
 alias barrier-keygen='openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout $HOME/.local/share/barrier/SSL/Barrier.pem -out $HOME/.local/share/barrier/SSL/Barrier.pem
 '
-################################################################################
-##  FUNCTIONS                                                                 ##
-################################################################################
-
-##
-##	ARRANGE $PWD AND STORE IT IN $NEW_PWD
-##	* The home directory (HOME) is replaced with a ~
-##	* The last pwdmaxlen characters of the PWD are displayed
-##	* Leading partial directory names are striped off
-##		/home/me/stuff -> ~/stuff (if USER=me)
-##		/usr/share/big_dir_name -> ../share/big_dir_name (if pwdmaxlen=20)
-##
-##	Original source: WOLFMAN'S color bash promt
-##	https://wiki.chakralinux.org/index.php?title=Color_Bash_Prompt#Wolfman.27s
-##
-##	Bash provides an environment variable called PROMPT_COMMAND.
-	##	The contents of this variable are executed as a regular Bash command
-	##	just before Bash displays a prompt.
-	##	We want it to call our own command to truncate PWD and store it in NEW_PWD
-	PROMPT_COMMAND=bash_prompt_command
-
-##	Call bash_promnt only once, then unset it (not needed any more)
-##	It will set $PS1 with colors and relative to $NEW_PWD,
-##	which gets updated by $PROMT_COMMAND on behalf of the terminal
-bash_prompt
