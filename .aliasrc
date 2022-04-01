@@ -1,9 +1,9 @@
 #!/bin/zsh
 encoding="UTF-8"
-
 ############### Todo / TEST ###############
 
-#alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
+
+
 ################ Todo ######################
 ############################################
 
@@ -112,6 +112,7 @@ alias whois='whois '               #whois input-ip 127.0.0.1
 alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
 alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
 alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"'       #network-monitoring     live-scan
+alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
 
 ## Convert
 alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
