@@ -75,7 +75,7 @@
       <property name="tweaks" type="empty">
         <property name="max-menu-items" type="uint" value="50"/>
         <property name="never-confirm-history-clear" type="bool" value="true"/>
-        <property name="paste-on-activate" type="uint" value="2"/>
+        <property name="paste-on-activate" type="uint" value="1"/>
         <property name="popup-at-pointer" type="bool" value="true"/>
         <property name="reorder-items" type="bool" value="true"/>
         <property name="reverse-menu-order" type="bool" value="false"/>
@@ -216,7 +216,7 @@
         <property name="enabled" type="bool" value="true"/>
         <property name="label" type="string" value=""/>
       </property>
-      <property name="timeout" type="uint" value="888"/>
+      <property name="timeout" type="uint" value="6666"/>
       <property name="uptime" type="empty">
         <property name="enabled" type="bool" value="false"/>
       </property>
@@ -360,7 +360,7 @@
     <property name="plugin-18" type="string" value="xfce4-sensors-plugin"/>
     <property name="plugin-9" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      <property name="mpris-players" type="string" value="audacious;chromium.instance1020736;chromium.instance106725;chromium.instance106971;chromium.instance107460;chromium.instance127028;chromium.instance12961;chromium.instance135944;chromium.instance13866;chromium.instance14211;chromium.instance153487;chromium.instance16539;chromium.instance170844;chromium.instance1729897;chromium.instance1734338;chromium.instance183897;chromium.instance18410;chromium.instance19349;chromium.instance22630;chromium.instance245920;chromium.instance28055;chromium.instance28768;chromium.instance31234;chromium.instance326074;chromium.instance343434;chromium.instance34731;chromium.instance36982;chromium.instance41775;chromium.instance43504;chromium.instance44599;chromium.instance45921;chromium.instance46425;chromium.instance46627;chromium.instance49788;chromium.instance508035;chromium.instance51125;chromium.instance53464;chromium.instance55533;chromium.instance58380;chromium.instance60058;chromium.instance61884;chromium.instance633569;chromium.instance69831;chromium.instance71446;chromium.instance72035;chromium.instance84564;chromium.instance91741;io.github.celluloid_player.Celluloid.instance-1;io.github.celluloid_player.Celluloid.instance-10;io.github.celluloid_player.Celluloid.instance-2;io.github.celluloid_player.Celluloid.instance-3;io.github.celluloid_player.Celluloid.instance-4;io.github.celluloid_player.Celluloid.instance-5;io.github.celluloid_player.Celluloid.instance-6;io.github.celluloid_player.Celluloid.instance-7;io.github.celluloid_player.Celluloid.instance-8;io.github.celluloid_player.Celluloid.instance-9;rhythmbox;sayonara;vlc"/>
+      <property name="mpris-players" type="string" value="audacious;chromium.instance1020736;chromium.instance106725;chromium.instance106971;chromium.instance107460;chromium.instance1237886;chromium.instance127028;chromium.instance12961;chromium.instance13480;chromium.instance135944;chromium.instance13866;chromium.instance14211;chromium.instance153487;chromium.instance160888;chromium.instance16539;chromium.instance170844;chromium.instance1729897;chromium.instance1734338;chromium.instance183897;chromium.instance18410;chromium.instance19349;chromium.instance22630;chromium.instance23037;chromium.instance235871;chromium.instance245920;chromium.instance28055;chromium.instance285345;chromium.instance28768;chromium.instance291019;chromium.instance31234;chromium.instance312557;chromium.instance326074;chromium.instance343434;chromium.instance34731;chromium.instance36982;chromium.instance397599;chromium.instance41775;chromium.instance43504;chromium.instance44599;chromium.instance45921;chromium.instance46425;chromium.instance46627;chromium.instance49788;chromium.instance508035;chromium.instance51125;chromium.instance53464;chromium.instance55533;chromium.instance58380;chromium.instance600285;chromium.instance60058;chromium.instance61884;chromium.instance633569;chromium.instance69831;chromium.instance71446;chromium.instance72035;chromium.instance731851;chromium.instance784632;chromium.instance84564;chromium.instance91670;chromium.instance91741;io.github.celluloid_player.Celluloid.instance-1;io.github.celluloid_player.Celluloid.instance-10;io.github.celluloid_player.Celluloid.instance-2;io.github.celluloid_player.Celluloid.instance-3;io.github.celluloid_player.Celluloid.instance-4;io.github.celluloid_player.Celluloid.instance-5;io.github.celluloid_player.Celluloid.instance-6;io.github.celluloid_player.Celluloid.instance-7;io.github.celluloid_player.Celluloid.instance-8;io.github.celluloid_player.Celluloid.instance-9;rhythmbox;sayonara;vlc"/>
     </property>
     <property name="plugin-49" type="string" value="wavelan"/>
     <property name="plugin-45" type="string" value="xfce4-mpc-plugin"/>

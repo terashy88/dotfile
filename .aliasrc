@@ -13,7 +13,9 @@ sudo systemctl enable --now systemd-timesyncd &
 sudo systemctl enable --now auto-cpufreq.service &
 sudo systemctl enable --now NetworkManager &
 sudo systemctl enable       lightdm &
-sudo systemctl enable --now ufw.service'
+sudo systemctl enable --now ufw.service;
+sudo systemctl enable --now clamav-freshclam.service
+'
 
 ## Ln Links herstellen
 alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
@@ -77,7 +79,7 @@ alias df='df -h '                                                # Human-readabl
 alias free='free -h '                                            # Show sizes in MB
 alias whereami='echo $PWD'
 alias more='less --use-color'
-alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack  ; sudo pacman -Syu;echo        here we go Richard'
+alias pacman-update='sudo pacman-mirrors -a -P https --fasttrack; sudo pacman -Syu;echo        here we go Richard'
 alias grub-update='sudo mkinitcpio -P && sudo update-grub'
 alias ping='ping -c 3 '
 alias mv='mv -iv '
@@ -120,7 +122,7 @@ alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffm
 
 ## Downloads
 alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
-alias  yta='yt -x -f bestaudio/best'
+alias  yta='cd $HOME/Downloads/; yt -x -f bestaudio/best'
 alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
 
 alias nvim='nvim '
@@ -209,6 +211,7 @@ alias sys-port='systemctl status|less --use-color'
 alias sys-status='systemctl list-unit-files|less'
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
+alias startup-speed='systemd-analyze blame'
 
 ## swappiness
 #Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee

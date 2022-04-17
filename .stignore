@@ -20,7 +20,6 @@
 .anydesk
 *Bitwarden
 Downloads
-.gradle/
 Thunar
 ## digikam
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
@@ -50,7 +49,8 @@ System Volume Information
 *.dmp
 *.nch
 *..swp
-#~
+.LCK
+.~
 (?i)*.log*
 (?i)*log.*
 (?i)*logs.*
@@ -73,6 +73,7 @@ kglobalshortcutsrc
 
 #.thunderbird
 .thunderbird/
+!.thunderbird/8e5mfh9q.default-release/ImapMail
 
 *.vdi
 (?i)*Barrier*
@@ -120,8 +121,9 @@ prime-run
 ## office
 .config/libreoffice
 .local/share/onlyoffice/
+~lock.
 
-## .Xauthority programm opener if delete false
+## .Xauthority programm opener if delete then false
 *.xinitrc*
 *.Xauthority*
 *.xsession*
@@ -164,7 +166,6 @@ xfce4-keyboard-shortcuts.xml
 .local/share/recently-used.xbel
 .lesshst
 .gnupg/
-.config/lbry
 *QtProject*
 
 ## torrent
@@ -182,8 +183,10 @@ qBittorrent
 (?!)game*
 
 ## PackagesManager
-# .conan
-# .go
+#.cargo
+#.gradle
+#.conan
+#.go
 
 ## Popcorntime
 Popcorn-Time

@@ -5,6 +5,7 @@ image/heif=userapp-digikam-JYB2F1.desktop;org.xfce.ristretto.desktop;
 image/jpeg=nemo.desktop;org.gnome.FileRoller.desktop;org.xfce.ristretto.desktop;
 text/x-python=codium.desktop;
 video/mp4=mpv.desktop;io.github.celluloid_player.Celluloid.desktop;
+text/csv=libreoffice-calc.desktop;
 
 [Default Applications]
 application/pdf=qpdfview.desktop
@@ -13,3 +14,4 @@ image/heif=org.xfce.ristretto.desktop
 image/jpeg=org.xfce.ristretto.desktop
 text/x-python=codium.desktop
 video/mp4=io.github.celluloid_player.Celluloid.desktop
+text/csv=libreoffice-calc.desktop

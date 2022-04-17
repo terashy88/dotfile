@@ -14,7 +14,7 @@ pfetch
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-HISTIGNORE=" ls:bg:fg:exit:reset:clear:cd:ll"
+HISTIGNORE='ls:bg:fg:exit:reset:clear:cd:ll:yt'
 HISTCONTROL="ignoreboth:erasedups"
 
 setopt autocd extendedglob nomatch
