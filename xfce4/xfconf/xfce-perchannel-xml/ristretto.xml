@@ -7,6 +7,8 @@
     </property>
     <property name="show-clock" type="bool" value="false"/>
     <property name="bgcolor-override" type="bool" value="false"/>
+    <property name="height" type="uint" value="440"/>
+    <property name="width" type="uint" value="600"/>
   </property>
   <property name="slideshow" type="empty">
     <property name="timeout" type="uint" value="3"/>

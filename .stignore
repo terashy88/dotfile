@@ -21,6 +21,7 @@
 *Bitwarden
 Downloads
 Thunar
+
 ## digikam
 #don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 #.dtrash
@@ -65,15 +66,17 @@ kglobalshortcutsrc
 
 ## vscodium
 #*vsliveshare*
-(?i)*vscod*
+# (?i)*vscod*
 .config/VSCodium/Backups/
 .config/TabNine
 .local/share/kite/
 .kite/
 
-#.thunderbird
-.thunderbird/
+## thunderbird   #! don't delete
+# .thunderbird/
+!.thunderbird/8e5mfh9q.default-release/quicktext/
 !.thunderbird/8e5mfh9q.default-release/ImapMail
+!.thunderbird/8e5mfh9q.default-release/persdict.dat
 
 *.vdi
 (?i)*Barrier*
@@ -107,8 +110,11 @@ VM-share-rsx
 .ssr
 *.pem
 *.gpg
-.key
-.ssl
+*.key
+*_key
+*.ssl
+*_rsa
+*.pgp
 
 # nvidia prime-run ignore
 prime-run
@@ -121,7 +127,7 @@ prime-run
 ## office
 .config/libreoffice
 .local/share/onlyoffice/
-~lock.
+~lock.*
 
 ## .Xauthority programm opener if delete then false
 *.xinitrc*
@@ -135,9 +141,6 @@ prime-run
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
 .local/share/notes/Notizen/
-
-## linux	#! don't ignore 'pkglist.txt' for GitHub
-#pkglist.txt
 
 # Signal
 .config/Signal/
@@ -154,6 +157,8 @@ xfce4-keyboard-shortcuts.xml
 # GitHub Desktop #! use IDE
 (?i)GitHub*
 *.git*
+## linux	#! don't ignore 'pkglist.txt' for GitHub
+#pkglist.txt
 
 ## Brave #don't delete
 *BraveSoftware*
@@ -173,7 +178,7 @@ xfce4-keyboard-shortcuts.xml
 qBittorrent
 *torrent*
 
-## kde-connect
+## kde-connect	#! delete
 .config/kdeconnect
 
 ## Game
@@ -195,3 +200,8 @@ Popcorn-Time
 Popcorntime
 !.config/Popcorn-Time/Default/Preferences
 !/home/shaderico/.config/Popcorn-Time/Default/Current Session
+
+## crack
+.john*
+
+.wget-hsts

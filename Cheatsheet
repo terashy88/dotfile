@@ -31,6 +31,10 @@ http://localhost:631/
 #systemd-analyze blame  #*startup-speedinfo
 #systemd-analyze        #*startup-loadtime
 
+## VirtualBox
+#sudo usermod -a -G vboxusers $USER
+
+
 ######################################################################################
 
 #echo '                                       -@                                              '

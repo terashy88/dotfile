@@ -2,7 +2,7 @@
 
 <channel name="thunar" version="1.0">
   <property name="default-view" type="string" value="ThunarCompactView"/>
-  <property name="last-compact-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_400_PERCENT"/>
+  <property name="last-compact-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_250_PERCENT"/>
   <property name="last-details-view-column-order" type="string" value="THUNAR_COLUMN_NAME,THUNAR_COLUMN_SIZE,THUNAR_COLUMN_DATE_MODIFIED,THUNAR_COLUMN_TYPE,THUNAR_COLUMN_OWNER,THUNAR_COLUMN_GROUP,THUNAR_COLUMN_PERMISSIONS,THUNAR_COLUMN_MIME_TYPE,THUNAR_COLUMN_DATE_ACCESSED,THUNAR_COLUMN_SIZE_IN_BYTES"/>
   <property name="last-details-view-column-widths" type="string" value="375,142,86,176,446,90,136,64,76,112"/>
   <property name="last-details-view-fixed-columns" type="bool" value="true"/>

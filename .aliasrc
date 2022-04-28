@@ -14,7 +14,7 @@ sudo systemctl enable --now auto-cpufreq.service &
 sudo systemctl enable --now NetworkManager &
 sudo systemctl enable       lightdm &
 sudo systemctl enable --now ufw.service;
-sudo systemctl enable --now clamav-freshclam.service
+sudo systemctl enable --now clamav-freshclam.service;
 '
 
 ## Ln Links herstellen
@@ -36,9 +36,11 @@ ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
 ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
 sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
 sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
-sudo timedatectl set-ntp true &
-sudo journalctl --vacuum-size=33M &
-sudo fc-cache -vf'
+sudo timedatectl set-ntp true ;
+sudo journalctl --vacuum-size=33M ;
+sudo fc-cache -vf;
+update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v ~/.local/share/mime/; update-desktop-database ~/.local/share/applications
+'
 
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
@@ -46,12 +48,14 @@ sudo fc-cache -vf'
 alias xfce-backup='mkdir -pv    $HOME/ownCloud/dotfile/ ;mkdir -pv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
 ln -fv $HOME/.config/mimeapps.list      $HOME/ownCloud/dotfile/xfce4/mimeapps.list ;
 ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/*  $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/ ;
-xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles'
+xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles;
+update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v ~/.local/share/mime/; update-desktop-database ~/.local/share/applications'
 
 alias xfce-restore='mkdir -pv   $HOME/ownCloud/dotfile/ ; $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
 ln -fv $HOME/ownCloud/dotfile/xfce4/mimeapps.list       $HOME/.config/mimeapps.list &
 ln -fv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/*     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/;
 sudo ln -fv ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list;
+update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v ~/.local/share/mime/; update-desktop-database ~/.local/share/applications;
 '
 
 # sudo pacman -Qqe > pkglist.txt        #! not use --combinedupgrade
@@ -59,10 +63,11 @@ alias  pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/o
 alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall --useask --noredownload --topdown --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias  cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
+alias  cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete; sudo find /root/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/ ; ccache -C'
 alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
 # alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
-alias pamacclean='pamac clean --no-confirm '
+alias pamacclean='pamac clean --no-confirm --keep 2; rm -f $HOME/.cache/pkg/*.sig; sudo rm -f /var/lib/pacman/sync/*; sudo rm /var/lib/pacman/db.lck; sudo rm -r /etc/pacman.d/gnupg; sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key -u --refresh-keys; sudo pacman-key --populate archlinux manjaro'
+alias downgrade='sudo downgrade'        #sudo downgrade 'package'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad samba
 
@@ -111,6 +116,7 @@ alias              myip='curl http:/ipecho.net/plain; echo'
 alias        whatismyip='curl http:/ipecho.net/plain; echo'
 alias   traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' #NetworkManager info scan
+alias   journalctl-live='journalctl -f'
 alias whois='whois '               #whois input-ip 127.0.0.1
 alias traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
 alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan
@@ -121,7 +127,7 @@ alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAI
 alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 
 ## Downloads
-alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i'
+alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
 alias  yta='cd $HOME/Downloads/; yt -x -f bestaudio/best'
 alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
 
@@ -179,6 +185,7 @@ alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 ## Arch
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+alias arch-pamacclean='pamac clean --no-confirm --keep 2; rm -f $HOME/.cache/pkg/*.sig; sudo rm -f /var/lib/pacman/sync/*; sudo rm /var/lib/pacman/db.lck; sudo rm -r /etc/pacman.d/gnupg; sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key --refresh-keys; sudo pacman-key --populate archlinux'
 
 # Quick/fast access
 #! alias please='sudo !!'
@@ -206,12 +213,14 @@ alias   enable='sudo systemctl enable  --now '
 alias  disable='sudo systemctl disable --now '
 alias   status='sudo systemctl status  --now '
 alias  restart='sudo systemctl restart --now '
-alias  stop='   sudo systemctl stop    --now '
+alias     stop='sudo systemctl stop    --now '
 alias sys-port='systemctl status|less --use-color'
 alias sys-status='systemctl list-unit-files|less'
 alias errors='sudo systemctl --failed'
 alias failed='sudo systemctl --failed'
 alias startup-speed='systemd-analyze blame'
+
+alias batterie-status='sudo tlp-stat --battery'
 
 ## swappiness
 #Todo alias swappiness-restore=echo ' vm.swappiness=8 \nvm.vfs_cache_pressure=40 \nvm.dirty_ratio=3' > ~/Downloads/ee
@@ -219,8 +228,15 @@ alias startup-speed='systemd-analyze blame'
 #sudo sysctl vm.swappiness=10
 
 ## Get server cpu info ##
-alias  cpuinfo='lscpu'
-alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
+alias     cpuinfo='lscpu'
+alias    cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
+alias monitor-cpu='sudo cpupower monitor'
+alias system-info='sudo sysctl --system'
+alias     sensors='sensors '
+# alias lsmod='lsmod'
+
+## Input-Info
+alias libinput-info='libinput list-devices'     #USB, Touchpad, etc
 
 ## get GPU ram on desktop / laptop##
 # alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
@@ -234,10 +250,12 @@ alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
 #Gets the total disk usage on your machine
-alias  diskinfo='df -hl --total | grep total'
-alias     fdisk='fdisk -x'                          #fdisk space / UUID etc
-alias uuid-info='    lsblk -fa'
+alias   diskinfo='df -hl ~'
+alias      fdisk='fdisk -x'                          #fdisk space / UUID etc
+alias  uuid-info='    lsblk -fa'
+alias uuid-blkid='    blkid'
 # alias disk-uuid='    df -hTl'
+#more uuid info 'lsblk -o PATH,LABEL,NAME,UUID'
 
 #Gives you what is using the most space. Both directories and files. Varies on current directory
 alias        most='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
@@ -291,7 +309,16 @@ alias -g X0G='| xargs -0 egrep'
 alias -g X0='| xargs -0'
 alias -g XG='| xargs egrep'
 alias -g X='| xargs'
+alias history-grep='history | grep'
 
 ## barrier new barrier key gen
 alias barrier-keygen='openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout $HOME/.local/share/barrier/SSL/Barrier.pem -out $HOME/.local/share/barrier/SSL/Barrier.pem
 '
+
+## Password Crack
+alias john='john '      #'john file'
+
+## wine
+alias wine-clean='sudo rm -vfr ~/.local/share/wineprefixes/; sudo rm -vfr ~/.config/menus/applications-merged/wine*; sudo rm -vfr ~/.wine /root/.wine; sudo rm -vfr ~/.local/share/applications/wine; sudo rm -vfr ~/.local/share/applications/mimeinfo.cache; sudo rm -vfr ~/.local/share/desktop-directories/wine*; sudo rm -vfr ~/.local/share/icons/????_*.{xpm,png}; sudo rm -vfr ~/.local/share/icons/*-x-wine-*.{xpm,png} '
+alias wine-config='mkdir ~/.wine; WINEARCH=win32 winetricks; WINEPREFIX=~/.wine
+wine winecfg; sudo winetricks --self-update; sudo chown -Rv shaderico:shaderico .wine; wine --version'
