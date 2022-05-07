@@ -58,6 +58,7 @@ System Volume Information
 *.db*
 *db.*
 *_db*
+DS_*
 *.ds
 kglobalshortcutsrc
 *.list
@@ -68,9 +69,10 @@ kglobalshortcutsrc
 #*vsliveshare*
 # (?i)*vscod*
 .config/VSCodium/Backups/
-.config/TabNine
+(?i)TabNine
 .local/share/kite/
 .kite/
+state.*
 
 ## thunderbird   #! don't delete
 # .thunderbird/

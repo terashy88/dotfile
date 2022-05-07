@@ -3,6 +3,14 @@
 
 #todo checkout script's at /usr/share/*
 
+## Fingerprint
+lsusb
+yy fprintd #! not working
+
+sudo find / -iname '*richard*'
+sudo find  -iname 'dd*'  -atime 0 -delete
+
+
 ## cups Printer/Drucker
 http://localhost:631/
 
@@ -37,18 +45,18 @@ http://localhost:631/
 
 ######################################################################################
 
-#echo '                                       -@                                              '
-#echo '                                      .##@                                             '
-#echo '                                     .####@                                            '
-#echo '                                     @#####@                                           '
-#echo '                                   . *######@                                          '
-#echo '                                  .##@o@#####@                                         '
-#echo '                                 /############@                                        '
-#echo '                                /##############@                                       '
-#echo '                               @######@**%######@                                      '
-#echo '                              @######`     %#####o                                     '
-#echo '                             @######@       ######%                                    '
-#echo '                           -@#######h       ######@.`                                  '
-#echo '                          /#####h**``       `**%@####@                                 '
-#echo '                         @H@*`                    `*%#@                                '
-#echo '                        *`                            `*                               '
+echo '                                       -@                                              '
+echo '                                      .##@                                             '
+echo '                                     .####@                                            '
+echo '                                     @#####@                                           '
+echo '                                   . *######@                                          '
+echo '                                  .##@o@#####@                                         '
+echo '                                 /############@                                        '
+echo '                                /##############@                                       '
+echo '                               @######@**%######@                                      '
+echo '                              @######`     %#####o                                     '
+echo '                             @######@       ######%                                    '
+echo '                           -@#######h       ######@.`                                  '
+echo '                          /#####h**``       `**%@####@                                 '
+echo '                         @H@*`                    `*%#@                                '
+echo '                        *`                            `*                               '

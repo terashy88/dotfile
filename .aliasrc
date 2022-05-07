@@ -260,6 +260,7 @@ alias uuid-blkid='    blkid'
 #Gives you what is using the most space. Both directories and files. Varies on current directory
 alias        most='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
 alias bigest-file='du -hsx * | sort -rh | head -15'                     # Bigest files in folder
+alias   diskspace='gdu'                                                 # Bigest files in folder 'd'=delete
 
 #shutdown
 #alias poweroff='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x zsh -c "poweroff"'
@@ -268,7 +269,10 @@ alias pwf='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "term
 alias gg='xfce4-terminal --geometry=66x14 --hide-scrollbar -H -x & zsh -c "termdown 88; sleep 1 ; poweroff"'
 
 ## htop
-alias   htop='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "sudo htop"'
+alias   htop='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "htop"'
+
+## Finance
+alias trade='xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c "cointop"'
 
 alias -g ...='../..'
 alias -g ....='../../..'

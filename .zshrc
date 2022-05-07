@@ -4,6 +4,7 @@ encoding="UTF-8"
 ##################### TODO / Test ######################
 
 
+
 #########################TODO###########################
 ########################################################
 
@@ -14,9 +15,13 @@ pfetch
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
+export HISTTIMEFORMAT="[%F %T] "
 HISTIGNORE='ls:bg:fg:exit:reset:clear:cd:ll:yt'
+HISTORY_IGNORE='ls:bg:fg:exit:reset:clear:cd:ll:yt'
 HISTCONTROL="ignoreboth:erasedups"
 
+#! setopt checkwinsize              # change winsize if needed
+setopt histappend                # Don't overwrite
 setopt autocd extendedglob nomatch
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
@@ -29,7 +34,13 @@ setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt EXTENDED_HISTORY
+setopt checkjobs
 unsetopt beep
+
+
+ZSH_THEME="agnoster"
+
 
 # Editor
 export EDITOR=vscodium
