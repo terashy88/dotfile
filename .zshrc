@@ -38,9 +38,16 @@ setopt EXTENDED_HISTORY
 setopt checkjobs
 unsetopt beep
 
-
 ZSH_THEME="agnoster"
 
+XDG_DESKTOP_DIR="$HOME/Schreibtisch"
+XDG_DOWNLOAD_DIR="$HOME/Downloads"
+XDG_TEMPLATES_DIR="$HOME"
+XDG_PUBLICSHARE_DIR="$HOME"
+XDG_DOCUMENTS_DIR="$HOME/ownCloud/D-link"
+XDG_MUSIC_DIR="$HOME/ownCloud/S-link"
+XDG_PICTURES_DIR="$HOME/ownCloud/P-link"
+XDG_VIDEOS_DIR="$HOME/ownCloud/M-link"
 
 # Editor
 export EDITOR=vscodium
