@@ -98,8 +98,10 @@ setopt numericglobsort                                          # Sort filenames
 setopt appendhistory                                            # Immediately append history instead of overwriting
 setopt histignorealldups                                        # If a new command is a duplicate, remove the older one
 setopt autocd
-# if only directory path is entered, cd there.
 
+# if only directory path is entered, cd there.
+zstyle ':completion::complete:*' gain-privileges 1
+zstyle ':completion:*' menu select
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
 zstyle ':completion:*' rehash true                              # automatically find new executables in path
 # Speed up completions
@@ -158,8 +160,9 @@ bindkey -M menuselect '^k' vi-up-line-or-history
 bindkey -M menuselect '^l' vi-forward-char
 
 # Theming section
-autoload -Uz compinit -i colors zcalc
+autoload -Uz compinit -i colors zcalc promptinit
 compinit -d
+promptinit
 
 # Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo

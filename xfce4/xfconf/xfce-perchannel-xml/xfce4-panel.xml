@@ -59,7 +59,7 @@
       <property name="position-locked" type="bool" value="true"/>
       <property name="role" type="string" value="xfce4-panel-12965750720"/>
       <property name="size" type="uint" value="28"/>
-      <property name="span-monitors" type="bool" value="true"/>
+      <property name="span-monitors" type="bool" value="false"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -73,9 +73,9 @@
         <property name="show-qr-code" type="bool" value="true"/>
       </property>
       <property name="tweaks" type="empty">
-        <property name="max-menu-items" type="uint" value="50"/>
+        <property name="max-menu-items" type="uint" value="44"/>
         <property name="never-confirm-history-clear" type="bool" value="true"/>
-        <property name="paste-on-activate" type="uint" value="1"/>
+        <property name="paste-on-activate" type="uint" value="2"/>
         <property name="popup-at-pointer" type="bool" value="true"/>
         <property name="reorder-items" type="bool" value="true"/>
         <property name="reverse-menu-order" type="bool" value="false"/>
@@ -261,6 +261,10 @@
       <property name="hide-new-items" type="bool" value="false"/>
       <property name="icon-size" type="int" value="0"/>
       <property name="known-items" type="array">
+        <value type="string" value="LBRY1"/>
+        <value type="string" value="com.github.eneshecan.WhatsAppForLinux.Tray"/>
+        <value type="string" value="Microsoft Teams - Preview1"/>
+        <value type="string" value="steam"/>
         <value type="string" value="TelegramDesktop"/>
         <value type="string" value="sayonara"/>
         <value type="string" value="obs"/>
@@ -270,8 +274,42 @@
         <value type="string" value="gammastep"/>
       </property>
       <property name="known-legacy-items" type="array">
-        <value type="string" value="funknetzwerkverbindung mit »schuppri asz fk2d91xwn735« ist aktiv: schuppri asz fk2d91xwn735 (87%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (89%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (60%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (71%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (65%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (56%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (70%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (59%)"/>
+        <value type="string" value="funknetzwerkverbindung »eduroam« wird konfiguriert …"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (91%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (52%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (90%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (92%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (87%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (62%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (60%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (62%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »iphone« ist aktiv: iphone (88%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (55%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (58%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »shadownet« ist aktiv: shadownet (50%)"/>
+        <value type="string" value="stacer"/>
+        <value type="string" value="funknetzwerkverbindung mit »eduroam« ist aktiv: eduroam (63%)"/>
+        <value type="string" value="funknetzwerkverbindung mit »shadownet« ist aktiv: shadownet (74%)"/>
+        <value type="string" value="gammastep-indicator"/>
+        <value type="string" value="pamac-tray"/>
+        <value type="string" value="funknetzwerkverbindung mit »shadownet« ist aktiv: shadownet (60%)"/>
+        <value type="string" value="funknetzwerkverbindung »iphone« wird konfiguriert …"/>
+        <value type="string" value="funknetzwerkverbindung mit »shadownet« ist aktiv: shadownet (57%)"/>
+        <value type="string" value="bluetooth deaktiviert"/>
+        <value type="string" value="funknetzwerkverbindung mit »cubot x30« ist aktiv: cubot x30 (57%)"/>
+        <value type="string" value="netzwerk-manager-applet"/>
+        <value type="string" value="caffeine"/>
+        <value type="string" value="bluetooth aktiviert"/>
+        <value type="string" value="taskmanager"/>
         <value type="string" value="com.cisco.anyconnect.gui"/>
+        <value type="string" value="funknetzwerkverbindung mit »schuppri asz fk2d91xwn735« ist aktiv: schuppri asz fk2d91xwn735 (87%)"/>
         <value type="string" value="zwischenablage"/>
         <value type="string" value="owncloud"/>
         <value type="string" value="barrier"/>
@@ -337,7 +375,7 @@
     <property name="plugin-18" type="string" value="xfce4-sensors-plugin"/>
     <property name="plugin-9" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
-      <property name="mpris-players" type="string" value="audacious;chromium.instance1020736;chromium.instance106725;chromium.instance106971;chromium.instance107460;chromium.instance108062;chromium.instance109813;chromium.instance111728;chromium.instance117218;chromium.instance1237886;chromium.instance127028;chromium.instance12961;chromium.instance13480;chromium.instance135944;chromium.instance137543;chromium.instance13866;chromium.instance14211;chromium.instance15330;chromium.instance153487;chromium.instance160888;chromium.instance163880;chromium.instance16539;chromium.instance170844;chromium.instance1729897;chromium.instance1734338;chromium.instance183897;chromium.instance18410;chromium.instance188173;chromium.instance19349;chromium.instance214822;chromium.instance218743;chromium.instance22630;chromium.instance229244;chromium.instance23037;chromium.instance235871;chromium.instance245920;chromium.instance28055;chromium.instance285345;chromium.instance28768;chromium.instance291019;chromium.instance31234;chromium.instance312557;chromium.instance326074;chromium.instance343434;chromium.instance34731;chromium.instance36982;chromium.instance37579;chromium.instance397599;chromium.instance41775;chromium.instance419179;chromium.instance43504;chromium.instance435880;chromium.instance437361;chromium.instance44052;chromium.instance44599;chromium.instance45921;chromium.instance46425;chromium.instance46627;chromium.instance49788;chromium.instance508035;chromium.instance51125;chromium.instance53464;chromium.instance55533;chromium.instance58380;chromium.instance600285;chromium.instance60058;chromium.instance61884;chromium.instance633569;chromium.instance69831;chromium.instance70212;chromium.instance71446;chromium.instance72035;chromium.instance731851;chromium.instance77557;chromium.instance784632;chromium.instance84564;chromium.instance8717;chromium.instance91670;chromium.instance91741;clementine;gogglesmm;io.github.celluloid_player.Celluloid.instance-1;io.github.celluloid_player.Celluloid.instance-10;io.github.celluloid_player.Celluloid.instance-11;io.github.celluloid_player.Celluloid.instance-2;io.github.celluloid_player.Celluloid.instance-3;io.github.celluloid_player.Celluloid.instance-4;io.github.celluloid_player.Celluloid.instance-5;io.github.celluloid_player.Celluloid.instance-6;io.github.celluloid_player.Celluloid.instance-7;io.github.celluloid_player.Celluloid.instance-8;io.github.celluloid_player.Celluloid.instance-9;org.gnome.Podcasts;rhythmbox;sayonara;vlc"/>
+      <property name="mpris-players" type="string" value="audacious;chromium.instance1020736;chromium.instance106725;chromium.instance106971;chromium.instance107460;chromium.instance108062;chromium.instance109813;chromium.instance111728;chromium.instance117218;chromium.instance1237886;chromium.instance127028;chromium.instance12886;chromium.instance12961;chromium.instance131771;chromium.instance13480;chromium.instance135944;chromium.instance137543;chromium.instance13866;chromium.instance140655;chromium.instance14211;chromium.instance144400;chromium.instance15330;chromium.instance153487;chromium.instance15385;chromium.instance15531;chromium.instance160888;chromium.instance1629059;chromium.instance163880;chromium.instance16539;chromium.instance1653975;chromium.instance170844;chromium.instance1729897;chromium.instance1734338;chromium.instance18210;chromium.instance183897;chromium.instance18410;chromium.instance188173;chromium.instance18857;chromium.instance19183;chromium.instance19349;chromium.instance214822;chromium.instance216869;chromium.instance218743;chromium.instance22630;chromium.instance229244;chromium.instance23037;chromium.instance23497;chromium.instance235871;chromium.instance245920;chromium.instance259963;chromium.instance28055;chromium.instance28294;chromium.instance285345;chromium.instance28585;chromium.instance28768;chromium.instance28791;chromium.instance288099;chromium.instance291019;chromium.instance31234;chromium.instance312557;chromium.instance326074;chromium.instance32722;chromium.instance343434;chromium.instance34731;chromium.instance36416;chromium.instance369656;chromium.instance36982;chromium.instance37579;chromium.instance397599;chromium.instance41775;chromium.instance419179;chromium.instance42633;chromium.instance43504;chromium.instance435880;chromium.instance43617;chromium.instance437361;chromium.instance44052;chromium.instance44599;chromium.instance45843;chromium.instance45921;chromium.instance46425;chromium.instance46627;chromium.instance46988;chromium.instance48921;chromium.instance49788;chromium.instance508035;chromium.instance510847;chromium.instance51125;chromium.instance529108;chromium.instance53464;chromium.instance55533;chromium.instance58380;chromium.instance600285;chromium.instance60058;chromium.instance61884;chromium.instance62080;chromium.instance63131;chromium.instance633569;chromium.instance68103;chromium.instance69831;chromium.instance70212;chromium.instance71353;chromium.instance71446;chromium.instance72035;chromium.instance72053;chromium.instance72707;chromium.instance731851;chromium.instance75384;chromium.instance77557;chromium.instance784632;chromium.instance84564;chromium.instance8557;chromium.instance8717;chromium.instance8801;chromium.instance8938;chromium.instance8968;chromium.instance91670;chromium.instance91741;chromium.instance95865;chromium.instance95871;clementine;firefox.instance1355414;firefox.instance37993;gogglesmm;io.github.celluloid_player.Celluloid.instance-1;io.github.celluloid_player.Celluloid.instance-10;io.github.celluloid_player.Celluloid.instance-11;io.github.celluloid_player.Celluloid.instance-12;io.github.celluloid_player.Celluloid.instance-13;io.github.celluloid_player.Celluloid.instance-14;io.github.celluloid_player.Celluloid.instance-15;io.github.celluloid_player.Celluloid.instance-16;io.github.celluloid_player.Celluloid.instance-17;io.github.celluloid_player.Celluloid.instance-2;io.github.celluloid_player.Celluloid.instance-3;io.github.celluloid_player.Celluloid.instance-4;io.github.celluloid_player.Celluloid.instance-5;io.github.celluloid_player.Celluloid.instance-6;io.github.celluloid_player.Celluloid.instance-7;io.github.celluloid_player.Celluloid.instance-8;io.github.celluloid_player.Celluloid.instance-9;org.gnome.Podcasts;rhythmbox;sayonara;vlc"/>
     </property>
     <property name="plugin-49" type="string" value="wavelan"/>
     <property name="plugin-45" type="string" value="xfce4-mpc-plugin"/>

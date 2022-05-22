@@ -7,7 +7,7 @@
 lsusb
 yy fprintd #! not working
 
-sudo find / -iname '*richard*'
+sudo find / -iname '*sync-confli*'
 sudo find  -iname 'dd*'  -atime 0 -delete
 
 

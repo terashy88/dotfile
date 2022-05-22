@@ -15,6 +15,15 @@
 ############################################
 ############################################
 
+# no catergory???
+.local/share/keyrings
+.local/share/zeitgeist
+.local/share/recently-used.xbel
+.lesshst
+.gnupg/
+*QtProject*
+.config/caffeine
+
 (?i)*history*
 *databases*
 .anydesk
@@ -23,7 +32,7 @@ Downloads
 Thunar
 
 ## digikam
-#don't delete '.dtrash/files' otherwise trash in digikam dosn't work
+#!don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 #.dtrash
 (?i)*trash*
 #digikamrc has to be ignore to sync on other PC
@@ -64,10 +73,18 @@ kglobalshortcutsrc
 *.list
 (?i)*cookies*
 *dconf
+*sqlite
+*.glass
+VNU4FPR.*
+*-SL6F6JF
 
 ## vscodium
 #*vsliveshare*
-# (?i)*vscod*
+(?i)*vscod*
+.config/VSCodium/
+.config/VSCodium/TransportSecurity
+.config/VSCodium/code.lock
+.config/VSCodium/logs/
 .config/VSCodium/Backups/
 (?i)TabNine
 .local/share/kite/
@@ -75,10 +92,13 @@ kglobalshortcutsrc
 state.*
 
 ## thunderbird   #! don't delete
-# .thunderbird/
+.thunderbird/
 !.thunderbird/8e5mfh9q.default-release/quicktext/
 !.thunderbird/8e5mfh9q.default-release/ImapMail
 !.thunderbird/8e5mfh9q.default-release/persdict.dat
+
+## Mozilla, firefox
+.mozilla
 
 *.vdi
 (?i)*Barrier*
@@ -162,25 +182,18 @@ xfce4-keyboard-shortcuts.xml
 ## linux	#! don't ignore 'pkglist.txt' for GitHub
 #pkglist.txt
 
-## Brave #don't delete
+## Brave #!don't delete
 *BraveSoftware*
 
 ## Sound Pipewire
 .local/state/
-
-# no catergory???
-.local/share/keyrings
-.local/share/recently-used.xbel
-.lesshst
-.gnupg/
-*QtProject*
 
 ## torrent
 .config/deluge/
 qBittorrent
 *torrent*
 
-## kde-connect	#! delete
+## kde-connect	#! not use
 .config/kdeconnect
 
 ## Game
@@ -207,3 +220,9 @@ Popcorntime
 .john*
 
 .wget-hsts
+
+## media
+.config/LBRY/
+
+## OBS Studio #! don't delete
+.config/obs-studio/basic/scenes/
