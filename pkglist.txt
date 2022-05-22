@@ -11,7 +11,9 @@ gdu
 geeqie
 get_iplayer
 gnome-maps
+google-webdesigner
 john
+joomla
 kdenlive
 languagetool
 lbry-app-bin
@@ -38,6 +40,10 @@ rhythmbox-plugin-alternative-toolbar
 rhythmbox-tray-icon
 steam-manjaro
 teams
+tensorflow
+v4l2loopback-utils
 virtualbox-ext-oracle
 vkd3d
+webstorm
 xclicker
+yara

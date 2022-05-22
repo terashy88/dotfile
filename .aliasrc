@@ -103,7 +103,7 @@ alias calculator-bc='bc -ql'  	        #Calculator
 alias mkdir='mkdir -pv '
 alias inxi-Fnzy='inxi -Fnzy'  #Info System      #-a uuid info
 alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
-alias defenderscan-libredefender='sudo libredefender scan'                             #Linux Antivierus/Defender programm
+# alias defenderscan-libredefender='sudo libredefender scan' #! not use   #Linux Antivierus/Defender programm
 
 # Pretty print the path
 # alias  path='echo $PATH | tr -s ':' '\n''
