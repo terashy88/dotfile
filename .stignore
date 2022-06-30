@@ -12,15 +12,28 @@
 # (?i)!*setting*
 # (?i)!*Preferences
 #!.conf		--will brake barrier--
+
+!*.gnupg*
+
 ############################################
 ############################################
 
+## owncloud file
+teramuse-rsx
+
+## ownCloud Ignorelist ##
+owncloud.cfg
+##!.stfolder                                ## Don't delete
+*.stversions*
+*.subversion*
+*.oscamerafaceu*
+
 # no catergory???
+Schreibtisch/
 .local/share/keyrings
 .local/share/zeitgeist
 .local/share/recently-used.xbel
 .lesshst
-.gnupg/
 *QtProject*
 .config/caffeine
 
@@ -29,7 +42,7 @@
 .anydesk
 *Bitwarden
 Downloads
-Thunar
+.config/Thunar
 
 ## digikam
 #!don't delete '.dtrash/files' otherwise trash in digikam dosn't work
@@ -39,7 +52,6 @@ Thunar
 digikamrc
 
 ## Microsoft
-*.wine
 *desktop.ini*
 $RECYCLE.BIN
 System Volume Information
@@ -64,6 +76,7 @@ System Volume Information
 (?i)*.log*
 (?i)*log.*
 (?i)*logs.*
+(?i)LOG*
 *.db*
 *db.*
 *_db*
@@ -75,27 +88,31 @@ kglobalshortcutsrc
 *dconf
 *sqlite
 *.glass
-VNU4FPR.*
+*VNU4FPR*
+
+## file-roler
 *-SL6F6JF
+*.fr*
 
 ## vscodium
 #*vsliveshare*
-(?i)*vscod*
+(?i)*.vscod*
 .config/VSCodium/
-.config/VSCodium/TransportSecurity
-.config/VSCodium/code.lock
-.config/VSCodium/logs/
-.config/VSCodium/Backups/
-(?i)TabNine
+.config/TabNine/
+.local/share/TabNine/
 .local/share/kite/
 .kite/
 state.*
+*QuotaManager*
+*sdb.*
+.config/systemd/user/
 
 ## thunderbird   #! don't delete
 .thunderbird/
-!.thunderbird/8e5mfh9q.default-release/quicktext/
-!.thunderbird/8e5mfh9q.default-release/ImapMail
-!.thunderbird/8e5mfh9q.default-release/persdict.dat
+# !.thunderbird/8e5mfh9q.default-release/quicktext/
+# !.thunderbird/8e5mfh9q.default-release/ImapMail
+# !.thunderbird/8e5mfh9q.default-release/persdict.dat
+#! *TbSync* dos not work well
 
 ## Mozilla, firefox
 .mozilla
@@ -107,36 +124,29 @@ snap
 .zcompdump
 (?i)*metadata*
 
-## ownCloud Ignorelist ##
-owncloud.cfg
-##!.stfolder                                ## Don't delete
-*.stversions*
-*.subversion*
-*.oscamerafaceu*
-
 ## rclone
 rclone
 
 ## VirtualBox VMs
-*VirtualBox*
+.config/VirtualBox*
+VirtualBox VMs
 VM-share-rsx
 
-## syncthing
+## syncthing #! don't delete
 .config/syncthing/
 
 ## Android
-*thumbnails*
-*.android
+# *thumbnails*
+# *.android
 
 ##.ssh / security
-.ssr
-*.pem
-*.gpg
-*.key
-*_key
-*.ssl
-*_rsa
-*.pgp
+!.ssr
+!*.gpg*
+!.key
+!_key
+!.ssl
+!*_rsa
+!*.pgp*
 
 # nvidia prime-run ignore
 prime-run
@@ -147,9 +157,9 @@ prime-run
 *Telegram*
 
 ## office
-.config/libreoffice
-.local/share/onlyoffice/
-~lock.*
+.config/libreoffice/
+# .local/share/onlyoffice/
+*~lock.*
 
 ## .Xauthority programm opener if delete then false
 *.xinitrc*
@@ -157,12 +167,12 @@ prime-run
 *.xsession*
 
 # xfce-panel
-.config/pavucontrol.ini
+.config/pavucontrol
 #Ignore 'xfce4-keyboard-shortcuts' if different Keyboard layout
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
 .config/xfce4/
-.local/share/notes/Notizen/
+# .local/share/notes/Notizen/
 
 # Signal
 .config/Signal/
@@ -174,7 +184,7 @@ xfce4-keyboard-shortcuts.xml
 .config/skypeforlinux/
 
 # Messenger
-(?i).config/Caprine/
+.config/Caprine/
 
 # GitHub Desktop #! use IDE
 (?i)GitHub*
@@ -183,13 +193,13 @@ xfce4-keyboard-shortcuts.xml
 #pkglist.txt
 
 ## Brave #!don't delete
-*BraveSoftware*
+.config/BraveSoftware/
 
 ## Sound Pipewire
-.local/state/
+.local/state/pipewire/
 
 ## torrent
-.config/deluge/
+.config/deluge
 qBittorrent
 *torrent*
 
@@ -198,14 +208,21 @@ qBittorrent
 
 ## Game
 (?i)*steam*
-*lutris*
-*PlayOnLinux*
-(?!)game*
+*lutris*	 #! not use
+*PlayOnLinux*	#! not use
+(?!)game
+*StarCraft*
+
+## wine
+.local/share/icons/
+*.wine
+wineprefixes
+winecfg
 
 ## PackagesManager
 #.cargo
 #.gradle
-#.conan
+.conan
 #.go
 
 ## Popcorntime

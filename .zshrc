@@ -15,7 +15,7 @@ pfetch
 HISTFILE=$HOME/.config/.zshistory
 HISTSIZE=3333
 SAVEHIST=3333
-export HISTTIMEFORMAT="[%F %T] "
+HISTTIMEFORMAT="[%F %T] "
 HISTIGNORE='ls:bg:fg:exit:reset:clear:cd:ll:yt'
 HISTORY_IGNORE='ls:bg:fg:exit:reset:clear:cd:ll:yt'
 HISTCONTROL="ignoreboth:erasedups"
@@ -56,6 +56,10 @@ export VISUAL=EDITOR
 # PATH 'short form "-P"'
 export PATH=$PATH:~/.local/bin:~/ownCloud/.bin
 #! 'test combine with line 40' export PATH=$PATH:~/ownCloud/.bin
+
+# Kvantum  --> ~/.profile
+export QT_STYLE_OVERRIDE=kvantum
+# export QT_QPA_PLATFORMTHEME="qt5ct"
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 WORDCHARS=${WORDCHARS//\/[&.;]}     # Don't consider certain characters part of the word
@@ -130,12 +134,12 @@ bindkey -e
 bindkey '^[[7~' beginning-of-line                               # Home key
 bindkey '^[[H' beginning-of-line                                # Home key
 if [[ "${terminfo[khome]}" != "" ]]; then
-    bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
+    bindkey "${terminfo[khome]}" beginning-of-line              # [Home] - Go to beginning of line
 fi
 bindkey '^[[8~' end-of-line                                     # End key
 bindkey '^[[F' end-of-line                                      # End key
 if [[ "${terminfo[kend]}" != "" ]]; then
-    bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
+    bindkey "${terminfo[kend]}" end-of-line                     # [End] - Go to end of line
 fi
 bindkey '^[[2~' overwrite-mode                                  # Insert key
 bindkey '^[[3~' delete-char                                     # Delete key
@@ -160,9 +164,10 @@ bindkey -M menuselect '^k' vi-up-line-or-history
 bindkey -M menuselect '^l' vi-forward-char
 
 # Theming section
-autoload -Uz compinit -i colors zcalc promptinit
+autoload -Uz compinit -i colors zcalc promptinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION
 compinit -d
 promptinit
+export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
 # Modify the colors and symbols in these variables as desired.
 GIT_PROMPT_SYMBOL="%{$fg[blue]%}?"                              # plus/minus     - clean repo

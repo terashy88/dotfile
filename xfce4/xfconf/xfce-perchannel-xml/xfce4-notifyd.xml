@@ -18,6 +18,7 @@
       <value type="string" value="clementine"/>
       <value type="string" value="ClipGrab"/>
       <value type="string" value="com.cisco.anyconnect.gui"/>
+      <value type="string" value="com.github.eneshecan.WhatsAppForLinux"/>
       <value type="string" value="com.nextcloud.desktopclient.nextcloud"/>
       <value type="string" value="digikam"/>
       <value type="string" value="dunstify"/>
@@ -49,6 +50,7 @@
       <value type="string" value="Paketmanager"/>
       <value type="string" value="rclone-browser"/>
       <value type="string" value="rhythmbox"/>
+      <value type="string" value="seahorse"/>
       <value type="string" value="showfoto"/>
       <value type="string" value="Skype"/>
       <value type="string" value="skype-web"/>

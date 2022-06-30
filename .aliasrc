@@ -10,34 +10,37 @@ encoding="UTF-8"
 
 ## systemctl enable
 alias systemctl-enable='sudo hwclock --systohc --utc;
-sudo systemctl enable --now systemd-timesyncd &
-sudo systemctl enable --now auto-cpufreq.service &
-sudo systemctl enable --now NetworkManager &
-sudo systemctl enable       lightdm &
-sudo systemctl enable --now ufw.service;
-sudo systemctl enable --now clamav-freshclam.service;
-sudo systemctl enable --now fstrim.timer
+sudo  systemctl enable --now systemd-timesyncd &
+sudo  systemctl enable --now auto-cpufreq.service &
+sudo  systemctl enable --now NetworkManager &
+sudo  systemctl enable       lightdm &
+sudo  systemctl enable --now ufw.service;
+sudo  systemctl enable --now fstrim.timer;
+sudo update-desktop-database;
+update-desktop-database ~/.local/share/applications;
+update-mime-database ~/.local/share/mime/
 '
 
 ## Ln Links herstellen
-alias backup='mkdir -pv $HOME/ownCloud/dotfile/  ;
-ln -fv $HOME/.zshrc                               $HOME/ownCloud/dotfile/.zshrc &
-sudo    ln -fv /etc/lightdm/lightdm.conf          $HOME/ownCloud/dotfile/lightdm.conf &
-sudo    ln -fv /etc/systemd/journald.conf         $HOME/ownCloud/dotfile/journald.conf &
-        ln -fv $HOME/.stignore                    $HOME/ownCloud/dotfile/.stignore &
-        ln -fv $HOME/.config/.dir_colors          $HOME/ownCloud/dotfile/.dir_colors &
-        ln -fv $HOME/aliasrc                      $HOME/ownCloud/dotfile/.aliasrc &
-        ln -fv $HOME/.bashrc                      $HOME/ownCloud/dotfile/.bashrc &
-sudo pacman -Qqe >                                $HOME/ownCloud/dotfile/pkglist.txt'
+alias backup='mkdir -pv ~/ownCloud/dotfile/  ;
+ln -fv ~/.zshrc                               ~/ownCloud/dotfile/.zshrc;
+sudo    ln -fv /etc/lightdm/lightdm.conf          ~/ownCloud/dotfile/lightdm.conf;
+sudo    ln -fv /etc/systemd/journald.conf         ~/ownCloud/dotfile/journald.conf;
+ln -fv ~/.stignore                    ~/ownCloud/dotfile/.stignore;
+ln -fv ~/.config/.dir_colors          ~/ownCloud/dotfile/.dir_colors;
+ln -fv ~/aliasrc                      ~/ownCloud/dotfile/.aliasrc;
+ln -fv ~/.bashrc                      ~/ownCloud/dotfile/.bashrc;
+sudo ln -s /var/lib/snapd/snap 			  /snap;
+sudo pacman -Qqe >                        ~/ownCloud/dotfile/pkglist.txt'
 
-alias backup-restore='mkdir -pv $HOME/ownCloud/dotfile/  ;
-ln -fv $HOME/ownCloud/dotfile/.zshrc         $HOME/.zshrc ;
-ln -fv $HOME/ownCloud/dotfile/.stignore      $HOME/.stignore ;
-ln -fv $HOME/ownCloud/dotfile/.dir_colors    $HOME/.config/.dir_colors ;
-ln -fv $HOME/ownCloud/dotfile/.aliasrc       $HOME/aliasrc ;
-ln -fv $HOME/ownCloud/dotfile/.bashrc        $HOME/.bashrc ;
-sudo ln -fv $HOME/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
-sudo ln -fv $HOME/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
+alias backup-restore='mkdir -pv ~/ownCloud/dotfile/  ;
+ln -fv ~/ownCloud/dotfile/.zshrc         ~/.zshrc ;
+ln -fv ~/ownCloud/dotfile/.stignore      ~/.stignore ;
+ln -fv ~/ownCloud/dotfile/.dir_colors    ~/.config/.dir_colors ;
+ln -fv ~/ownCloud/dotfile/.aliasrc       ~/aliasrc ;
+ln -fv ~/ownCloud/dotfile/.bashrc        ~/.bashrc ;
+sudo ln -fv ~/ownCloud/dotfile/lightdm.conf        /etc/lightdm/lightdm.conf ;
+sudo ln -fv ~/ownCloud/dotfile/journald.conf       /etc/journald.conf ;
 sudo timedatectl set-ntp true ;
 sudo journalctl --vacuum-size=33M ;
 sudo fc-cache -vf;
@@ -47,36 +50,55 @@ update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v 
 #! echo 'LANGUAGE=de_CH.UTF-8 \nLC_ALL=de_CH.UTF-8 \nLC_MESSAGES=de_CH.UTF-8 \nLANG=de_CH.UTF-8 \n' > /etc/locale.gen ;
 
 ## xfce4-backup
-alias xfce-backup='mkdir -pv    $HOME/ownCloud/dotfile/ ;mkdir -pv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
-ln -fv $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/*  $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/ ;
-xfce4-panel-profiles save $HOME/ownCloud/dotfile/xfce4/xfce4-panel-profiles;
-update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v ~/.local/share/mime/; update-desktop-database ~/.local/share/applications'
+alias xfce-backup='mkdir -pv    ~/ownCloud/dotfile/ ;
+mkdir -pv ~/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv ~/.config/xfce4/xfconf/xfce-perchannel-xml/*  ~/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+xfce4-panel-profiles save ~/ownCloud/dotfile/xfce4/xfce4-panel-profiles;
+update-desktop-database -v $XDG_DATA_DIRS/applications;
+update-mime-database -v ~/.local/share/mime/;
+update-desktop-database ~/.local/share/applications'
 
-alias xfce-restore='mkdir -pv   $HOME/ownCloud/dotfile/ ; $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
-ln -fv $HOME/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/*     $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/;
+alias xfce-restore='mkdir -pv   ~/ownCloud/dotfile/;
+~/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/;
+ln -fv ~/ownCloud/dotfile/xfce4/xfconf/xfce-perchannel-xml/*        ~/.config/xfce4/xfconf/xfce-perchannel-xml/;
 sudo ln -fv ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list;
-update-desktop-database -v $XDG_DATA_DIRS/applications; update-mime-database -v ~/.local/share/mime/; update-desktop-database ~/.local/share/applications;
+update-desktop-database -v $XDG_DATA_DIRS/applications;
+update-mime-database -v ~/.local/share/mime/;
+update-desktop-database ~/.local/share/applications;
 '
 
 # sudo pacman -Qqe > pkglist.txt        #! not use --combinedupgrade
-alias  pkglist-backup='mkdir -pv $HOME/ownCloud/dotfile/ ; pacman -Qqe > $HOME/ownCloud/dotfile/pkglist.txt'
-alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall --useask --noredownload --topdown --sudoloop - < $HOME/ownCloud/dotfile/pkglist.txt'
+alias  pkglist-backup='mkdir -pv ~/ownCloud/dotfile/ ; pacman -Qqe > ~/ownCloud/dotfile/pkglist.txt'
+alias pkglist-restore='paru -Syu --needed --cleanafter --batchinstall --useask --noredownload --topdown --sudoloop - < ~/ownCloud/dotfile/pkglist.txt'
 
 ## Systemclean
-alias  cclean='sudo pacman -Sc --noconfirm ; /usr/bin/sudo journalctl --vacuum-time=14d ; rm $HOME/.cache/.fr* ; sudo find /tmp -type f -atime +10 -delete & sudo find $HOME/.local/share/ -type f -atime +88 -delete ; sudo find $HOME/.cache/ -type f -atime +88 -delete; sudo find /root/.cache/ -type f -atime +88 -delete ; rm $HOME/.dtrash ; rm $HOME/.local/share/Trash/files/ ; rm $HOME/.local/share/Trash/info/; ccache -C'
-alias orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
-# alias pacman-orphans='[[ -n $(pacman -Qdt) ]] && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
-alias  pamacclean='pamac clean --no-confirm --keep 2; rm -f $HOME/.cache/pkg/*.sig; sudo rm -f /var/lib/pacman/sync/*; sudo rm /var/lib/pacman/db.lck; sudo rm -r /etc/pacman.d/gnupg; sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key -u --refresh-keys; sudo pacman-key --populate archlinux manjaro'
+alias  cclean='sudo pacman -Sc --noconfirm; /usr/bin/sudo journalctl --vacuum-time=14d; rm -rfv ~/.cache/.fr*;
+sudo find /tmp -type f -atime +10 -delete; sudo find ~/ownCloud/D-link/.z_archiv -type f -atime +888 -delete;
+sudo find /var/tmp -type f -atime +10 -delete ; sudo find ~/.local/share/ -type f -atime +88 -delete;
+sudo find ~/.cache/ -type f -atime +88 -delete; sudo find /var/cache/* -type f -atime +22 -delete;
+sudo find /root/.cache/ -type f -atime +22 -delete; rm -rfv ~/.dtrash; rm -rfv ~/.local/share/Trash/*;
+ccache -C'
+alias 	  orphans='[[ -n $(pacman -Qdt) ]]        && sudo pacman -Rs $(pacman -Qdtq) || echo "no orphans to remove"'
+alias  pamacclean='pamac clean --no-confirm --keep 1; sudo rm -fv /var/lib/pacman/sync/*;
+sudo rm -rfv /etc/pacman.d/gnupg; sudo rm  -rfv /var/lib/pacman/db.lck; sudo rm -Rv /root/.gnupg/;
+sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key -u --refresh-keys; sudo pacman-key --populate archlinux manjaro; sudo pacman -Syyu'
 alias   downgrade='sudo downgrade'        #sudo downgrade 'package'
 
-## wine
-alias  wine-clean='sudo rm -vfr ~/.local/share/wineprefixes/; sudo rm -vfr ~/.config/menus/applications-merged/wine*; sudo rm -vfr ~/.wine /root/.wine; sudo rm -vfr ~/.local/share/applications/wine; sudo rm -vfr ~/.local/share/applications/mimeinfo.cache; sudo rm -vfr ~/.local/share/desktop-directories/wine*; sudo rm -vfr ~/.local/share/icons/????_*.{xpm,png}; sudo rm -vfr ~/.local/share/icons/*-x-wine-*.{xpm,png} '
-alias wine-config='mkdir ~/.wine; WINEARCH=win32 winetricks; WINEPREFIX=~/.wine
-wine winecfg; sudo winetricks --self-update; sudo chown -Rv shaderico:shaderico .wine; wine --version'
+alias gpg-manjaro='wget gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro.gpg; gpg --import manjaro.gpg; gpg --verify manjaro-ISO-image.iso.sig manjaro-ISO-image.iso'
 
+## Arch
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+alias arch-pamacclean='pamac clean --no-confirm --keep 1; sudo rm -Rv /root/.gnupg/; rm -fv ~/.cache/pkg/*.sig; sudo rm -fv /var/lib/pacman/sync/*; sudo rm -rfv /var/lib/pacman/db.lck; sudo rm -rfv /etc/pacman.d/gnupg; sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key --refresh-keys; sudo pacman-key --populate archlinux; sudo pacman -Syyu'
+
+## wine
+alias  wine-clean='sudo rm -vfr ~/.local/share/wineprefixes/; sudo rm -vfr ~/.config/menus/applications-merged/wine*; sudo rm -vfr ~/.wine /root/.wine; sudo rm -vfr ~/.local/share/applications/wine; sudo rm -vfr ~/.local/share/applications/mimeinfo.cache; sudo rm -vfr ~/.local/share/desktop-directories/wine*; sudo rm -vfr ~/.local/share/icons/????_*.{xpm,png}; sudo rm -vfr ~/.local/share/icons/*-x-wine-*.{xpm,png}; rm -fv ~/.local/share/mime/packages/x-wine*; rm -fv ~/.local/share/applications/wine-extension*; rm ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*; rm -fv ~/.local/share/mime/application/x-wine-extension*; rm -fv ~/.local/share/applications/wine-extension*.desktop; rm -fv ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*; update-desktop-database ~/.local/share/applications; update-mime-database ~/.local/share/mime/;
+rm -r ~/.wine/drive_c/users/$USER/Temp ~/.wine/drive_c/windows/temp
+ln -s /tmp/ ~/.wine/drive_c/users/$USER/Temp
+ln -s /tmp/ ~/.wine/drive_c/windows/temp;'
+alias wine-config='sudo pacman -Syu --needed --noconfirm wine-staging winetricks wine-gecko steamos-compositor-plus steam-manjaro vkd3d;  env WINEPREFIX="~/.wine"; sudo winetricks --self-update &&; wine --version; winecfg; sudo chown -R shaderico:shaderico .wine'
 
 # yay -Rc -noconfirm --needed pidgin hexchat mousepad samba
-
 ## Block any Website
 # zb. cat '0.0.0.0 www.pornhub.com' >> /etc/hosts
 
@@ -102,7 +124,7 @@ alias rechner-bc='   bc -ql'  		#Calculator
 alias calculator-bc='bc -ql'  	        #Calculator
 alias mkdir='mkdir -pv '
 alias inxi-Fnzy='inxi -Fnzy'  #Info System      #-a uuid info
-alias ssh-copypub='ssh-copy-id -fi $HOME/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
+alias ssh-copypub='ssh-copy-id -fi ~/.ssh/id_rsa.pub' #-p #IP...                 #man ssh-keygen      #ssh-keygen -t rsa -b 4096
 # alias defenderscan-libredefender='sudo libredefender scan' #! not use   #Linux Antivierus/Defender programm
 
 # Pretty print the path
@@ -130,7 +152,8 @@ alias              whois='whois '               #whois input-ip 127.0.0.1
 alias         traceroute='traceroute '     #traceroute input-ip    #traffic-backtrace info scan
 alias network-monitoring='       sudo bettercap'       #network-monitoring     live-scan spoofing
 alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"'       #network-monitoring     live-scan
-alias netstat='sudo netstat -tapn |  sed '1 d' | sort -r +6 c| grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK''
+alias netstat="sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK'"
+alias netstat-live='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo netstat -c -i eno1"'
 alias networkstatus='networkctl list'
 # sudo dhclient -v
 # sudo airmon-ng
@@ -145,13 +168,14 @@ alias ffmpeg='ffmpeg -hide_banner'	#'ffmpeg -i input.mp4 output.avi'  https:/ffm
 alias cam-info=' v4l2-ctl --list-devices'
 
 ## Downloads
-alias   yt='mkdir $HOME/Downloads/yt ; cd $HOME/Downloads/yt ; youtube-dl --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
-alias  yta='cd $HOME/Downloads/; yt -x -f bestaudio/best'
+alias   yt='mkdir ~/Downloads/yt ; cd ~/Downloads/yt ; youtube-dl --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
+alias  yta='cd ~/Downloads/; yt -x -f bestaudio/best'
 alias wget='wget -c'     #web get #Commandline Homepage URL Download > index.html
 alias wget-completed='wget -m -c -r -np -p -E -k -K 'target-url-here''     #web get #Commandline Homepage URL Download > index.html
 # alias curl-completed='wget -r -k -E -l 8 '     #web get #Commandline Homepage URL Download > index.html
 alias curl='curl -C'     #web get #Commandline Homepage URL Download > index.html
 alias server-response='wget --server-response'  # Website/Page Speed test
+alias speed-wget-speedometer='wget --server-response'  # Website/Page Speed test
 
 alias nvim='nvim '
 alias  vim='nvim '
@@ -204,29 +228,24 @@ alias giti='echo; git log -n 12 --graph --oneline --decorate; echo; git status; 
 alias np='$EDITOR -w PKGBUILD'
 alias makepkg-si='makepkg -si'                          #git clone - PKGBUILD
 
-## Arch
-alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
-alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
-alias arch-pamacclean='pamac clean --no-confirm --keep 2; rm -f $HOME/.cache/pkg/*.sig; sudo rm -f /var/lib/pacman/sync/*; sudo rm /var/lib/pacman/db.lck; sudo rm -r /etc/pacman.d/gnupg; sudo pacman-key --init; sudo pacman -Syy; sudo pacman-key --refresh-keys; sudo pacman-key --populate archlinux'
-
 # Quick/fast access
 #! alias please='sudo !!'
-alias ee='$EDITOR $HOME/ownCloud/private-git/todo ;$EDITOR $HOME/ownCloud/dotfile/Cheatsheet ; $EDITOR $HOME/.stignore ; $EDITOR $HOME/aliasrc ; $EDITOR $HOME/.zshrc;$EDITOR $HOME/ownCloud/.bin/pytest; exit'
-alias www='$EDITOR $HOME/ownCloud/W-link/cheatsheet.htm; $EDITOR $HOME/ownCloud/W-link/index.html; $EDITOR $HOME/ownCloud/W-link/css/style.css; $EDITOR $HOME/ownCloud/W-link/js/index.js; exit'
-# alias stignore='$EDITOR $HOME/.stignore; exit'
-# alias zshrc='$EDITOR $HOME/.zshrc; exit'
-# alias aliasrc='$EDITOR $HOME/aliasrc; exit'
-alias t='mkdir -p $HOME/Downloads/test ; cd $HOME/Downloads/test ; ls'
-alias dl='$HOME/Downloads/ ; cd $HOME/Downloads/ ; ls'
+alias ee='$EDITOR ~/ownCloud/private-git/todo ;$EDITOR ~/ownCloud/dotfile/Cheatsheet ; $EDITOR ~/.stignore ; $EDITOR ~/aliasrc ; $EDITOR ~/.zshrc;$EDITOR ~/ownCloud/.bin/pytest; exit'
+alias www='$EDITOR ~/ownCloud/W-link/cheatsheet.htm; $EDITOR ~/ownCloud/W-link/index.html; $EDITOR ~/ownCloud/W-link/css/style.css; $EDITOR ~/ownCloud/W-link/js/index.js; exit'
+# alias stignore='$EDITOR ~/.stignore; exit'
+# alias zshrc='$EDITOR ~/.zshrc; exit'
+# alias aliasrc='$EDITOR ~/aliasrc; exit'
+alias t='mkdir -p ~/Downloads/test ; cd ~/Downloads/test ; ls'
+alias dl='~/Downloads/ ; cd ~/Downloads/ ; ls'
 alias cd..='cd .. ; ls'
-alias own-Claud='$HOME/ownCloud        ; ls'
-alias D-link='   $HOME/ownCloud/D-link ; ls'
-alias S-link='   $HOME/ownCloud/S-link ; ls'
-alias M-link='   $HOME/ownCloud/M-link ; ls'
-alias W-link='   $HOME/ownCloud/W-link ; ls'
-alias P-link='   $HOME/ownCloud/P-link ; ls'
-alias D-link='   $HOME/ownCloud/D-link ; ls'
-alias bin='      $HOME/ownCloud/.bin   ; ls'
+alias own-Claud='~/ownCloud        ; ls'
+alias D-link='   ~/ownCloud/D-link ; ls'
+alias S-link='   ~/ownCloud/S-link ; ls'
+alias M-link='   ~/ownCloud/M-link ; ls'
+alias W-link='   ~/ownCloud/W-link ; ls'
+alias P-link='   ~/ownCloud/P-link ; ls'
+alias D-link='   ~/ownCloud/D-link ; ls'
+alias bin='      ~/ownCloud/.bin   ; ls'
 
 ## mount
 alias mount='mount |column -t'
@@ -254,6 +273,9 @@ alias batterie-status='sudo tlp-stat --battery'
 alias     cpuinfo='lscpu'
 alias    cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 alias monitor-cpu='sudo cpupower monitor'
+alias btop-btm='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"'           #! use htop
+alias monitor-btop-btm='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"'   #! use htop
+
 alias system-info='sudo sysctl --system'
 alias     sensors='sensors '
 alias     lspci='lspci -k '
@@ -340,7 +362,7 @@ alias -g X='| xargs'
 alias history-grep='history | grep'
 
 ## barrier new barrier key gen
-alias barrier-keygen='openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout $HOME/.local/share/barrier/SSL/Barrier.pem -out $HOME/.local/share/barrier/SSL/Barrier.pem
+alias barrier-keygen='openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout ~/.local/share/barrier/SSL/Barrier.pem -out ~/.local/share/barrier/SSL/Barrier.pem
 '
 
 ## Password Crack
