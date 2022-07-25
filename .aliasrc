@@ -10,25 +10,30 @@ encoding="UTF-8"
 
 ## systemctl enable
 alias systemctl-enable='sudo hwclock --systohc --utc;
-sudo  systemctl enable --now systemd-timesyncd &
-sudo  systemctl enable --now auto-cpufreq.service &
-sudo  systemctl enable --now NetworkManager &
-sudo  systemctl enable       lightdm &
-sudo  systemctl enable --now ufw.service;
-sudo  systemctl enable --now fstrim.timer;
-sudo  systemctl enable --now tlp;
+sudo systemctl enable --now systemd-timesyncd &
+sudo systemctl enable --now auto-cpufreq.service &
+sudo systemctl enable --now NetworkManager &
+sudo systemctl enable       lightdm &
+sudo systemctl enable --now ufw.service;
+sudo systemctl enable --now fstrim.timer;
+sudo systemctl enable --now tlp;
+sudo systemctl enable --now systemd-vconsole-setup.service;
 sudo update-desktop-database;
 update-desktop-database ~/.local/share/applications;
 update-mime-database ~/.local/share/mime/;
 sudo locale-gen;
-sudo locale -a
+sudo locale -a;
+sudo ln -s /var/lib/snapd/snap /snap
 '
 
 ## Ln Links herstellen
 alias backup='mkdir -pv ~/ownCloud/dotfile/  ;
 ln -fv ~/.zshrc                               ~/ownCloud/dotfile/.zshrc;
 sudo    ln -fv /etc/lightdm/lightdm.conf          ~/ownCloud/dotfile/lightdm.conf;
+sudo	ln -fv /etc/pamac.conf			~/ownCloud/dotfile/pamac.conf;
+sudo    ln -fv /etc/pacman.conf 	~/ownCloud/dotfile/pacman.conf;
 sudo    ln -fv /etc/systemd/journald.conf         ~/ownCloud/dotfile/journald.conf;
+sudo ln -fv /etc/vconsole.conf		  ~/ownCloud/dotfile/vconsole.conf;
 ln -fv ~/.stignore                    ~/ownCloud/dotfile/.stignore;
 ln -fv ~/.config/.dir_colors          ~/ownCloud/dotfile/.dir_colors;
 ln -fv ~/aliasrc                      ~/ownCloud/dotfile/.aliasrc;
@@ -37,6 +42,9 @@ sudo ln -s /var/lib/snapd/snap 			  /snap;
 sudo pacman -Qqe >                        ~/ownCloud/dotfile/pkglist.txt'
 
 alias backup-restore='mkdir -pv ~/ownCloud/dotfile/  ;
+sudo ln -fv ~/ownCloud/dotfile/pamac.conf		/etc/pamac.conf;
+sudo ln -fv ~/ownCloud/dotfile/pacman.conf	/etc/pacman.conf;
+sudo -fv ~/ownCloud/dotfile/vconsole.conf	/etc/vconsole.conf;
 ln -fv ~/ownCloud/dotfile/.zshrc         ~/.zshrc ;
 ln -fv ~/ownCloud/dotfile/.stignore      ~/.stignore ;
 ln -fv ~/ownCloud/dotfile/.dir_colors    ~/.config/.dir_colors ;
@@ -283,6 +291,9 @@ alias system-info='sudo sysctl --system'
 alias     sensors='sensors '
 alias     lspci='lspci -k '
 # alias lsmod='lsmod'
+
+## Data recovery
+alias ddrescue='ddrescue'	#man ddrescue
 
 ## Input-Info
 alias libinput-info='libinput list-devices'     #USB, Touchpad, etc

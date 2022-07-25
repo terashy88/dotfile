@@ -4,7 +4,11 @@
   <property name="columns" type="empty">
     <property name="sort-type" type="uint" value="1"/>
     <property name="sort-id" type="uint" value="5"/>
+    <property name="column-vsz" type="bool" value="false"/>
   </property>
   <property name="window-width" type="int" value="1020"/>
   <property name="window-height" type="int" value="600"/>
+  <property name="interface" type="empty">
+    <property name="show-filter" type="bool" value="true"/>
+  </property>
 </channel>

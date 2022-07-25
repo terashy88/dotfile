@@ -36,6 +36,7 @@ libuninameslist
 linux518
 linux518-nvidia
 manjaro-xfce-settings
+manjaro-zsh-config
 mingw-w64-binutils
 mingw-w64-crt
 mingw-w64-gcc

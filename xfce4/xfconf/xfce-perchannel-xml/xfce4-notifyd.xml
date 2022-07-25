@@ -44,6 +44,7 @@
       <value type="string" value="org.kde.smb4k"/>
       <value type="string" value="org.manjaro.pamac.manager"/>
       <value type="string" value="org.manjaro.pamac.tray"/>
+      <value type="string" value="org.Nemo"/>
       <value type="string" value="org.qbittorrent.qBittorrent"/>
       <value type="string" value="ownCloud"/>
       <value type="string" value="Package Manager"/>
@@ -62,6 +63,7 @@
       <value type="string" value="uk.co.ibboard.cawbird"/>
       <value type="string" value="vpnui"/>
       <value type="string" value="whatsapp-for-linux"/>
+      <value type="string" value="whatsapp-nativefier-d40211"/>
       <value type="string" value="Xfce volume control"/>
       <value type="string" value="Xfce4-notifyd settings"/>
       <value type="string" value="xfce4-power-manager"/>
@@ -81,7 +83,7 @@
   <property name="plugin" type="empty">
     <property name="hide-clear-prompt" type="bool" value="false"/>
     <property name="log-only-today" type="bool" value="false"/>
-    <property name="log-display-limit" type="int" value="10"/>
+    <property name="log-display-limit" type="int" value="2"/>
   </property>
   <property name="initial-opacity" type="double" value="0.790000"/>
 </channel>

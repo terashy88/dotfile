@@ -36,7 +36,8 @@ Schreibtisch/
 .lesshst
 *QtProject*
 .config/caffeine
-
+maps-places
+user-places
 (?i)*history*
 *databases*
 .anydesk
@@ -88,7 +89,6 @@ kglobalshortcutsrc
 *dconf
 *sqlite
 *.glass
-*VNU4FPR*
 
 ## file-roler
 *-SL6F6JF
@@ -96,7 +96,7 @@ kglobalshortcutsrc
 
 ## vscodium
 #*vsliveshare*
-(?i)*.vscod*
+.config/vscode-sqltools
 .config/VSCodium/
 .config/TabNine/
 .local/share/TabNine/
@@ -109,9 +109,9 @@ state.*
 
 ## thunderbird   #! don't delete
 .thunderbird/
-# !.thunderbird/8e5mfh9q.default-release/quicktext/
-# !.thunderbird/8e5mfh9q.default-release/ImapMail
-# !.thunderbird/8e5mfh9q.default-release/persdict.dat
+!.thunderbird/8e5mfh9q.default-release/quicktext/
+!.thunderbird/8e5mfh9q.default-release/ImapMail
+!.thunderbird/8e5mfh9q.default-release/persdict.dat
 #! *TbSync* dos not work well
 
 ## Mozilla, firefox
@@ -134,6 +134,7 @@ VM-share-rsx
 
 ## syncthing #! don't delete
 .config/syncthing/
+*VNU4FPR*
 
 ## Android
 # *thumbnails*
@@ -167,7 +168,7 @@ prime-run
 *.xsession*
 
 # xfce-panel
-.config/pavucontrol
+.config/pavucontrol*
 #Ignore 'xfce4-keyboard-shortcuts' if different Keyboard layout
 !~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 xfce4-keyboard-shortcuts.xml
@@ -178,6 +179,7 @@ xfce4-keyboard-shortcuts.xml
 .config/Signal/
 
 # whatsapp
+whatsapp
 .local/share/webkitgtk/
 
 # skype
@@ -226,10 +228,13 @@ winecfg
 #.go
 
 ## Popcorntime
-Popcorn-Time
+# Popcorn-Time
 #.config/Popcorn-Time/
+.config/Popcorn-Time/Local State
+.config/Popcorn-Time/Last Session
+.config/Popcorn-Time/Reporting and NEL
+.config/Popcorn-Time/Network Persistent State
 # !.config/Popcorn-Time/Default/
-Popcorntime
 !.config/Popcorn-Time/Default/Preferences
 !/home/shaderico/.config/Popcorn-Time/Default/Current Session
 
