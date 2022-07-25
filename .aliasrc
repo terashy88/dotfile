@@ -16,9 +16,12 @@ sudo  systemctl enable --now NetworkManager &
 sudo  systemctl enable       lightdm &
 sudo  systemctl enable --now ufw.service;
 sudo  systemctl enable --now fstrim.timer;
+sudo  systemctl enable --now tlp;
 sudo update-desktop-database;
 update-desktop-database ~/.local/share/applications;
-update-mime-database ~/.local/share/mime/
+update-mime-database ~/.local/share/mime/;
+sudo locale-gen;
+sudo locale -a
 '
 
 ## Ln Links herstellen
@@ -275,7 +278,7 @@ alias    cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 alias monitor-cpu='sudo cpupower monitor'
 alias btop-btm='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"'           #! use htop
 alias monitor-btop-btm='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"'   #! use htop
-
+alias monitor-dedector-xrandr='xrandr'		#monitor-dedector
 alias system-info='sudo sysctl --system'
 alias     sensors='sensors '
 alias     lspci='lspci -k '
@@ -296,7 +299,8 @@ alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
 #Gets the total disk usage on your machine
-alias   diskinfo='df -hl ~'
+alias   diskinfo='sudo parted --list'
+alias   diskinfo2='df -hl ~'
 alias      fdisk='fdisk -x'                          #fdisk space / UUID etc
 alias  uuid-info='    lsblk -fa'
 alias uuid-blkid='    blkid'
