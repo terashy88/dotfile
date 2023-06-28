@@ -1,0 +1,8 @@
+mktar() { tar cvf "${1%%/}.tar" "${1%%/}/"; }
+mktgz() { tar cvzf "${1%%/}.tar.gz" "${1%%/}/"; }
+mktbz() { tar cvjf "${1%%/}.tar.bz2" "${1%%/}/"; }
+
+[[ $- != *i* ]] && return
+
+unset use_color safe_term match_lhs sh
+xhost +local:root >/dev/null 2>&1

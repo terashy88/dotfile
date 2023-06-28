@@ -1,0 +1,11 @@
+127.0.0.1 localhost
+::1 localhost ip6-localhost ip6-loopback
+127.0.1.1 $HOST.localdomain $HOST
+
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+#0.0.0.0 facebook.com
+#127.0.0.1 google.com
+
+129.132.99.164	sslvpn.ethz.ch ###Cisco AnyConnect VPN client modified this file. Please do not modify contents until this comment is removed.

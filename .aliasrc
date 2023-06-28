@@ -1,0 +1,1066 @@
+#!/usr/bin/env bash
+
+# LANG="UTF-8"
+# Pfetch / Neofetch
+fetch_() {
+    # Define a function to check if a command exists
+    command_exists() {
+        command -v "$1" >/dev/null 2>&1
+    }
+    # Define a function to display system information
+    if command_exists pfetch; then
+        pfetch
+    elif command_exists neofetch; then
+        NEOFETCH_CONFIG="config/candies.conf" neofetch
+    else
+        echo "Error: Neither pfetch nor neofetch are installed."
+        exit 1
+    fi
+    # Set colors for pfetch
+    if command_exists pfetch; then
+        export PF_COLORS="lightblue blue"
+    fi
+}
+fetch_
+############ Todo Workaround ################
+
+################## TODO #####################
+
+## Alias and Functions ##
+
+# xfce4-backup
+xfce-backup() {
+    if [[ ! -d ~/ownCloud/dotfile/ ]]; then
+        mkdir -v ~/ownCloud/dotfile/ || true
+    fi
+    xfce4-panel-profiles save ~/ownCloud/dotfile/xfce4/xfce4-panel-profiles
+    update-desktop-database ~/.config/mimeapps.list
+    update-desktop-database ~/.local/share/applications #! deprecated
+}
+xfce_restore() {
+    ln -fv ~/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+}
+
+pkglist-backup() {
+    # sudo pacman -Qqe > pkglist.txt       #! not use --combinedupgrade
+    if [[ ! -d ~/ownCloud/dotfile/ ]]; then
+        mkdir -v ~/ownCloud/dotfile/ || true
+    fi
+    pacman -Qqe >~/ownCloud/dotfile/pkglist.txt
+}
+pkglist_restore() {
+    paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt
+}
+f7-pkglist-backup() {
+    if [[ ! -d ~/ownCloud/dotfile/ ]]; then
+        mkdir -v ~/ownCloud/dotfile/ || true
+    fi
+    pacman -Qqe >~/ownCloud/dotfile/pkglist_f7.txt
+}
+f7-pkglist_restore() {
+    paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
+    Packet Blacklist / Ignorelist /etc/pacman.conf
+    # IgnorePkg = audacious, kodi, nemo-emblems,vuescan
+}
+
+# Systemclean
+cclean() {
+    sudo pacman -Sc --noconfirm
+    /usr/bin/sudo journalctl --vacuum-time=14d --rotate
+    sudo journalctl --vacuum-size=33M
+    rm -rfv ~/.cache/.fr*
+    rm -rfv ~/.dtrash
+    fc-cache -fv
+    sudo find ~/.cache/ -atime 88 -delete -print
+    sudo rm -rfv /tmp
+    sudo rm -rfv /var/tmp
+    sudo rm -rfv /var/cache/*
+    sudo rm -rfv /root/.cache/
+    sudo rm -rfv /var/lib/pacman/db.lck
+    find ~/.local/share/Trash/files/* -delete -print
+    delete_packages
+    ccache -C
+}
+
+# advance cleanup
+ccclean() {
+    find / -iname '*.bak' -type f -print -delete
+    find / -iname '*.old' -type f -print -delete
+    find / -iname '*sync-conflict' -type f -print -delete
+    rm /etc/ufw/*202*
+}
+
+findbrokenpkgs() {
+    # find Broke Symlinks
+    command findbrokenpkgs
+}
+findbrokesymlinks() {
+    sudo find / -xtype l -print
+}
+
+# Deleted not wanted packages >> cclean
+delete_packages() {
+    # List of packages to delete
+    packages=(pidgin hexchat mousepad audacious kodi nemo-emblems vuescan)
+
+    # Loop through the packages and remove them
+    for package in "${packages[@]}"; do
+        if paru -Qs "${package}" >/dev/null; then
+            echo "${package} is installed, deleting..."
+            paru -Rcns "${package}"
+            # else
+            # echo "$package is not installed, skipping..."
+        fi
+    done
+}
+
+move_to_trash() {
+    if [[ $# -eq 0 ]]; then
+        return 0 # return success if no arguments passed
+    fi
+    if ! [[ -d ~/.local/share/Trash/files/ ]]; then
+        mkdir -p ~/.local/share/Trash/files/
+    fi
+    for arg in "$@"; do
+        if [[ -e "${arg}" ]]; then # check for existence of file or directory
+            # get the base filename without extension
+            filename=$(basename -- "${arg}")
+            extension="${filename##*.}"
+            filename="${filename%.*}"
+            # get a unique filename by appending a version number
+            counter=1
+            while [[ -e ~/.local/share/Trash/files/"${filename}-${counter}.${extension}" ]]; do
+                counter=$((counter + 1))
+            done
+            # move the file or directory to the trash
+            mv -vf "${arg}" ~/.local/share/Trash/files/"${filename}-${counter}.${extension}"
+        else
+            printf "The file or directory '%s' does not exist and was skipped.\n" "${arg}"
+        fi
+    done
+    # find and delete in some days
+    find ~/.local/share/Trash/files/* -atime 7 -delete -print
+    echo hi
+}
+
+rm() {
+    if [ "$(id -u)" != "0" ]; then
+        echo -e '      to delete \e[38;2;242;29;0m'"$*"'\e[0m press (y/n) or Enter: '
+        stty -echo
+        read -r response
+        stty echo
+        echo
+        if [[ "$response" =~ ^[Yy]$ ]] || [[ "$response" == "" ]]; then
+            sudo /bin/rm -vr "$@"
+        else
+            echo "Deletion cancelled"
+        fi
+    else
+        /bin/rm -vr "$@"
+    fi
+}
+# rm() {
+#     echo "Are you sure you want to delete $@? (y/n)"
+#     read -r choice
+#     if [ "$choice" != "y" ]; then
+#         echo "Deletion cancelled."
+#         return
+#     fi
+#     /bin/rm "$@"
+# }
+# rm    #!breaks other rm commands
+# rm() {
+#     # because rm is a reserved word
+#     move_to_trash "$@"
+# }
+
+# Define my_touch function to create directories and files
+my_touch() {
+    for arg in "$@"; do
+        if [[ -n "${arg}" ]]; then
+            mkdir -p "$(dirname "${arg}")" && command touch "${arg}" && ls -ld "${arg}"
+        else
+            echo "Invalid argument: ${arg}"
+        fi
+    done
+}
+# Define touch function to call my_touch with -v option
+touch() {
+    # Avoid infinite recursion by not calling the touch function here
+    my_touch "$@"
+}
+
+orphans() {
+
+    # sudo pacman -Sy
+    orphans_="$(sudo pacman -Qtd)"
+    if [[ -n "${orphans_}" ]]; then
+        sudo pacman -Qqtd | sudo pacman -Rns - || true
+    else
+        sudo pacman -Qtdv
+        echo -e "\n no orphans to remove"
+    fi
+}
+
+pamacclean() {
+    pamac clean --no-confirm --keep 1
+    sudo rm -fv /var/lib/pacman/sync/*
+    sudo rm /var/tmp/pamac/dbs/sync/*.*
+    sudo rm -rfv /etc/pacman.d/gnupg
+    sudo rm -rfv /var/lib/pacman/db.lck
+    sudo rm -Rv /root/.gnupg/
+    sudo rm -fv /var/cache/pacman/pkg/*.tar.zst.sig
+    sudo pacman -Sy gnupg archlinux-keyring manjaro-keyring
+    sudo pacman-key --init
+    sudo pacman -Syy
+    sudo pacman-key --populate --populate archlinux manjaro
+    sudo pacman-key -u --refresh-keys &&
+        sudo pacman-mirrors -a -P https --fasttrack &&
+        (sudo pacman -Syyu || touch ~/.gnupg/gpg.conf)
+}
+
+downgrade() {
+    command /usr/bin/sudo /usr/bin/downgrade "$@"
+}
+
+# speedtest
+alias speedtest="   speedtest --secure" # https
+alias h-speedtest=" speedtest "
+
+# endeavouros
+alias eos-update='eos-rankmirrors; sudo pacman -Syu'
+# Arch
+alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
+arch-pamacclean() {
+    pamac clean --no-confirm --keep 1
+    sudo rm -Rv /root/.gnupg/
+    rm -fv ~/.cache/pkg/*.sig
+    sudo rm -fv /var/lib/pacman/sync/*
+    sudo rm -rfv /var/lib/pacman/db.lck
+    sudo rm -rfv /etc/pacman.d/gnupg
+    sudo pacman-key --init
+    sudo pacman -Syy
+    sudo pacman-key --populate archlinux
+    sudo pacman-key --refresh-keys
+    sudo pacman -Syyu
+    if ! sudo pacman -Syyu; then
+        touch ~/.gnupg/gpg.conf
+    fi
+}
+
+# wine steam game
+wine-config() {
+    sudo pacman -Sy --needed wine winetricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader
+    winetricks -q d3dcompiler_43 d3dcompiler_47 d3dx9 corefonts cjkfonts faudio dxvk dx8vb vkd3d galliumnine
+    sudo pacman -Sy --needed glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-libwrap lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx libwrap openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg
+    WINEPREFIX=~/.wine wine wineboot
+    sudo winetricks --self-update
+    export WINEESYNC=1
+    wine --version
+    sudo chown -R "${USER}":"${USER}" .wine .steam
+    export WINEARCH=win64
+    export WINEESYNC=1
+    winecfg
+}
+# steam linux-steam-integration
+wine_clean() {
+    yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9
+    rm -vfr ~/steam* &
+    rm -vfr ~/.local/share/wineprefixes/ &
+    rm -vfr ~/.config/menus/applications-merged/wine* &
+    rm -vfr ~/.config/mimeapps.list/wine &
+    rm -vfr ~/.config/mimeapps.list/mimeinfo.cache &
+    rm -vfr ~/.local/share/desktop-directories/wine* &
+    rm -vfr ~/.local/share/icons/????_*.{xpm,png} &
+    rm -vfr ~/.local/share/icons/*-x-wine-*.{xpm,png} &
+    rm -fv ~/.local/share/mime/packages/x-wine* &
+    rm -fv ~/.config/mimeapps.list/wine-extension* &
+    rm -f ~/.local/share/applications/mimeinfo.cache &
+    rm -fv ~/.local/share/mime/application/x-wine-extension* &
+    rm -fv ~/.config/mimeapps.list/wine-extension*.desktop &
+    rm -fv ~/.local/share/icons/hicolor/*/*/application-x-wine-extension* &
+    sudo rm -vfr /root/.wine
+    update-desktop-database ~/.config/mimeapps.list
+    update-desktop-database ~/.local/share/applications
+    update-mime-database ~/.local/share/mime/
+    rm -r ~/.wine/drive_c/users/"${USER}"/Temp ~/.wine/drive_c/windows/temp
+    ln -s /tmp/ ~/.wine/drive_c/users/"${USER}"/Temp
+    ln -s /tmp/ ~/.wine/drive_c/windows/temp
+}
+
+alias cp='cp -vi '    # Confirm before overwriting something
+alias df='df -h '     # Human-readable sizes check
+alias free='free -h ' # Show sizes in MB
+alias whereami='echo $PWD'
+alias more='less --use-color'
+pacman-update() {
+    sudo pacman-mirrors -a -P https --fasttrack &&
+        sudo pacman -Syu && echo here we go Richard
+}
+alias mirror-check='pacman-mirrors --status'
+grub-update() {
+    sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
+    sudo mkinitcpio -P
+    sudo update-grub && sudo tree /boot/efi
+}
+
+alias pacman-grep='pacman -Qe | grep '
+
+# MS tracert google.ch
+alias mv='mv -iv '
+
+AUR_helper="paru"
+alias zz='$AUR_helper'
+alias yy='$AUR_helper'
+
+alias rechner-bc='   bc -ql'               #Calculator
+alias calculator-bc='bc -ql'               #Calculator
+alias inxi-Fnzy='export LANG=C;inxi -Fnzy' #Info System      #-a uuid info
+
+# Antivirus
+alias defenderscan-libredefender='sudo libredefender scan ~/'
+alias defenderscan_infection='sudo libredefender infections '
+
+# SSH
+alias ssh-copypub='ssh-copy-id -fi ~/.ssh/id_rsa.pub'
+ssh-keygen_() {
+    # Prompt for email address
+    echo "Enter your email address: "
+    read -r email
+
+    # Generate new SSH key with passphrase
+    echo "Generating new SSH key with passphrase..."
+    if ! ssh-keygen -t rsa -b 4096 -C "$email" -N ""; then
+        echo "Error generating SSH key."
+        exit 1
+    fi
+
+    # Add public key to SSH agent
+    eval "$(ssh-agent -s)" >/dev/null 2>&1
+    echo "Adding public key to SSH agent..."
+    if ! ssh-add ~/.ssh/id_rsa; then
+        echo "Error adding public key to SSH agent."
+        exit 1
+    fi
+
+    echo "SSH key added successfully."
+}
+alias ssh-keygen_status=' ssh-keygen -lf ~/.ssh/id_rsa.pub'
+#todo alias ssh='enable sshd.service; ssh; disable sshd.service'
+
+# GPG  https://keys.openpgp.org/
+alias gpg-status='gpg -k'
+alias gpg-setnew='gpg --full-generate-key --expert'
+alias gpg-manjaro='wget gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro.gpg; gpg --import manjaro.gpg; gpg --verify manjaro-ISO-image.iso.sig manjaro-ISO-image.iso'
+
+# Clearing Keys in Memory
+alias keychain-clear='keychain --clear'
+
+#! if legitimierung erforderlich / keyring / Schlüsselbund problem --> get 'seahorse'
+
+# Pretty print the path
+# alias path='echo $PATH | tr -s ':' '\n''
+alias path='echo -e ${PATH//:/\\n}'
+
+# Network
+# open port check
+alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' #port open-list
+# alias ps='ps'   # ps System Info running like 'whish shell'
+alias ss='ss '                                       # like lsof
+alias port-no-ping-input-ip=' nmap -T4 -A -v -Pn '   #nmap -T4 -A -v -Pn 127.0.0.1
+alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' #nmap -p 1-65535 -T4 -A -v 127.0.0.1
+# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '   #nmap -sS -sU -T4 -A -v 127.0.0.1
+# alias port-nmap-input-ip='nmap -T4 -A -v '         #nmap -T4 -A -v 127.0.0.1
+
+# Networkinfo          #* Network Mapping status 'rpcbind'
+alias ip-c='ip -c a' #ip-coler     ip addr      ip -br -c addr show
+alias ip-cAddr='ip -br -c addr show'
+alias ifconfig='ifconfig' #same as ip-coler with netmask info
+alias nmcli='nmcli | more '
+alias nmtui='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "nmtui"'
+alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
+alias whatismyip="sh -c 'curl http:/ipecho.net/plain; echo'"
+alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' #NetworkManager info scan
+alias journalctl-live='       journalctl -f'
+alias journalctl-kernel='sudo journalctl -rp 3 -xb|more'
+alias journalctl-log='   sudo journalctl -r |more'
+alias whois='whois '                                                                                              # whois input-ip 127.0.0.1
+alias traceroute='traceroute '                                                                                    # traceroute input-ip    #traffic-backtrace info scan
+alias network_bettercap_monitoring='sudo bettercap'                                                               #network-monitoring     live-scan spoofing
+alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' #network-monitoring     live-scan
+# alias netstat="sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK'"
+alias netstat-live='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo netstat -c -i eno1"'
+alias networkstatus='networkctl list'
+alias ufw-iptables='sudo iptables -L'
+alias whowatch='whowatch '                    # who is on my network
+alias traffic_wavemon='wavemon'               # Network traffic strength
+alias tcpdump_wlp59='sudo tcpdump -i wlp59s0' # wireshark cli
+alias ping='ping -c 3 '
+alias gateway-ping='ping _gateway'
+
+#Gateway
+alias route='route -n'
+
+#VPN
+alias vpnProtonvpn='protonvpn'
+alias vpn-eth='sudo rm /opt/cisco/anyconnect; sudo mkdir /opt/cisco/anyconnect/; sudo ~/ownCloud/shellscript/other/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh'
+
+# sudo dhclient -v
+# sudo airmon-ng
+
+# Find / Help /forget
+alias help_apropos='  apropos '
+alias forget_apropos='apropos '
+
+# Convert
+alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
+
+# cam-info
+alias cam-info=' v4l2-ctl --list-devices'
+
+# Downloads    youtube-dl, clipgrab
+alias yt='mkdir ~/Downloads/yt ; cd ~/Downloads/yt ; yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
+alias yta='cd ~/Downloads/; yt -x -f bestaudio/best'
+alias wget='wget -c'                                                   #web get #Commandline Homepage URL Download > index.html
+alias wget-completed='wget -m -c -r -np -p -E -k -K 'target-url-here'' #web get #Commandline Homepage URL Download > index.html
+# alias curl-completed='wget -r -k -E -l 8 '     #web get #Commandline Homepage URL Download > index.html
+alias curl='curl -C'                                  #web get #Commandline Homepage URL Download > index.html
+alias server-response='wget --server-response'        # Website/Page Speed test
+alias speed-wget-speedometer='wget --server-response' # Website/Page Speed test
+
+alias nvim='nvim '
+# alias  vim='nvim '
+alias v='sudo nvim '
+alias env='env  ' # Startup memorie speicher Information
+alias f=' nemo'
+
+# change
+# alias $HOME="nope"
+
+#nvidia Proprietary
+alias nvidia0300='sudo mhwd -a pci nonfree 0300'
+alias mhwd-info='mhwd -l ; mhwd -li'
+
+# Sound    # pipewire-media-session are wireplumber
+alias sound-info='aplay -L'
+
+alias ls="ls -thaNr  --color=auto --sort=time"
+alias ll="ls -thaNrl --color=auto --sort=time"
+
+alias ln='/usr/bin/ln -v'
+alias chown='chown -c '
+alias chmod='chmod -c '
+alias grep='grep --color=auto'
+alias g='grep --color=auto'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'
+alias diff='diff --color=auto'
+# These common commands are just too long! Abbreviate them.
+alias ka='pkill ' #'killall'
+
+alias e='eval "${EDITOR:=neovim}"'
+# VISUAL=EDITOR
+if [[ -n ${DISPLAY} ]]; then
+    export EDITOR='codium'
+else
+    export EDITOR='neovim'
+fi
+
+# Git
+## create git
+alias gitinit='git init'
+gitup() {
+    # local
+    git add .
+    git add README.md
+    git commit -m "commit"
+    git commit -m update
+    git branche -M master
+    # git remote add origin git@github.com:username/reponame
+    git push master
+}
+
+gh_website() {
+    git remote add origin git@github.com:terashy88/website.git
+    git branch -M master
+    git push -u origin main master
+}
+
+alias gitstatus='git status'
+alias gitlog-info='git log --pretty=on'
+alias gitremotestatus='git remote -v'
+
+alias gitdiff='git diff'
+
+## Create branch
+alias gitbranch='git branch'
+alias gitcheckout='git checkout -b'
+alias gitremoteadd='git remote add'
+alias gitremoterm='git remote rm'
+
+# Git Pull
+alias gitpull='git pull'
+
+# Git fetch
+alias gitfetch='git fetch'
+alias gitpull='git merge'
+
+alias gitclone='git clone'
+alias gittag='git tag -a -m'
+alias gitreflog='git reflog'
+alias gitl='git log --graph --oneline --decorate'
+alias giti='echo
+git log -n 12 --graph --oneline --decorate
+echo
+git status
+echo'
+
+: <<GIT
+# Delete all changes in the branch
+git checkout .
+
+# unstack
+git reset
+
+GIT
+
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si' #git clone - PKGBUILD
+
+# Quick fast Navigat access
+please() {
+    sudo "$(fc -l -1)" || true
+}
+# alias please='sudo !!'
+
+# alias ee='$EDITOR ~/ownCloud/p-git/todo;
+# $EDITOR ~/ownCloud/dotfile/cheatsheet;
+# $EDITOR ~/ownCloud/dotfile/.stignore;
+# $EDITOR ~/ownCloud/dotfile/.aliasrc;
+# $EDITOR ~/ownCloud/dotfile/.zshrc;
+# $EDITOR ~/ownCloud/.bin/pytest; exit''
+# $EDITOR ~/ownCloud/W-link/css/style.css; $EDITOR ~/ownCloud/W-link/js/index.js; exit'
+
+# alias stignore='$EDITOR ~/.stignore; exit'
+# alias zshrc='$EDITOR ~/.zshrc; exit'
+alias t="mkdir -p ~/Downloads/test && cd ~/Downloads/test && ll || ls"
+alias dl=' cd ~/Downloads/ && ll || ls'
+cd..() {
+    cd .. &&
+        eval ll || ls
+}
+D-link() {
+    cd ~/ownCloud/D-link/ &&
+        eval ll || ls
+}
+S-link() {
+    cd ~/ownCloud/S-link/ &&
+        eval ll || ls
+}
+M-link() {
+    cd ~/ownCloud/M-link/ &&
+        eval ll || ls
+}
+W-link() {
+    cd ~/ownCloud/W-link/ &&
+        eval ll || ls
+}
+P-link() {
+    cd ~/ownCloud/P-link/ &&
+        eval ll || ls
+}
+bin() {
+    cd ~/ownCloud/.bin/ &&
+        eval ll || ls
+}
+
+# Search
+alias catfish='catfish --path=/ --start  --hidden --sort=path '
+
+# mount
+alias mount='mount |column -t'
+
+# systemctl
+alias enable='      sudo systemctl enable  --now '
+alias disable='     sudo systemctl disable --now '
+alias status='more| sudo systemctl status  --now '
+alias restart='     sudo systemctl restart --now '
+alias stop='        sudo systemctl stop    --now '
+alias sys-port='systemctl status|less --use-color'
+alias sys-status='systemctl list-unit-files|less '
+alias sys-info='pactl list cards pactl list sinks'
+alias errors='          sudo systemctl --failed'
+alias failed='          sudo systemctl --failed'
+alias startup-speed_info='      systemd-analyze'
+alias startup-speed2_info='     systemd-analyze blame'
+alias startup-speed_analyze='   systemd-analyze critical-chain'
+alias sudo='sudo '
+alias shell-echo='echo $SHELL '
+
+# Boottime info
+alias boottime='sudo systemd-analyze blame | head -n 20'
+alias bootinfo='sudo efibootmgr'
+
+# Akku info
+alias batterie-status='sudo tlp-stat --battery'
+alias powertop='sudo powertop'
+# powertop --calibrate
+
+# swap
+swap-activate() {
+    sudo swapoff /swapfile &&
+        sudo rm /swapfile &&
+        sudo dd if=/dev/zero of=/swapfile bs=1M count=8024 status=progress &&
+        sudo chmod 600 /swapfile &&
+        sudo mkswap /swapfile &&
+        sudo swapon /swapfile &&
+        cat >/etc/sysctl.d/99-swappiness.conf <<EOF
+
+    vm.swappiness=6
+    vm.vfs_cache_pressure=66
+    vm.dirty_ratio=3
+    # sudo sysctl vm.vfs_cache_pressure=100
+    # sudo sysctl vm.swappiness=8
+    # sudo mkinitcpio -P
+EOF
+    if sudo grep -q '/swapfile' /etc/fstab; then
+        sudo echo "Entry already exists in /etc/fstab"
+    else
+        echo "/swapfile none swap defaults 0 0" >>/etc/fstab
+        sudo echo "Entry added to /etc/fstab"
+    fi
+}
+
+alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio -P'
+alias swapStatus='swapon --show'
+
+# Get server cpu info
+alias printenv="printenv "        #environment information
+alias cpuinfo='cat /proc/cpuinfo' #'lscpu'
+alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
+alias monitor-cpu='sudo cpupower monitor'
+# alias btop-btm='exo-open --launch TerminalEmulator --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"' #! use htop
+# alias monitor-btop-btm='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "btm"'   #! use htop
+alias monitor-dedector-xrandr='xrandr' #monitor-dedector
+alias system-info='sudo sysctl --system'
+alias sensors='sensors '
+alias lspci='lspci -k ' # Grafikcard information
+alias pstree='pstree '  # systemd baum ansicht
+# alias lsmod='lsmod'
+
+# Data recovery
+alias ddrescue='ddrescue' # man ddrescue
+
+# Input-Info
+alias libinput-info='libinput list-devices' # USB, Touchpad, etc
+alias xinput='xinput '                      # 'xinput -list'
+#lsusb
+
+# ~/.inputrc    ^[[200~ fix
+set enable-bracketed-paste on
+# set enable-bracketed-paste off
+
+# Faster completion
+set show-all-if-unmodified on
+# Color files by types
+# Note that this may cause completion text blink in some terminals (e.g. xterm).
+set colored-stats On
+# Append char to indicate type
+set visible-stats On
+# Mark symlinked directories
+set mark-symlinked-directories On
+# Color the common prefix
+set colored-completion-prefix On
+# Color the common prefix in menu-complete
+set menu-complete-display-prefix On
+
+# # turn off ZLE bracketed paste in dumb term
+# # otherwise turn on ZLE bracketed-paste-magic
+# if [[ $TERM == dumb ]]; then
+#     unset zle_bracketed_paste
+# else
+#     autoload -Uz bracketed-paste-magic
+#     zle -N bracketed-paste bracketed-paste-magic
+# fi
+
+# get GPU ram on desktop / laptop#
+# alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
+alias mem-psmc='ps -Ao "comm %cpu %mem"'
+# ps aux --sort -%mem
+
+# logout
+alias tlo_logout_fast='     xfce4-session-logout --logout --fast'
+alias logout_xfce-session=' xfce4-session-logout --logout '
+
+# turn screen off
+alias screenoff="xset dpms force off"
+
+# lock-screen #todo test i3lock
+qq() {
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x sh -c "sleep 2 ; cmatrix || xflock4"
+}
+
+# Weather / Wetter
+alias wetter="weather"
+weather() {
+    xfce4-terminal --hide-scrollbar --hide-menubar --maximize -x sh -c "curl wttr.in;  read -n 1 -srp 'Press any key to continue...'"
+}
+
+# sort files in current directory by the number of words they contain
+alias wordy='wc -w * | sort | tail -n10'
+alias filecount='sudo ls -aRF | wc -l'
+
+# Gets the total disk usage on your machine
+alias diskinfo='sudo parted --list'
+alias diskinfo2='df -hl ~'
+alias fdisk='fdisk -x' #fdisk space / UUID etc
+alias uuid-info=' lsblk -fa'
+alias uuid-blkid='blkid'
+# alias disk-uuid='    df -hTl'
+#more uuid info 'lsblk -o PATH,LABEL,NAME,UUID'
+
+#Gives you what is using the most space. Both directories and files. Varies on current directory
+alias most='        du -hsx * | sort -rh | head -15' # Bigest files in folder
+alias bigest-file=' du -hsx * | sort -rh | head -15' # Bigest files in folder
+alias diskspace='   gdu'                             # Bigest files in folder 'd'=delete
+
+# shutdown
+pwf() {
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --geometry=66x14 -x sh -c "sleep 1 ; termdown 88 && systemctl poweroff"
+}
+
+# htop
+alias htop='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --maximize -x sh -c "htop"'
+
+# Finance
+alias trade='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --maximize -x sh -c "cointop"'
+
+alias history-grep='history | grep'
+
+# barrier new barrier key gen #todo
+barrier-keygen() {
+    if [[ ! -d ~/.local/share/barrier/SSL/Fingerprints ]]; then
+        mkdir -pv ~/.local/share/barrier/SSL/Fingerprints || true
+    fi
+    openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout ~/.local/share/barrier/SSL/Barrier.pem -out ~/.local/share/barrier/SSL/Barrier.pem
+    fingerprint=$(openssl x509 -fingerprint -sha256 -noout -in ~/.local/share/barrier/SSL/Barrier.pem | cut -d"=" -f2)
+    echo "v2:sha256:$fingerprint" >~/.local/share/barrier/SSL/Fingerprints/Local.txt
+}
+
+aa() {
+    # ChatGPT Terminal
+    tgpt "$*"
+}
+
+# chatblade with OpenAPI    #!   pay
+# function aaa() {
+#     export OPENAI_API_KEY="$(gpg --quiet --batch --decrypt ~/ownCloud/p-git/openApi_key.pgp 2>/dev/null)"
+#     chatblade "$1"
+# }
+# export OPENAI_API_KEY="$(gpg --quiet --batch --decrypt ~/ownCloud/p-git/openApi_key.pgp 2>/dev/null)"
+# alias aaa='chatblade'
+
+# Password Crack
+alias john='john ' #'john file'
+
+# Mariadb / fork of MySQL    'sudo mysql -u root --auto-rehash'
+alias mysql='sudo mysql -u root --auto-rehash'
+mariadb_aktivate() {
+    disable mariadb || true
+    'sudo rm -fr /var/lib/mysql' || true
+    sudo pacman -S mariadb --needed || true
+    sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql || true
+    sudo mkdir -pv /var/lib/mysqltmp || true
+    sudo chown mysql:mysql /var/lib/mysqltmp || true
+    mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mysql -u root -p mysql || true
+    enable mariadb
+}
+alias mariadb_securePrompt='sudo mysql_secure_installation'
+alias mariadb_versionUpgrade='sudo mysql_upgrade -u root -p --force;
+sudo mysqlcheck --all-databases -u root -p -r;
+sudo mysqlcheck --all-databases -u root -p -o'
+
+# Drucker / Printer CUPS
+alias print-aktivate='sudo pacman -S --needed  cups avahi; sudo gpasswd -a "$USER" sys;
+sudo systemctl enable --now cups.service;
+sudo systemctl enable --now cups.socket;
+sudo systemctl enable --now cups.path;
+sudo systemctl enable --now avahi-daemon.service'
+
+alias print_deaktivate='sudo pacman -Rc
+sudo systemctl disable --now cups.service
+sudo systemctl disable --now cups.socket
+sudo systemctl disable --now cups.path'
+
+alias printer-show='lpstat -p -d'
+
+# Scan
+# viewscane
+# scanimage -L
+# brsaneconfig4 -a
+# sudo sane-find-scanner
+# sudo scanimage -vvL
+
+# Anbox snap #! deprecated
+alias anbox_snap_aktiv='git clone https://github.com/anbox/anbox.git --recurse-submodules
+cd anbox
+mkdir build
+cd build
+cmake ..
+make'
+alias anbox_snap_delete='yy -Rc glm gtest properties-cpp'
+# Anbox AUR
+alias anbox-aktivate='sudo mkdir /dev/binderfs
+mount -t binder binder /dev/binderfs
+systemctl enable --now anbox-container-manager.service
+systemctl enable --now systemd-networkd anbox-container-manager'
+# Add in to fstab:
+#   binder    /dev/binderfs    binder    nofail    0    0
+
+# modprobe
+alias modprobe-test='modprobe binder_linux
+modprobe ashmem_linux
+modprobe efivarfs'
+
+# systemctl enable
+systemctl-enable() {
+
+    sudo hwclock --systohc --utc
+    sudo timedatectl set-ntp true
+    sudo systemctl enable --now systemd-timesyncd
+    sudo systemctl enable --now auto-cpufreq.service
+    sudo systemctl enable --now NetworkManager
+    sudo systemctl enable lightdm
+    sudo systemctl enable --now ufw.service
+    sudo systemctl enable --now fstrim.timer
+    sudo systemctl enable --now tlp
+    sudo systemctl enable iptables
+    sudo systemctl enable --now systemd-vconsole-setup.service
+    sudo update-ca-trust
+    update-desktop-database ~/.config/mimeapps.list
+    update-mime-database ~/.local/share/mime
+    sudo ln -s /var/lib/snapd/snap /snap
+    chmod go-w ~
+    sudo chown -R "${USER}":"${USER}" ~/.ssh
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/*
+    sudo powertop --auto-tune
+    sudo ln -fL ~/ownCloud/dotfile/hosts /etc/hosts
+    xdg-mime default nemo.desktop inode/directory
+    xdg-mime default nemo.desktop x-directory/normal
+    xdg-mime default nemo-autorun-software.desktop x-content/unix-software
+    update-desktop-database "${HOME}"/.local/share/applications
+    localectl set-locale LANG=en_US.UTF-8
+    sudo locale-gen
+    sudo locale -a
+
+    if [[ ! -f ~/.imwheelrc ]]; then
+        cat >~/.imwheelrc <<EOF
+".*"
+None,      Up,   Button4, 4
+None,      Down, Button5, 5
+Control_L, Up,   Control_L|Button4
+Control_L, Down, Control_L|Button5
+Shift_L,   Up,   Shift_L|Button4
+Shift_L,   Down, Shift_L|Button5
+EOF
+    fi
+    imwheel -k
+}
+
+backup() {
+    mkdir -pv ~/ownCloud/dotfile/ ~/.config/zsh/
+    ln -fs ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+    ln -fv ~/ownCloud/dotfile/.zshrc ~/.zshrc
+    # todo .p10k change from ~/
+    ln -fv ~/ownCloud/dotfile/.p10k.zsh ~/.config/zsh/.p10k.zsh
+    ln -fv ~/ownCloud/dotfile/.bashrc ~/.bashrc
+    ln -fv ~/ownCloud/dotfile/.profile ~/.profile
+    ln -fv ~/ownCloud/dotfile/.stignore ~/.stignore
+    sudo ln -s /var/lib/snapd/snap /snap
+    sudo ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf
+    sudo ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf
+    sudo ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf
+    sudo ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config
+    sudo ln -fv ~/ownCloud/dotfile/lightdm.conf /etc/lightdm/lightdm.conf
+    sudo ln -fv ~/ownCloud/dotfile/journald.conf /etc/systemd/journald.conf
+    ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
+    ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
+    ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
+    ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
+    if [[ ! -f ~/ownCloud/p-git/vscodium-setting/settings.json ]]; then
+        mkdir -pv ~/ownCloud/p-git/vscodium-setting/
+    fi
+    ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
+    pacman -Qqe >~/ownCloud/dotfile/pkglist.txt
+}
+
+imwheel() {
+
+    if [[ ! -f ~/.imwheelrc ]]; then
+        cat >~/.imwheelrc <<EOF
+".*"
+None,      Up,   Button4, 4
+None,      Down, Button5, 5
+Control_L, Up,   Control_L|Button4
+Control_L, Down, Control_L|Button5
+Shift_L,   Up,   Shift_L|Button4
+Shift_L,   Down, Shift_L|Button5
+EOF
+        imwheel -k
+        return 0
+    else
+        command imwheel -k
+    fi
+}
+
+# Automatically ls when changing directory  #! problem with vscode code-runner
+# cd() {
+#     builtin cd "$@" && ls -thaNrl --color=auto --sort=time
+# }
+
+set_path() {
+
+    # Check if user id is 1000 or higher
+    id_=$(id -u) || true
+    [[ "${id_}" -ge 1000 ]] || return
+
+    for i in "$@"; do
+        # Check if the directory exists
+        [[ -d "${i}" ]] || continue
+
+        # Check if it is not already in your $PATH.
+        echo "${PATH}" | grep -Eq "(^|:)${i}(:|$)" && continue
+
+        # Then append it to $PATH and export it
+        export PATH="${PATH}:${i}"
+    done
+}
+set_path ~/bin ~/scripts
+
+# Easy extract
+extract() {
+    if [[ -f "$1" ]]; then
+        case $1 in
+        *.tar.bz2) tar xvjf "$1" ;;
+        *.tar.gz) tar xvzf "$1" ;;
+        *.bz2) bunzip2 "$1" ;;
+        *.rar) rar x "$1" ;;
+        *.gz) gunzip "$1" ;;
+        *.tar) tar xvf "$1" ;;
+        *.tbz2) tar xvjf "$1" ;;
+        *.tgz) tar xvzf "$1" ;;
+        *.zip) unzip "$1" ;;
+        *.Z) uncompress "$1" ;;
+        *.7z) 7z x "$1" ;;
+        *) echo "don't know how to extract '$1'..." ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
+}
+
+# Makes directory then moves into it
+function mkcdr {
+    mkdir -p -v "$@"
+    cd "$1" || return 1
+    if ! cd "$1"; then
+        echo 'cd failed turning back to home'
+        cd ~/ || return 1
+    fi
+}
+
+parse_git_branch() {
+    # Show Git branch/tag, or name-rev if on detached head
+    (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
+}
+
+search() {
+    find ~/ -iname "*$1*"
+}
+
+# Suffix alias for opening PDF files with the default program   #! not for bash --> zshrc
+# alias -s pdf='opendefaultpdf'
+# Define suffix aliases for image files
+# alias -s '{jpg,jpeg,png,gif,bmp,tiff,webp}'=imgopen '\$1'
+
+# Bash completion function for PDF files
+_pdf_completion() {
+    _files -g "*.pdf"
+}
+
+# IMPG PNG Define function for opening image files with system's default image opener
+function imgopen() {
+    if command -v gio >/dev/null 2>&1; then
+        if test -f "$1"; then
+            setsid gio open "$1" >/dev/null 2>&1 &
+        else
+            echo "$1 is not a valid file."
+        fi
+    else
+        echo "gio command not found. Please install glib and try again."
+    fi
+}
+
+# Function for opening PDF files with the default program
+opendefaultpdf() {
+    if command -v xdg-open >/dev/null 2>&1; then
+        if [[ -f "$1" ]]; then
+            xdg-open "$1" >/dev/null 2>&1 &
+        else
+            echo "$1 is not a valid file."
+        fi
+    else
+        echo "xdg-open command not found. Please install xdg-utils and try again."
+    fi
+}
+
+# Convert an image to PDF using ImageMagick
+convert_toPDF() {
+    # Check if the convert command is available
+    if ! command -v convert >/dev/null 2>&1; then
+        echo "ERROR: 'convert' command not found. Please install ImageMagick and try again." >&2
+        return 1
+    fi
+
+    # Check that the input file exists
+    local input="$1"
+    if [[ ! -f "${input}" ]]; then
+        echo "ERROR: '${input}' is not a valid file." >&2
+        return 1
+    fi
+
+    # Perform the conversion
+    local output="${2:-${input%.*}.pdf}"
+    convert "${input}" "${output}.pdf" && echo "Image converted to PDF: ${output}.pdf"
+}
+
+set_wgetrc() {
+    if [[ -z "${XDG_CONFIG_HOME}" ]]; then
+        export XDG_CONFIG_HOME="${HOME}/.config"
+    fi
+    export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+    echo "WGETRC is now set to ${WGETRC}"
+}
+
+# Colormap
+# function colormap() {
+#   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+# }
+
+# some note
+: <<EOF
+# spamassassin_aktivate    #! don't use this
+# alias spamassassin_aktivate='sudo mkdir /etc/mail/spamassassin/sa-update-keys
+# sudo chown spamd:spamd /etc/mail/spamassassin/sa-update-keys
+# sudo chmod 700 /etc/mail/spamassassin/sa-update-keys
+# sudo systemctl enable --now spamassassin.service
+# sudo -u spamd /usr/bin/vendor_perl/sa-update && sudo -u spamd /usr/bin/vendor_perl/sa-compile
+# '
+
+
+
+
+EOF
