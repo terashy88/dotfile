@@ -623,7 +623,6 @@ poppler-data
 poppler-glib
 portmaster-stub
 potrace
-pound
 powerline-go
 powertop
 preload
@@ -748,7 +747,7 @@ rhash
 rhythmbox
 rhythmbox-plugin-alternative-toolbar
 rhythmbox-tray-icon
-rmlint-shredder
+rmlint
 rnnoise
 rsync
 rubberband
@@ -770,7 +769,6 @@ sgml-common
 shaderc
 shadow
 shairplay
-shiny-mirrors
 signon-kwallet-extension
 signon-plugin-oauth2
 signon-ui
@@ -808,6 +806,7 @@ timeshift-autosnap-manjaro
 tinyxml
 tlp
 totem-pl-parser
+tree
 tree-sitter
 ts-node
 ttf-dejavu

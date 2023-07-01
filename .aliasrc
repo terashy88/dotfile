@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
 # LANG="UTF-8"
+
 # Pfetch / Neofetch
 fetch_() {
     # Define a function to check if a command exists
@@ -28,6 +28,30 @@ fetch_
 
 ## Alias and Functions ##
 
+set_path() {
+
+    # Check if user id is 1000 or higher
+    id_=$(id -u) || true
+    [[ "${id_}" -ge 1000 ]] || return
+
+    for i in "$@"; do
+        # Check if the directory exists
+        [[ -d "${i}" ]] || continue
+
+        # Check if it is not already in your $PATH.
+        echo "${PATH}" | grep -Eq "(^|:)${i}(:|$)" && continue
+
+        # Then append it to $PATH and export it
+        export PATH="${PATH}:${i}"
+    done
+}
+set_path ~/bin ~/scripts
+
+# PATH
+export home_=~/ownCloud
+export bin_=~/ownCloud/.bin
+export dotfile_=~/ownCloud/dotfile
+
 # xfce4-backup
 xfce-backup() {
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
@@ -43,19 +67,23 @@ xfce_restore() {
 
 pkglist-backup() {
     # sudo pacman -Qqe > pkglist.txt       #! not use --combinedupgrade
+    pkg_=~/ownCloud/dotfile/pkglist.txt
+
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
-        mkdir -v ~/ownCloud/dotfile/ || true
+        mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qqe >~/ownCloud/dotfile/pkglist.txt
+    pacman -Qqe >$pkg_ && echo "$pkg_  done"
 }
 pkglist_restore() {
     paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt
 }
 f7-pkglist-backup() {
+    f7_=~/ownCloud/dotfile/pkglist_f7.txt
+
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
-        mkdir -v ~/ownCloud/dotfile/ || true
+        mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qqe >~/ownCloud/dotfile/pkglist_f7.txt
+    pacman -Qqe >$f7_ && echo "$f7_  done"
 }
 f7-pkglist_restore() {
     paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
@@ -75,18 +103,17 @@ cclean() {
     sudo find /var/tmp/* -delete -print
     sudo find /root/.cache/* -delete -print
     sudo find /var/cache/* -delete -print
-    sudo rm -rfv /var/lib/pacman/db.lck
+    sh -c "sudo rm -rfv /var/lib/pacman/db.lck"
     find ~/.local/share/Trash/files/* -delete -print
     delete_packages
     ccache -C
 }
-
 # advance cleanup
 ccclean() {
     sudo find / -iname '*.bak' -type f -print -delete
     sudo find / -iname '*.old' -type f -print -delete
+    sudo find / -iname /etc/ufw/*202* -type f -print -delete
     sudo find / -iname '*sync-conflict' -type f -print -delete
-    sudo rm /etc/ufw/*202*
 }
 find_oldstuff() {
     find ~/.config -atime 266 -print
@@ -217,8 +244,8 @@ arch-pamacclean() {
 # endeavouros
 alias eos-update='eos-rankmirrors; sudo pacman -Syu'
 
-# wine steam game
 wine-config() {
+    # wine steam game
     sudo pacman -Sy --needed wine winetricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader
     winetricks -q d3dcompiler_43 d3dcompiler_47 d3dx9 corefonts cjkfonts faudio dxvk dx8vb vkd3d galliumnine
     sudo pacman -Sy --needed glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-libwrap lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx libwrap openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg
@@ -226,7 +253,7 @@ wine-config() {
     sudo winetricks --self-update
     export WINEESYNC=1
     wine --version
-    sudo chown -R "${USER}":"${USER}" .wine .steam
+    sh -c 'sudo chown -R "${USER}":"${USER}" .wine .steam'
     export WINEARCH=win64
     export WINEESYNC=1
     winecfg
@@ -344,10 +371,11 @@ alias route='route -n'
 alias vpnProtonvpn='protonvpn'
 vpn-eth() {
     if [[ -d /opt/cisco/anyconnect ]]; then
-        sudo rm -rf /opt/cisco/anyconnect
+        sh -c sudo rm -rfv /opt/cisco/anyconnect || return 1
     fi
-    sudo mkdir -p /opt/cisco/anyconnect/
-    sudo ~/ownCloud/shellscript/other/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh
+    sh -c sudo mkdir -pv /opt/cisco/anyconnect/
+    echo 'hi'
+    sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh
 }
 # sudo dhclient -v
 # sudo airmon-ng
@@ -524,46 +552,51 @@ mkdir_() {
     # make directory if not exist
     for dir in "$@"; do
         if [[ ! -d "$dir" ]]; then
-            command mkdir -p "$dir" && ll || ls
+            command mkdir -pv "$dir" || return
         fi
     done
+    eval ll || ls
 }
 
 t() {
-    mkdir -p ~/Downloads/test &&
-        cd ~/Downloads/test && ll || ls
+    if [[ ! -d ~/Downloads/test ]]; then
+        mkdir -p ~/Downloads/test
+    fi
+    cd ~/Downloads/test || return
+    eval ll || ls
 }
+
 dl() {
-    cd ~/Downloads/ &&
-        ll || ls
+    cd ~/Downloads/ || return
+    ll || ls
 }
 cd..() {
-    cd .. &&
-        eval ll || ls
+    cd .. || true
+    ll || ls
 }
 D-link() {
-    cd ~/ownCloud/D-link/ &&
-        eval ll || ls
+    cd ~/ownCloud/D-link/ || true
+    eval ll || ls
 }
 S-link() {
-    cd ~/ownCloud/S-link/ &&
-        eval ll || ls
+    cd ~/ownCloud/S-link/ || true
+    eval ll || ls
 }
 M-link() {
-    cd ~/ownCloud/M-link/ &&
-        eval ll || ls
+    cd ~/ownCloud/M-link/ || true
+    eval ll || ls
 }
 W-link() {
-    cd ~/ownCloud/W-link/ &&
-        eval ll || ls
+    cd ~/ownCloud/W-link/ || true
+    eval ll || ls
 }
 P-link() {
-    cd ~/ownCloud/P-link/ &&
-        eval ll || ls
+    cd ~/ownCloud/P-link/ || true
+    eval ll || ls
 }
 bin() {
-    cd ~/ownCloud/.bin/ &&
-        eval ll || ls
+    cd ~/ownCloud/.bin/ || true
+    eval ll || ls
 }
 
 # Search
@@ -601,9 +634,9 @@ alias powertop='sudo powertop'
 # swap
 swap-activate() {
     sudo swapoff /swapfile &&
-        sudo rm /swapfile &&
+        sh -c "sudo rm /swapfile" &&
         sudo dd if=/dev/zero of=/swapfile bs=1M count=8024 status=progress &&
-        sudo chmod 600 /swapfile &&
+        sh -c "sudo chmod 600 /swapfile" &&
         sudo mkswap /swapfile &&
         sudo swapon /swapfile &&
         cat >/etc/sysctl.d/99-swappiness.conf <<EOF
@@ -615,7 +648,7 @@ swap-activate() {
     # sudo sysctl vm.swappiness=8
     # sudo mkinitcpio -P
 EOF
-    if sudo grep -q '/swapfile' /etc/fstab; then
+    if sh -c "sudo grep -q '/swapfile' /etc/fstab"; then
         sudo echo "Entry already exists in /etc/fstab"
     else
         echo "/swapfile none swap defaults 0 0" >>/etc/fstab
@@ -764,9 +797,11 @@ mariadb_aktivate() {
     'sudo rm -fr /var/lib/mysql' || true
     sudo pacman -S mariadb --needed || true
     sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql || true
-    sudo mkdir -pv /var/lib/mysqltmp || true
-    sudo chown mysql:mysql /var/lib/mysqltmp || true
-    mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mysql -u root -p mysql || true
+    if [[ ! -d /var/lib/mysqltmp ]]; then
+        sh -c "sudo mkdir -pv /var/lib/mysqltmp" || true
+    fi
+    sh -c "sudo chown mysql:mysql /var/lib/mysqltmp" || true
+    mariadb-tzinfo-to-sql /usr/share/zoneinfo | sh -c "sudo mysql -u root -p mysql" || true
     enable mariadb
 }
 alias mariadb_securePrompt='sudo mysql_secure_installation'
@@ -832,13 +867,13 @@ systemctl-enable() {
     sudo update-ca-trust
     update-desktop-database ~/.config/mimeapps.list
     update-mime-database ~/.local/share/mime
-    sudo ln -s /var/lib/snapd/snap /snap
+    sh -c "sudo ln -s /var/lib/snapd/snap /snap"
     chmod go-w ~
-    sudo chown -R "${USER}":"${USER}" ~/.ssh
+    sh -c 'sudo chown -R "${USER}":"${USER}" ~/.ssh'
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/*
-    sudo powertop --auto-tune
-    sudo ln -fL ~/ownCloud/dotfile/hosts /etc/hosts
+    sh -c "sudo powertop --auto-tune"
+    sh -c "sudo ln -fL ~/ownCloud/dotfile/hosts /etc/hosts"
     xdg-mime default nemo.desktop inode/directory
     xdg-mime default nemo.desktop x-directory/normal
     xdg-mime default nemo-autorun-software.desktop x-content/unix-software
@@ -870,19 +905,18 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.bashrc ~/.bashrc
     ln -fv ~/ownCloud/dotfile/.profile ~/.profile
     ln -fv ~/ownCloud/dotfile/.stignore ~/.stignore
-    sudo ln -s /var/lib/snapd/snap /snap
-    sudo ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf
-    sudo ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf
-    sudo ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf
-    sudo ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config
-    sudo ln -fv ~/ownCloud/dotfile/lightdm.conf /etc/lightdm/lightdm.conf
-    sudo ln -fv ~/ownCloud/dotfile/journald.conf /etc/systemd/journald.conf
+    sh -c "sudo ln -s /var/lib/snapd/snap /snap"
+    sh -c "sudo ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf"
+    sh -c "sudo ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf"
+    sh -c "sudo ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf"
+    sh -c "sudo ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config"
+    sh -c "sudo ln -fv ~/ownCloud/dotfile/lightdm.conf /etc/lightdm/lightdm.conf"
+    sh -c "sudo ln -fv ~/ownCloud/dotfile/journald.conf /etc/systemd/journald.conf"
     ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
     ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
     ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
     ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
-    pacman -Qqe >~/ownCloud/dotfile/pkglist.txt
 }
 
 imwheel() {
@@ -908,25 +942,6 @@ EOF
 # cd() {
 #     builtin cd "$@" && ls -thaNrl --color=auto --sort=time
 # }
-
-set_path() {
-
-    # Check if user id is 1000 or higher
-    id_=$(id -u) || true
-    [[ "${id_}" -ge 1000 ]] || return
-
-    for i in "$@"; do
-        # Check if the directory exists
-        [[ -d "${i}" ]] || continue
-
-        # Check if it is not already in your $PATH.
-        echo "${PATH}" | grep -Eq "(^|:)${i}(:|$)" && continue
-
-        # Then append it to $PATH and export it
-        export PATH="${PATH}:${i}"
-    done
-}
-set_path ~/bin ~/scripts
 
 # Easy extract
 extract() {

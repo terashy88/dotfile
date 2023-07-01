@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # LANG="UTF-8"
 
-# Enable Zsh completions / Bash / aliasrc
+# Enable ZSH completions / Bash / aliasrc
 autoload_() {
 
     # bash() {
@@ -48,7 +48,7 @@ history_() {
     HISTIGNORE="   :ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # bash
     HISTCONTROL="ignoreboth:erasedups:ignorespace"
 }
-export history_
+history_
 
 # Browser
 if [ -n "$DISPLAY" ]; then
@@ -63,7 +63,7 @@ fi
 
 path_() {
     typeset -U path PATH
-    path=(~/.local/bin $path)
+    export path=(~/.local/bin $path)
     export PATH
     # PATH 'short form "-P"'
     # If user ID is greater than or equal to 1000 & if ~/bin exists and is a directory & if ~/bin is not already in your $PATH
@@ -72,60 +72,61 @@ path_() {
         export PATH="${PATH}:~/ownCloud/.bin"
     fi
 }
-export path_
+path_
 
-# Options section
 setopt_() {
+    ## Setopt section
+
     # setopt correct           # Auto correct mistakes  #! distract
-    export setopt extendedglob      # Extended globbing. Allows using regular expressions with *
-    export setopt nocaseglob        # Case insensitive globbing
-    export setopt rcexpandparam     # Array expension with parameters
-    export setopt nocheckjobs       # Don't warn about running processes when exiting
-    export setopt numericglobsort   # Sort filenames numerically when it makes sense
-    export setopt appendhistory     # Immediately append history instead of overwriting
-    export setopt histignorealldups # If a new command is a duplicate, remove the older one
-    export setopt notify
+    setopt extendedglob      # Extended globbing. Allows using regular expressions with *
+    setopt nocaseglob        # Case insensitive globbing
+    setopt rcexpandparam     # Array expension with parameters
+    setopt nocheckjobs       # Don't warn about running processes when exiting
+    setopt numericglobsort   # Sort filenames numerically when it makes sense
+    setopt appendhistory     # Immediately append history instead of overwriting
+    setopt histignorealldups # If a new command is a duplicate, remove the older one
+    setopt notify
 
     # Set/unset  shell options
-    export setopt autoresume histignoredups
-    export setopt globdots pushdtohome cdablevars autolist
+    setopt autoresume histignoredups
+    setopt globdots pushdtohome cdablevars autolist
     # setopt correctall autocd recexact longlistjobs    #! distract
-    export setopt autopushd pushdminus rcquotes mailwarning
-    export unsetopt bgnice autoparamslash
+    setopt autopushd pushdminus rcquotes mailwarning
+    unsetopt bgnice autoparamslash
     ## This reverts the +/- operators.
-    export setopt PUSHD_MINUS
-    export setopt nomatch
+    setopt PUSHD_MINUS
+    setopt nomatch
     # export setopt checkwinsize              # change winsize if needed    #! distract
 
-    export setopt COMPLETE_IN_WORD # Complete from both ends of a word.
-    export setopt ALWAYS_TO_END    # Move cursor to the end of a completed word.
-    export setopt PATH_DIRS        # Perform path search even on command names with slashes.
-    export setopt AUTO_MENU        # Show completion menu on a succesive tab press.
-    export setopt AUTO_LIST        # Automatically list choices on ambiguous completion.
-    export setopt AUTO_PARAM_SLASH # If completed parameter is a directory, add a trailing slash.
+    setopt COMPLETE_IN_WORD # Complete from both ends of a word.
+    setopt ALWAYS_TO_END    # Move cursor to the end of a completed word.
+    setopt PATH_DIRS        # Perform path search even on command names with slashes.
+    setopt AUTO_MENU        # Show completion menu on a succesive tab press.
+    setopt AUTO_LIST        # Automatically list choices on ambiguous completion.
+    setopt AUTO_PARAM_SLASH # If completed parameter is a directory, add a trailing slash.
     ## Setopt section
-    export setopt interactivecomments
-    export setopt nobeep
-    export setopt histignorespace
-    export setopt histappend # Don't overwrite
-    export setopt no_nomatch
-    export setopt BANG_HIST              # Treat the '!' character specially during expansion.
-    export setopt EXTENDED_HISTORY       # Write the history file in the ':start:elapsed;command' format.
-    export setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
-    export setopt SHARE_HISTORY          # Share history between all sessions.
-    export setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
-    export setopt HIST_IGNORE_DUPS       # Do not record an event that was just recorded again.
-    export setopt HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate.
-    export setopt HIST_FIND_NO_DUPS      # Do not display a previously found event.
-    export setopt HIST_IGNORE_SPACE      # Do not record an event starting with a space.
-    export setopt HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file.
-    export setopt HIST_VERIFY            # Do not execute immediately upon history expansion.
-    export setopt checkjobs
-    export unsetopt beep
-    export unsetopt MENU_COMPLETE # Do not autoselect the first completion entry.
-    export unsetopt FLOW_CONTROL  # Disable start/stop characters in shell editor.
+    setopt interactivecomments
+    setopt nobeep
+    setopt histignorespace
+    setopt histappend # Don't overwrite
+    setopt no_nomatch
+    setopt BANG_HIST              # Treat the '!' character specially during expansion.
+    setopt EXTENDED_HISTORY       # Write the history file in the ':start:elapsed;command' format.
+    setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
+    setopt SHARE_HISTORY          # Share history between all sessions.
+    setopt HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history.
+    setopt HIST_IGNORE_DUPS       # Do not record an event that was just recorded again.
+    setopt HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate.
+    setopt HIST_FIND_NO_DUPS      # Do not display a previously found event.
+    setopt HIST_IGNORE_SPACE      # Do not record an event starting with a space.
+    setopt HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file.
+    setopt HIST_VERIFY            # Do not execute immediately upon history expansion.
+    setopt checkjobs
+    unsetopt beep
+    unsetopt MENU_COMPLETE # Do not autoselect the first completion entry.
+    unsetopt FLOW_CONTROL  # Disable start/stop characters in shell editor.
 }
-export setopt_
+setopt_
 
 export_() {
 
@@ -175,7 +176,7 @@ export_() {
     export LD_LIBRARY_PATH="/opt/spflashtool"
 
     export ERL_AFLAGS="-kernel shell_history enabled"
-    WORDCHARS=${WORDCHARS//\/[&.;]/} # Don't consider certain characters part of the word
+    export WORDCHARS=${WORDCHARS//\/[&.;]/} # Don't consider certain characters part of the word
 
     # Color man pages
     export LESS_TERMCAP_mb=$'\E[01;32m'
@@ -188,7 +189,7 @@ export_() {
     export LESS=-R
 
 }
-export export_
+export_
 
 env_() {
 
@@ -202,9 +203,9 @@ env_() {
     # X11
     # QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
-    export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
+    # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     # export QT_STYLE_OVERRIDE="qt6ct"
-    # export QT_QPA_PLATFORMTHEME="qt5ct"   # Gnome
+    export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
     # export QT_STYLE_OVERRIDE="qt5ct"
 
     # waydroid
@@ -249,7 +250,7 @@ ssh_() {
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
     fi
     # Start ssh-agent and redirect output to /dev/null #! maybe double
-    eval "$(ssh-agent -s)" >/dev/null 2>&1
+    eval "$(ssh-agent -s)" >/dev/null
 
     #  keychain
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
@@ -258,8 +259,8 @@ ssh_() {
 
     # Load keychain variables and check for id_dsa
     [ -z "$HOSTNAME" ] && HOSTNAME=$(uname -n)
-    . $HOME/.keychain/$HOSTNAME-sh 2>/dev/null
-    ssh-add -l 2>/dev/null | grep -q id_rsa
+    . $HOME/.keychain/$HOSTNAME-sh 2
+    ssh-add -l 2 | grep -q id_rsa
 
     ssh_check_agent() {
         ssh-agent
@@ -350,7 +351,7 @@ powerline_() {
     # starship prompt
     # eval "$(starship init zsh)"
 
-    function install_powerline_precmd() {
+    install_powerline_precmd() {
         for s in "${precmd_functions[@]}"; do
             if [ "$s" = "powerline_precmd" ]; then
                 return
@@ -366,10 +367,10 @@ powerline_() {
 powerline_
 
 zstyle_() {
+    ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+    export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-    fpath=(/usr/local/share/zsh-completions $fpath)
 
-    # export ZDOTDIR="$XDG_CONFIG_HOME/zsh" #todo   #! break terminal
     zstyle ':completion:*' cache-path $XDG_CACHE_HOME/
 
     # Add completion for the touch command
@@ -409,7 +410,7 @@ zstyle_() {
     zstyle ':completion:*' rehash true # automatically find new executables in path
     # Speed up completions
     zstyle ':completion:*' accept-exact '*(N)'
-    # zstyle ':completion:*' use-cache on
+    zstyle ':completion:*' use-cache on
 
     zstyle ':completion:*' completions 1
     zstyle ':completion:*' format '0 %d'
@@ -471,17 +472,16 @@ zstyle_() {
     zstyle ':completion:*:corrections' format $'%{\e[0;31m%}%d (errors: %e)%{\e[0m%}'              #
     zstyle ':completion:*:correct:*' original true                                                 #
     # zstyle ':completion:*:default'                      list-colors ${(s.:.)LS_COLORS}     # activate color-completion(!) list
-    # zstyle ':completion:*:descriptions'                 format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'  # format on #! use next line <<- 357:67: parameter expansion requires a literal
+    zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}' # format on #! use next line <<- 357:67: parameter expansion requires a literal
 
-    zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}' # format on completioncompletion
-    zstyle ':completion:*:*:cd:*:directory-stack' menu yes select                        # complete 'cd -<tab>' with menu
-    zstyle ':completion:*:expand:*' tag-order all-expansions                             # insert all expansions for expand completer
-    zstyle ':completion:*:history-words' list false                                      #
-    zstyle ':completion:*:history-words' menu yes                                        # activate menu
-    zstyle ':completion:*:history-words' remove-all-dups yes                             # ignore duplicate entries
-    zstyle ':completion:*:history-words' stop yes                                        #
-    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'                                  # match uppercase from lowercase
-    zstyle ':completion:*:matches' group 'yes'                                           # separate matches into groups
+    zstyle ':completion:*:*:cd:*:directory-stack' menu yes select # complete 'cd -<tab>' with menu
+    zstyle ':completion:*:expand:*' tag-order all-expansions      # insert all expansions for expand completer
+    zstyle ':completion:*:history-words' list false               #
+    zstyle ':completion:*:history-words' menu yes                 # activate menu
+    zstyle ':completion:*:history-words' remove-all-dups yes      # ignore duplicate entries
+    zstyle ':completion:*:history-words' stop yes                 #
+    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'           # match uppercase from lowercase
+    zstyle ':completion:*:matches' group 'yes'                    # separate matches into groups
     zstyle ':completion:*' group-name ''
     if [[ -z "$NOMENU" ]]; then
         zstyle ':completion:*' menu select=2 # if there are more than 5 options allow selecting from a menu
@@ -507,7 +507,7 @@ zstyle_() {
     zstyle ':completion:*:man:*' menu yes select
     # command for process lists, the local web server details and host completion
     zstyle ':completion:*:urls' local 'www' '/var/www/' 'public_html'
-    # host completion /* add brackets as vim can't parse zsh's complex cmdlines 8-) {{{ */
+
     # [ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
     # [ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
 
@@ -543,16 +543,16 @@ zstyle_() {
     zmodload -ap zsh/mapfile mapfile
     # stat(1) is now commonly an external command, so just load zstat
     zmodload -aF zsh/stat b:zstat
+
 }
 zstyle_
 
 bindkey_() {
     # Keybindings section #    "bindkey -L"  to get all the bindkey info
-    # Menu select
     zmodload -i zsh/complist
     bindkey -M menuselect '^h' vi-backward-char
-    # bindkey -M menuselect '^j' vi-down-line-or-history
-    # bindkey -M menuselect '^k' vi-up-line-or-history
+    bindkey -M menuselect '^j' vi-down-line-or-history
+    bindkey -M menuselect '^k' vi-up-line-or-history
     bindkey -M menuselect '^l' vi-forward-char
     # bind UP and DOWN arrow keys to history substring search
     bindkey '^[[A' history-substring-search-up
@@ -560,7 +560,7 @@ bindkey_() {
 
     bindkey -e
     bindkey '^[[7~' beginning-of-line # Home key
-    # bindkey '^[[H' beginning-of-line                                # Home key
+    bindkey '^[[H' beginning-of-line  # Home key
     if [[ "${terminfo[khome]}" != "" ]]; then
         bindkey "${terminfo[khome]}" beginning-of-line # [Home] - Go to beginning of line
     fi
@@ -569,17 +569,17 @@ bindkey_() {
     if [[ "${terminfo[kend]}" != "" ]]; then
         bindkey "${terminfo[kend]}" end-of-line # [End] - Go to end of line
     fi
-    bindkey '^[[2~' overwrite-mode # Insert key
-    bindkey '^[[3~' delete-char    # Delete key
-    bindkey '^[[C' forward-char    # Right key
-    bindkey '^[[D' backward-char   # Left key
-    # bindkey '^[[5~' history-beginning-search-backward # Page up key
-    # bindkey '^[[6~' history-beginning-search-forward  # Page down key
-    bindkey '^[Oc' forward-word     #
-    bindkey '^[Od' backward-word    #
-    bindkey '^[[1;5D' backward-word #
-    bindkey '^[[1;5C' forward-word  #
-    bindkey '^H' backward-kill-word # delete previous word with ctrl+backspace
+    bindkey '^[[2~' overwrite-mode                    # Insert key
+    bindkey '^[[3~' delete-char                       # Delete key
+    bindkey '^[[C' forward-char                       # Right key
+    bindkey '^[[D' backward-char                      # Left key
+    bindkey '^[[5~' history-beginning-search-backward # Page up key
+    bindkey '^[[6~' history-beginning-search-forward  # Page down key
+    bindkey '^[Oc' forward-word                       #
+    bindkey '^[Od' backward-word                      #
+    bindkey '^[[1;5D' backward-word                   #
+    bindkey '^[[1;5C' forward-word                    #
+    bindkey '^H' backward-kill-word                   # delete previous word with ctrl+backspace
     bindkey '^[[3;5~' kill-word
     bindkey '^[[Z' undo # Shift+tab undo last action
 
@@ -641,18 +641,18 @@ autoload -Uz run-help-svn
 autoload -Uz run-help-svk
 autoload -Uz run-help-sudo
 autoload -Uz run-help-openssl
+alias help=run-help
 
-export DIRSTACKFILE="${XDG_CACHE_HOME:-$HOME/.cache}"
+# export DIRSTACKFILE="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 # (( ${+aliases[run-help]} )) && unalias run-help
-alias help=run-help
 
 # if [[ -f "$DIRSTACKFILE" ]] && (( ${#dirstack} == 0 )); then
 #     dirstack=("${(@f)"$(< "$DIRSTACKFILE")"}")
 #     [[ -d "${dirstack[1]}" ]] && cd -- "${dirstack[1]}"
 # fi
 
-export DIRSTACKSIZE='20'
+# export DIRSTACKSIZE='20'
 
 setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
 
@@ -768,10 +768,6 @@ plugin_() {
 }
 plugin_
 
-# userdel / groupdel
-# Enable zsh tab completion for this function
-compdef '_users -S ""' userGroupdel
-
 userGroupdel() {
     if [[ $# -ne 1 ]]; then
         echo "Usage: userGroupdel <username>"
@@ -802,6 +798,10 @@ userGroupdel() {
         echo "Error: User and group for $1 could not be deleted"
         return 1
     fi
+
+    # userdel / groupdel
+    # Enable zsh tab completion for this function
+    compdef '_users -S ""' userGroupdel
 }
 
 : <<EO
