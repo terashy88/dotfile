@@ -259,7 +259,6 @@ mastodon
 memtest86+
 memtest86+-efi
 memtester
-menulibre
 mesa-demos
 mesa-utils
 meson
