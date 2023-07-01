@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## startup script       #! gui tool doesn't work
+## startup script       #! gui tool doesn't work properly
 
 # Check if ufw is running
 if ! pgrep -x "ufw" >/dev/null; then

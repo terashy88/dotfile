@@ -60,7 +60,6 @@ f7-pkglist-backup() {
 f7-pkglist_restore() {
     paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
     Packet Blacklist / Ignorelist /etc/pacman.conf
-    # IgnorePkg = audacious, kodi, nemo-emblems,vuescan
 }
 
 # Systemclean
@@ -68,14 +67,14 @@ cclean() {
     sudo pacman -Sc --noconfirm
     /usr/bin/sudo journalctl --vacuum-time=14d --rotate
     sudo journalctl --vacuum-size=33M
-    rm -rfv ~/.cache/.fr*
-    rm -rfv ~/.dtrash
+    sudo find ~/.cache/.fr* -delete -print
+    sudo find ~/.dtrash/* -delete -print
     fc-cache -fv
     sudo find ~/.cache/ -atime 88 -delete -print
-    sudo rm -rfv /tmp
-    sudo rm -rfv /var/tmp
-    sudo rm -rfv /var/cache/*
-    sudo rm -rfv /root/.cache/
+    sudo find /tmp/* -delete -print
+    sudo find /var/tmp/* -delete -print
+    sudo find /root/.cache/* -delete -print
+    sudo find /var/cache/* -delete -print
     sudo rm -rfv /var/lib/pacman/db.lck
     find ~/.local/share/Trash/files/* -delete -print
     delete_packages
@@ -84,12 +83,16 @@ cclean() {
 
 # advance cleanup
 ccclean() {
-    find / -iname '*.bak' -type f -print -delete
-    find / -iname '*.old' -type f -print -delete
-    find / -iname '*sync-conflict' -type f -print -delete
-    rm /etc/ufw/*202*
+    sudo find / -iname '*.bak' -type f -print -delete
+    sudo find / -iname '*.old' -type f -print -delete
+    sudo find / -iname '*sync-conflict' -type f -print -delete
+    sudo rm /etc/ufw/*202*
 }
-
+find_oldstuff() {
+    find ~/.config -atime 266 -print
+    find ~/.local -atime 266 -print
+    find ~/.cache -atime 266 -print
+}
 findbrokenpkgs() {
     # find Broke Symlinks
     command findbrokenpkgs
@@ -98,8 +101,8 @@ findbrokesymlinks() {
     sudo find / -xtype l -print
 }
 
-# Deleted not wanted packages >> cclean
 delete_packages() {
+    # Deleted not wanted packages >> cclean
     # List of packages to delete
     packages=(pidgin hexchat mousepad audacious kodi nemo-emblems vuescan)
 
@@ -159,39 +162,8 @@ rm() {
         /bin/rm -vr "$@"
     fi
 }
-# rm() {
-#     echo "Are you sure you want to delete $@? (y/n)"
-#     read -r choice
-#     if [ "$choice" != "y" ]; then
-#         echo "Deletion cancelled."
-#         return
-#     fi
-#     /bin/rm "$@"
-# }
-# rm    #!breaks other rm commands
-# rm() {
-#     # because rm is a reserved word
-#     move_to_trash "$@"
-# }
-
-# Define my_touch function to create directories and files
-my_touch() {
-    for arg in "$@"; do
-        if [[ -n "${arg}" ]]; then
-            mkdir -p "$(dirname "${arg}")" && command touch "${arg}" && ls -ld "${arg}"
-        else
-            echo "Invalid argument: ${arg}"
-        fi
-    done
-}
-# Define touch function to call my_touch with -v option
-touch() {
-    # Avoid infinite recursion by not calling the touch function here
-    my_touch "$@"
-}
 
 orphans() {
-
     # sudo pacman -Sy
     orphans_="$(sudo pacman -Qtd)"
     if [[ -n "${orphans_}" ]]; then
@@ -204,50 +176,46 @@ orphans() {
 
 pamacclean() {
     pamac clean --no-confirm --keep 1
-    sudo rm -fv /var/lib/pacman/sync/*
-    sudo rm /var/tmp/pamac/dbs/sync/*.*
-    sudo rm -rfv /etc/pacman.d/gnupg
-    sudo rm -rfv /var/lib/pacman/db.lck
-    sudo rm -Rv /root/.gnupg/
-    sudo rm -fv /var/cache/pacman/pkg/*.tar.zst.sig
+    sudo find /tmp/* -delete -print
+    sudo find /var/lib/pacman/sync/* -delete -print
+    sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
+    sudo find /etc/pacman.d/gnupg -delete -print
+    sudo find /var/lib/pacman/db.lck -delete -print
+    sudo find /root/.gnupg/* -delete -print
+    sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
     sudo pacman -Sy gnupg archlinux-keyring manjaro-keyring
     sudo pacman-key --init
     sudo pacman -Syy
     sudo pacman-key --populate --populate archlinux manjaro
     sudo pacman-key -u --refresh-keys &&
         sudo pacman-mirrors -a -P https --fasttrack &&
-        (sudo pacman -Syyu || touch ~/.gnupg/gpg.conf)
+        sudo pacman -Syyu
 }
 
 downgrade() {
     command /usr/bin/sudo /usr/bin/downgrade "$@"
 }
 
-# speedtest
-alias speedtest="   speedtest --secure" # https
-alias h-speedtest=" speedtest "
-
-# endeavouros
-alias eos-update='eos-rankmirrors; sudo pacman -Syu'
 # Arch
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
 arch-pamacclean() {
     pamac clean --no-confirm --keep 1
-    sudo rm -Rv /root/.gnupg/
-    rm -fv ~/.cache/pkg/*.sig
-    sudo rm -fv /var/lib/pacman/sync/*
-    sudo rm -rfv /var/lib/pacman/db.lck
-    sudo rm -rfv /etc/pacman.d/gnupg
+    sudo find /tmp/* -delete -print
+    sudo find /var/lib/pacman/sync/* -delete -print
+    sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
+    sudo find /etc/pacman.d/gnupg -delete -print
+    sudo find /var/lib/pacman/db.lck -delete -print
+    sudo find /root/.gnupg/* -delete -print
+    sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
     sudo pacman-key --init
     sudo pacman -Syy
     sudo pacman-key --populate archlinux
     sudo pacman-key --refresh-keys
     sudo pacman -Syyu
-    if ! sudo pacman -Syyu; then
-        touch ~/.gnupg/gpg.conf
-    fi
 }
+# endeavouros
+alias eos-update='eos-rankmirrors; sudo pacman -Syu'
 
 # wine steam game
 wine-config() {
@@ -266,21 +234,22 @@ wine-config() {
 # steam linux-steam-integration
 wine_clean() {
     yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9
-    rm -vfr ~/steam* &
-    rm -vfr ~/.local/share/wineprefixes/ &
-    rm -vfr ~/.config/menus/applications-merged/wine* &
-    rm -vfr ~/.config/mimeapps.list/wine &
-    rm -vfr ~/.config/mimeapps.list/mimeinfo.cache &
-    rm -vfr ~/.local/share/desktop-directories/wine* &
-    rm -vfr ~/.local/share/icons/????_*.{xpm,png} &
-    rm -vfr ~/.local/share/icons/*-x-wine-*.{xpm,png} &
-    rm -fv ~/.local/share/mime/packages/x-wine* &
-    rm -fv ~/.config/mimeapps.list/wine-extension* &
-    rm -f ~/.local/share/applications/mimeinfo.cache &
-    rm -fv ~/.local/share/mime/application/x-wine-extension* &
-    rm -fv ~/.config/mimeapps.list/wine-extension*.desktop &
-    rm -fv ~/.local/share/icons/hicolor/*/*/application-x-wine-extension* &
-    sudo rm -vfr /root/.wine
+    sudo find ~/steam* -delete -print
+    sudo find ~/.local/share/wineprefixes/ -delete -print
+    sudo find ~/.config/menus/applications-merged/wine* -delete -print
+    sudo find ~/.config/mimeapps.list/wine -delete -print
+    sudo find ~/.config/mimeapps.list/mimeinfo.cache -delete -print
+    sudo find ~/.local/share/desktop-directories/wine* -delete -print
+    sudo find ~/.local/share/icons/????_*.{xpm,png} -delete -print
+    sudo find ~/.local/share/icons/*-x-wine-*.{xpm,png} -delete -print
+    sudo find ~/.local/share/mime/packages/x-wine* -delete -print
+    sudo find ~/.config/mimeapps.list/wine-extension* -delete -print
+    sudo find ~/.local/share/applications/mimeinfo.cache -delete -print
+    sudo find ~/.local/share/mime/application/x-wine-extension* -delete -print
+    rm -fv
+    sudo find ~/.config/mimeapps.list/wine-extension*.desktop -delete -print
+    sudo find ~/.local/share/icons/hicolor/*/*/application-x-wine-extension* -delete -print
+    sudo find /root/.wine -delete -print
     update-desktop-database ~/.config/mimeapps.list
     update-desktop-database ~/.local/share/applications
     update-mime-database ~/.local/share/mime/
@@ -310,8 +279,9 @@ alias pacman-grep='pacman -Qe | grep '
 # MS tracert google.ch
 alias mv='mv -iv '
 
-AUR_helper="paru"
-alias zz='$AUR_helper'
+# paru / yay
+AUR_helper=paru
+alias zz='yy'
 alias yy='$AUR_helper'
 
 alias rechner-bc='   bc -ql'               #Calculator
@@ -322,56 +292,23 @@ alias inxi-Fnzy='export LANG=C;inxi -Fnzy' #Info System      #-a uuid info
 alias defenderscan-libredefender='sudo libredefender scan ~/'
 alias defenderscan_infection='sudo libredefender infections '
 
-# SSH
-alias ssh-copypub='ssh-copy-id -fi ~/.ssh/id_rsa.pub'
-ssh-keygen_() {
-    # Prompt for email address
-    echo "Enter your email address: "
-    read -r email
-
-    # Generate new SSH key with passphrase
-    echo "Generating new SSH key with passphrase..."
-    if ! ssh-keygen -t rsa -b 4096 -C "$email" -N ""; then
-        echo "Error generating SSH key."
-        exit 1
-    fi
-
-    # Add public key to SSH agent
-    eval "$(ssh-agent -s)" >/dev/null 2>&1
-    echo "Adding public key to SSH agent..."
-    if ! ssh-add ~/.ssh/id_rsa; then
-        echo "Error adding public key to SSH agent."
-        exit 1
-    fi
-
-    echo "SSH key added successfully."
-}
-alias ssh-keygen_status=' ssh-keygen -lf ~/.ssh/id_rsa.pub'
-#todo alias ssh='enable sshd.service; ssh; disable sshd.service'
-
-# GPG  https://keys.openpgp.org/
-alias gpg-status='gpg -k'
-alias gpg-setnew='gpg --full-generate-key --expert'
-alias gpg-manjaro='wget gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro.gpg; gpg --import manjaro.gpg; gpg --verify manjaro-ISO-image.iso.sig manjaro-ISO-image.iso'
-
-# Clearing Keys in Memory
-alias keychain-clear='keychain --clear'
-
-#! if legitimierung erforderlich / keyring / Schlüsselbund problem --> get 'seahorse'
-
 # Pretty print the path
-# alias path='echo $PATH | tr -s ':' '\n''
-alias path='echo -e ${PATH//:/\\n}'
+# alias path='echo $PATH | tr -s ':' '\n'' # ls
+alias path='echo -e ${PATH//:/\\n}' # ll
 
 # Network
 # open port check
 alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' #port open-list
 # alias ps='ps'   # ps System Info running like 'whish shell'
 alias ss='ss '                                       # like lsof
-alias port-no-ping-input-ip=' nmap -T4 -A -v -Pn '   #nmap -T4 -A -v -Pn 127.0.0.1
-alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' #nmap -p 1-65535 -T4 -A -v 127.0.0.1
-# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '   #nmap -sS -sU -T4 -A -v 127.0.0.1
-# alias port-nmap-input-ip='nmap -T4 -A -v '         #nmap -T4 -A -v 127.0.0.1
+alias port-no-ping-input-ip=' nmap -T4 -A -v -Pn '   # nmap -T4 -A -v -Pn 127.0.0.1
+alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' # nmap -p 1-65535 -T4 -A -v 127.0.0.1
+# alias port-all-and-udp='nmap -sS -sU -T4 -A -v '   # nmap -sS -sU -T4 -A -v 127.0.0.1
+# alias port-nmap-input-ip='nmap -T4 -A -v '         # nmap -T4 -A -v 127.0.0.1
+
+# speedtest
+alias speedtest="   speedtest --secure" # https
+alias h-speedtest=" speedtest "
 
 # Networkinfo          #* Network Mapping status 'rpcbind'
 alias ip-c='ip -c a' #ip-coler     ip addr      ip -br -c addr show
@@ -405,8 +342,13 @@ alias route='route -n'
 
 #VPN
 alias vpnProtonvpn='protonvpn'
-alias vpn-eth='sudo rm /opt/cisco/anyconnect; sudo mkdir /opt/cisco/anyconnect/; sudo ~/ownCloud/shellscript/other/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh'
-
+vpn-eth() {
+    if [[ -d /opt/cisco/anyconnect ]]; then
+        sudo rm -rf /opt/cisco/anyconnect
+    fi
+    sudo mkdir -p /opt/cisco/anyconnect/
+    sudo ~/ownCloud/shellscript/other/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh
+}
 # sudo dhclient -v
 # sudo airmon-ng
 
@@ -430,10 +372,13 @@ alias curl='curl -C'                                  #web get #Commandline Home
 alias server-response='wget --server-response'        # Website/Page Speed test
 alias speed-wget-speedometer='wget --server-response' # Website/Page Speed test
 
-alias nvim='nvim '
-# alias  vim='nvim '
-alias v='sudo nvim '
-alias env='env  ' # Startup memorie speicher Information
+v() {
+    if [[ $nvim ]]; then
+        sudo nvim "$@"
+    else
+        nvim "$@"
+    fi
+}
 alias f=' nemo'
 
 # change
@@ -468,6 +413,9 @@ else
     export EDITOR='neovim'
 fi
 
+alias np='$EDITOR -w PKGBUILD'
+alias makepkg-si='makepkg -si' #git clone - PKGBUILD
+
 # Git
 ## create git
 alias gitinit='git init'
@@ -494,7 +442,7 @@ alias gitremotestatus='git remote -v'
 
 alias gitdiff='git diff'
 
-## Create branch
+# Create branch
 alias gitbranch='git branch'
 alias gitcheckout='git checkout -b'
 alias gitremoteadd='git remote add'
@@ -516,6 +464,10 @@ git log -n 12 --graph --oneline --decorate
 echo
 git status
 echo'
+parse_git_branch() {
+    # Show Git branch/tag, or name-rev if on detached head
+    (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
+}
 
 : <<GIT
 # Delete all changes in the branch
@@ -526,27 +478,65 @@ git reset
 
 GIT
 
-alias np='$EDITOR -w PKGBUILD'
-alias makepkg-si='makepkg -si' #git clone - PKGBUILD
-
 # Quick fast Navigat access
-please() {
-    sudo "$(fc -l -1)" || true
+
+#todo
+# please() {
+#     sudo "$(fc -l -1)" || true
+# }
+# alias sudo='sudo_'
+# sudo_() {
+#     command sudo "$@"
+# }
+# please() {
+#     sudo "$@"
+# }
+
+eee() { # Editor Quick load
+    $EDITOR ~/ownCloud/p-git/todo
+    $EDITOR ~/ownCloud/dotfile/cheatsheet
+    $EDITOR ~/ownCloud/dotfile/.stignore
+    $EDITOR ~/ownCloud/dotfile/.aliasrc
+    $EDITOR ~/ownCloud/dotfile/.zshrc
+    $EDITOR ~/ownCloud/W-link/css/style.css
+    $EDITOR ~/ownCloud/W-link/js/index.js
+    exit
 }
-# alias please='sudo !!'
 
-# alias ee='$EDITOR ~/ownCloud/p-git/todo;
-# $EDITOR ~/ownCloud/dotfile/cheatsheet;
-# $EDITOR ~/ownCloud/dotfile/.stignore;
-# $EDITOR ~/ownCloud/dotfile/.aliasrc;
-# $EDITOR ~/ownCloud/dotfile/.zshrc;
-# $EDITOR ~/ownCloud/.bin/pytest; exit''
-# $EDITOR ~/ownCloud/W-link/css/style.css; $EDITOR ~/ownCloud/W-link/js/index.js; exit'
+# Define my_touch function to create directories and files
+my_touch() {
+    for arg in "$@"; do
+        if [[ -n "${arg}" ]]; then
+            mkdir -p "$(dirname "${arg}")" && command touch "${arg}" && ls -ld "${arg}"
+        else
+            echo "Invalid argument: ${arg}"
+        fi
+    done
+}
+# Define touch function to call my_touch with -v option
+touch() {
+    # Avoid infinite recursion by not calling the touch function here
+    my_touch "$@"
+}
 
-# alias stignore='$EDITOR ~/.stignore; exit'
-# alias zshrc='$EDITOR ~/.zshrc; exit'
-alias t="mkdir -p ~/Downloads/test && cd ~/Downloads/test && ll || ls"
-alias dl=' cd ~/Downloads/ && ll || ls'
+alias mkdir='mkdir_'
+mkdir_() {
+    # make directory if not exist
+    for dir in "$@"; do
+        if [[ ! -d "$dir" ]]; then
+            command mkdir -p "$dir" && ll || ls
+        fi
+    done
+}
+
+t() {
+    mkdir -p ~/Downloads/test &&
+        cd ~/Downloads/test && ll || ls
+}
+dl() {
+    cd ~/Downloads/ &&
+        ll || ls
+}
 cd..() {
     cd .. &&
         eval ll || ls
@@ -596,7 +586,7 @@ alias failed='          sudo systemctl --failed'
 alias startup-speed_info='      systemd-analyze'
 alias startup-speed2_info='     systemd-analyze blame'
 alias startup-speed_analyze='   systemd-analyze critical-chain'
-alias sudo='sudo '
+
 alias shell-echo='echo $SHELL '
 
 # Boottime info
@@ -637,7 +627,9 @@ alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio 
 alias swapStatus='swapon --show'
 
 # Get server cpu info
-alias printenv="printenv "        #environment information
+alias env='env ' # environment information
+# unset $(env | cut -d= -f1)
+# alias printenv="printenv "        # same as env
 alias cpuinfo='cat /proc/cpuinfo' #'lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 alias monitor-cpu='sudo cpupower monitor'
@@ -659,8 +651,8 @@ alias xinput='xinput '                      # 'xinput -list'
 #lsusb
 
 # ~/.inputrc    ^[[200~ fix
-set enable-bracketed-paste on
-# set enable-bracketed-paste off
+# set enable-bracketed-paste on
+set enable-bracketed-paste off
 
 # Faster completion
 set show-all-if-unmodified on
@@ -826,7 +818,6 @@ modprobe efivarfs'
 
 # systemctl enable
 systemctl-enable() {
-
     sudo hwclock --systohc --utc
     sudo timedatectl set-ntp true
     sudo systemctl enable --now systemd-timesyncd
@@ -871,7 +862,7 @@ EOF
 }
 
 backup() {
-    mkdir -pv ~/ownCloud/dotfile/ ~/.config/zsh/
+
     ln -fs ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
     ln -fv ~/ownCloud/dotfile/.zshrc ~/.zshrc
     # todo .p10k change from ~/
@@ -890,9 +881,6 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
     ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
     ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
-    if [[ ! -f ~/ownCloud/p-git/vscodium-setting/settings.json ]]; then
-        mkdir -pv ~/ownCloud/p-git/vscodium-setting/
-    fi
     ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
     pacman -Qqe >~/ownCloud/dotfile/pkglist.txt
 }
@@ -962,29 +950,9 @@ extract() {
     fi
 }
 
-# Makes directory then moves into it
-function mkcdr {
-    mkdir -p -v "$@"
-    cd "$1" || return 1
-    if ! cd "$1"; then
-        echo 'cd failed turning back to home'
-        cd ~/ || return 1
-    fi
-}
-
-parse_git_branch() {
-    # Show Git branch/tag, or name-rev if on detached head
-    (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
-}
-
 search() {
     find ~/ -iname "*$1*"
 }
-
-# Suffix alias for opening PDF files with the default program   #! not for bash --> zshrc
-# alias -s pdf='opendefaultpdf'
-# Define suffix aliases for image files
-# alias -s '{jpg,jpeg,png,gif,bmp,tiff,webp}'=imgopen '\$1'
 
 # Bash completion function for PDF files
 _pdf_completion() {
@@ -1045,9 +1013,13 @@ set_wgetrc() {
     echo "WGETRC is now set to ${WGETRC}"
 }
 
-# Colormap
-# function colormap() {
-#   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
+# colormap() {
+#   for i in {0..255}; do
+#     print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f "
+#     if [[ $((i%6)) -eq 3 ]]; then
+#       print -P $'\n'
+#     fi
+#   done
 # }
 
 # some note

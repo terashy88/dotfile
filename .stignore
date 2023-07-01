@@ -51,6 +51,7 @@ Schreibtisch
 .config/Bitwarden
 .local/share/zeitgeist/*
 .config/Debauchee/Barrier.conf
+.local/share/barrier/SSL/Fingerprints/Local.txt
 
 # remote
 .anydesk

@@ -125,7 +125,7 @@ run-help() { help "$READLINE_LINE" 2>/dev/null || man "$READLINE_LINE"; }
 
 # Powerline
 # Use powerline
-# USE_POWERLINE="true"
+USE_POWERLINE="true"
 
 powerline-daemon -q
 export POWERLINE_BASH_CONTINUATION=1
