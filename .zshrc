@@ -1,8 +1,7 @@
 #!/usr/bin/env zsh
 # LANG="UTF-8"
-
-# Enable ZSH completions / Bash / aliasrc
 autoload_() {
+    # Enable ZSH completions / Bash / aliasrc
 
     # bash() {
     #     # Workaround if ZSH problem
@@ -27,26 +26,17 @@ autoload_() {
 }
 autoload_
 
-# Workaround #
-# echo $port_
-# ssh 192.168.43.30 -p 22
-# ssh -T git@github.com -A -p 22 || echo 'Connection to GitHub failed... '
-
 ## By the way if it ain't broke, break it then fix it. ##
-########### TODO / Test ###########
-
-###############TODO################
-###################################
 
 history_() {
     # History - config
-    HISTFILE=$HOME/.config/.zshistory
-    HISTSIZE=8888
-    SAVEHIST=8888
-    HISTTIMEFORMAT="[%F %T] "
-    HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh #! alias not working
-    HISTIGNORE="   :ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # bash
-    HISTCONTROL="ignoreboth:erasedups:ignorespace"
+    export HISTFILE=$HOME/.config/.zshistory
+    export HISTSIZE=8888
+    export SAVEHIST=8888
+    export HISTTIMEFORMAT="[%F %T] "
+    export HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh #! alias not working
+    export HISTIGNORE="   :ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # bash
+    export HISTCONTROL="ignoreboth:erasedups:ignorespace"
 }
 history_
 
@@ -203,9 +193,9 @@ env_() {
     # X11
     # QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
-    # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
+    export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     # export QT_STYLE_OVERRIDE="qt6ct"
-    export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
+    # export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
     # export QT_STYLE_OVERRIDE="qt5ct"
 
     # waydroid
@@ -237,6 +227,7 @@ ssh_() {
     if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
         export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     fi
+
     # Start ssh-agent if not already running
     if ! pgrep -u "$USER" ssh-agent >/dev/null; then
         ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
@@ -246,25 +237,34 @@ ssh_() {
     if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
         source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
     fi
+
     if [[ ! -n ${SSH_CONNECTION} ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
     fi
-    # Start ssh-agent and redirect output to /dev/null #! maybe double
-    eval "$(ssh-agent -s)" >/dev/null
+
+    # Start ssh-agent, add key to Agent and show Agent
+    if ! pgrep -x ssh-agent >/dev/null; then
+        eval "$(ssh-agent -s)" >/dev/null
+        if [ -d "$HOME/.ssh" ]; then
+            ssh-add ~/.ssh/* && ssh-add -l
+        else
+            echo 'no SSH key found'
+        fi
+    fi
 
     #  keychain
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
     # eval "$(keychain --eval -q gpg ssh id_rsa)"
     # eval "$(keychain --eval -q --agents ssh id_rsa)"
 
-    # Load keychain variables and check for id_dsa
-    [ -z "$HOSTNAME" ] && HOSTNAME=$(uname -n)
-    . $HOME/.keychain/$HOSTNAME-sh 2
-    ssh-add -l 2 | grep -q id_rsa
+    ssh_log() {
+        journalctl | g ssh
+    }
 
     ssh_check_agent() {
         ssh-agent
         ssh -V
+        ssh-add -l
     }
 
     # SSH
@@ -301,10 +301,14 @@ gpg_() {
     # GPG  https://keys.openpgp.org/
     gpg-status() {
         gpg -k
+        echo "test" | gpg --clearsign
+        gpg --list-keys
+        gpg --list-secret-keys
     }
     gpg-setnew() {
         gpg --full-generate-key --expert
     }
+
     gpg-manjaro() {
         wget gitlab.manjaro.org/packages/core/manjaro-keyring/-/raw/master/manjaro.gpg
         gpg --import manjaro.gpg
@@ -315,12 +319,15 @@ gpg_() {
         # Clearing Keys in Memory
         keychain --clear
     }
+
     gpg_reload() {
         gpg-connect-agent reloadagent /bye
     }
+
     keygrip_() {
         gpg --list-keys --with-keygrip
     }
+
     export GPG_TTY=$(tty)
     gpg-connect-agent updatestartuptty /bye >/dev/null
 
@@ -333,6 +340,7 @@ gpg_() {
             gpg --output "$2" --decrypt "$1"
         }
     }
+    encryption_
 }
 gpg_
 
@@ -367,7 +375,7 @@ powerline_() {
 powerline_
 
 zstyle_() {
-    ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+    # ZDOTDIR="$XDG_CONFIG_HOME/zsh"    #! break terminal in vscodium
     export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 
@@ -508,10 +516,6 @@ zstyle_() {
     # command for process lists, the local web server details and host completion
     zstyle ':completion:*:urls' local 'www' '/var/www/' 'public_html'
 
-    # [ -r ~/.ssh/known_hosts ] && _ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[\|]*}%%\ *}%%,*}) || _ssh_hosts=()
-    # [ -r /etc/hosts ] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
-
-    # hosts=(`hostname` "$_ssh_hosts[@]" "$_etc_hosts[@]" localhost)
     zstyle ':completion:*:hosts' hosts $hosts
 
     # My zsh configurations (Based on the Manjaro ZSH config)
@@ -740,14 +744,14 @@ plugin_() {
     # Source Plugin Extension
     # dir-colors
     [[ -f ~/.config/.dir_colors ]] && eval $(dircolors ~/.config/.dir_colors)
-    # p10k
+    # p10k #! starting zsh config
     [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
     [[ -d $HOME/.config/zsh/ ]] && source "$HOME/.config/zsh/"
     # UFW aktivate
-    # [[ -f ~/ownCloud/.bin/ufwEnable.sh ]] && source ~/ownCloud/.bin/ufwEnable.sh
+    [[ -f ~/ownCloud/.bin/ufwEnable.sh ]] && source ~/ownCloud/.bin/ufwEnable.sh
     [ -d /etc/profile ] && source /etc/profile
     # Pacman comand not found
-    [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && . /usr/share/doc/pkgfile/command-not-found.zsh
+    [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
     # powerlevel10k icons
     [[ -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh ]] && source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
     # zsh-autosuggestions
@@ -758,7 +762,7 @@ plugin_() {
     [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     # powerlevel10k theme
     [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] && source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-    [[ -f $HOME/ownCloud/p-git/p-aliasrc ]] && . "$HOME"/ownCloud/p-git/p-aliasrc
+    [[ -f $HOME/ownCloud/p-git/p-aliasrc ]] && source "$HOME"/ownCloud/p-git/p-aliasrc
     # oh-my-zsh
     [[ -d /usr/share/oh-my-zsh ]] && source /usr/share/oh-my-zsh
     ZSH_THEME="random" # theme of oh-my-zsh

@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # LANG="UTF-8"
-
-# Pfetch / Neofetch
 fetch_() {
+    # Pfetch / Neofetch
     # Define a function to check if a command exists
     command_exists() {
         command -v "$1" >/dev/null 2>&1
@@ -24,7 +23,12 @@ fetch_() {
 fetch_
 ############ Todo Workaround ################
 
+# for ((i = 0; i < n; i++)); do
+#     echo "${i}"
+# done
+# restart sshd
 ################## TODO #####################
+#############################################
 
 ## Alias and Functions ##
 
@@ -46,6 +50,10 @@ set_path() {
     done
 }
 set_path ~/bin ~/scripts
+
+# Pretty print the path
+# alias path='echo $PATH | tr -s ':' '\n'' # ls
+alias path='echo -e ${PATH//:/\\n}' # ll
 
 # PATH
 export home_=~/ownCloud
@@ -319,10 +327,6 @@ alias inxi-Fnzy='export LANG=C;inxi -Fnzy' #Info System      #-a uuid info
 alias defenderscan-libredefender='sudo libredefender scan ~/'
 alias defenderscan_infection='sudo libredefender infections '
 
-# Pretty print the path
-# alias path='echo $PATH | tr -s ':' '\n'' # ls
-alias path='echo -e ${PATH//:/\\n}' # ll
-
 # Network
 # open port check
 alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' #port open-list
@@ -407,7 +411,18 @@ v() {
         nvim "$@"
     fi
 }
-alias f=' nemo'
+
+f() {
+    if [ -d "$1" ]; then
+        if [ "$(id -u)" != "$(stat -c %u "$1")" ]; then
+            sudo nemo "$1"
+        else
+            nemo "$1"
+        fi
+    else
+        echo "Usage: $0 <folder>"
+    fi
+}
 
 # change
 # alias $HOME="nope"
@@ -427,6 +442,11 @@ alias chown='chown -c '
 alias chmod='chmod -c '
 alias grep='grep --color=auto'
 alias g='grep --color=auto'
+
+gg() {
+    man "$1" | grep --color=auto "$2"
+}
+
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 alias diff='diff --color=auto'
@@ -528,7 +548,6 @@ eee() { # Editor Quick load
     $EDITOR ~/ownCloud/dotfile/.zshrc
     $EDITOR ~/ownCloud/W-link/css/style.css
     $EDITOR ~/ownCloud/W-link/js/index.js
-    exit
 }
 
 # Define my_touch function to create directories and files
@@ -639,7 +658,7 @@ swap-activate() {
         sh -c "sudo chmod 600 /swapfile" &&
         sudo mkswap /swapfile &&
         sudo swapon /swapfile &&
-        cat >/etc/sysctl.d/99-swappiness.conf <<EOF
+        cat <<'EOF' >>/etc/sysctl.d/99-swappiness.conf
 
     vm.swappiness=6
     vm.vfs_cache_pressure=66
@@ -683,9 +702,9 @@ alias libinput-info='libinput list-devices' # USB, Touchpad, etc
 alias xinput='xinput '                      # 'xinput -list'
 #lsusb
 
-# ~/.inputrc    ^[[200~ fix
-# set enable-bracketed-paste on
-set enable-bracketed-paste off
+# ~/.inputrc   #todo ^[[200~ fix
+set enable-bracketed-paste on
+# set enable-bracketed-paste off
 
 # Faster completion
 set show-all-if-unmodified on
@@ -723,8 +742,10 @@ alias logout_xfce-session=' xfce4-session-logout --logout '
 alias screenoff="xset dpms force off"
 
 # lock-screen #todo test i3lock
+
 qq() {
-    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x sh -c "sleep 2 ; cmatrix || xflock4"
+    # xflock4 can be skip by terminate the terminal
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
 }
 
 # Weather / Wetter
@@ -764,7 +785,7 @@ alias trade='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --max
 
 alias history-grep='history | grep'
 
-# barrier new barrier key gen #todo
+# barrier new barrier keyGen
 barrier-keygen() {
     if [[ ! -d ~/.local/share/barrier/SSL/Fingerprints ]]; then
         mkdir -pv ~/.local/share/barrier/SSL/Fingerprints || true
@@ -775,8 +796,12 @@ barrier-keygen() {
 }
 
 aa() {
+    # ChatGPT Terminal https://chatbot.theb.ai/
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
+}
+aaa() {
     # ChatGPT Terminal
-    tgpt "$*"
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
 }
 
 # chatblade with OpenAPI    #!   pay
