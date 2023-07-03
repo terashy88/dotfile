@@ -294,7 +294,7 @@ ssh_() {
     alias ssh-keygen_status=' ssh-keygen -lf ~/.ssh/id_rsa.pub'
     #todo alias ssh='enable sshd.service; ssh; disable sshd.service'
 }
-ssh_
+# ssh_
 
 gpg_() {
 
@@ -342,7 +342,7 @@ gpg_() {
     }
     encryption_
 }
-gpg_
+# gpg_
 
 powerline_() {
     # Use powerline manjaro-zsh-config #todo
