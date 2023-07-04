@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # LANG="UTF-8"
 autoload_() {
+
     # Enable ZSH completions / Bash / aliasrc
 
     # bash() {
@@ -16,7 +17,7 @@ autoload_() {
     colors
 
     aliasrc_() {
-        # aliasrc
+
         aliasrc_=~/ownCloud/dotfile/.aliasrc
         [[ -f $aliasrc_ ]] && source $aliasrc_
     }
@@ -29,7 +30,7 @@ autoload_
 ## By the way if it ain't broke, break it then fix it. ##
 
 history_() {
-    # History - config
+
     export HISTFILE=$HOME/.config/.zshistory
     export HISTSIZE=8888
     export SAVEHIST=8888
@@ -65,7 +66,6 @@ path_() {
 path_
 
 setopt_() {
-    ## Setopt section
 
     # setopt correct           # Auto correct mistakes  #! distract
     setopt extendedglob      # Extended globbing. Allows using regular expressions with *
@@ -86,7 +86,7 @@ setopt_() {
     ## This reverts the +/- operators.
     setopt PUSHD_MINUS
     setopt nomatch
-    # export setopt checkwinsize              # change winsize if needed    #! distract
+    # export setopt checkwinsize       # change winsize if needed    #! distract
 
     setopt COMPLETE_IN_WORD # Complete from both ends of a word.
     setopt ALWAYS_TO_END    # Move cursor to the end of a completed word.
@@ -193,7 +193,7 @@ env_() {
     # X11
     # QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
-    export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
+    # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     # export QT_STYLE_OVERRIDE="qt6ct"
     # export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
     # export QT_STYLE_OVERRIDE="qt5ct"
@@ -221,6 +221,7 @@ echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE"
 env_
 
 ssh_() {
+
     SSH_AGENT_PID=""
     SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
     unset SSH_AGENT_PID
@@ -254,8 +255,8 @@ ssh_() {
 
     #  keychain
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
-    # eval "$(keychain --eval -q gpg ssh id_rsa)"
-    # eval "$(keychain --eval -q --agents ssh id_rsa)"
+    # eval "$(keychain --eval -q gpg ~/.gnupg/**/*)"
+    eval "$(keychain --eval -q --agents ssh ~/.ssh/id_rsa*)"
 
     ssh_log() {
         journalctl | g ssh
@@ -264,6 +265,8 @@ ssh_() {
     ssh_check_agent() {
         ssh-agent
         ssh -V
+        ssh-add ~/.ssh/id_rsa*
+        eval "$(ssh-agent -s)"
         ssh-add -l
     }
 
@@ -291,10 +294,9 @@ ssh_() {
 
         echo "SSH key added successfully."
     }
-    alias ssh-keygen_status=' ssh-keygen -lf ~/.ssh/id_rsa.pub'
     #todo alias ssh='enable sshd.service; ssh; disable sshd.service'
 }
-# ssh_
+ssh_
 
 gpg_() {
 
@@ -342,7 +344,7 @@ gpg_() {
     }
     encryption_
 }
-# gpg_
+gpg_
 
 powerline_() {
     # Use powerline manjaro-zsh-config #todo
@@ -375,6 +377,7 @@ powerline_() {
 powerline_
 
 zstyle_() {
+
     # ZDOTDIR="$XDG_CONFIG_HOME/zsh"    #! break terminal in vscodium
     export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'

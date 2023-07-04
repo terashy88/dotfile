@@ -797,11 +797,12 @@ barrier-keygen() {
 
 aa() {
     # ChatGPT Terminal https://chatbot.theb.ai/
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
+
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
 }
 aaa() {
     # ChatGPT Terminal
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
 }
 
 # chatblade with OpenAPI    #!   pay
