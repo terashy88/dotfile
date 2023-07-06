@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 # LANG="UTF-8"
 autoload_() {
+
     # Enable ZSH completions / Bash / aliasrc
 
     # bash() {
@@ -16,7 +17,7 @@ autoload_() {
     colors
 
     aliasrc_() {
-        # aliasrc
+
         aliasrc_=~/ownCloud/dotfile/.aliasrc
         [[ -f $aliasrc_ ]] && source $aliasrc_
     }
@@ -29,7 +30,7 @@ autoload_
 ## By the way if it ain't broke, break it then fix it. ##
 
 history_() {
-    # History - config
+
     export HISTFILE=$HOME/.config/.zshistory
     export HISTSIZE=8888
     export SAVEHIST=8888
@@ -65,7 +66,6 @@ path_() {
 path_
 
 setopt_() {
-    ## Setopt section
 
     # setopt correct           # Auto correct mistakes  #! distract
     setopt extendedglob      # Extended globbing. Allows using regular expressions with *
@@ -86,7 +86,7 @@ setopt_() {
     ## This reverts the +/- operators.
     setopt PUSHD_MINUS
     setopt nomatch
-    # export setopt checkwinsize              # change winsize if needed    #! distract
+    # export setopt checkwinsize       # change winsize if needed    #! distract
 
     setopt COMPLETE_IN_WORD # Complete from both ends of a word.
     setopt ALWAYS_TO_END    # Move cursor to the end of a completed word.
@@ -185,7 +185,7 @@ env_() {
 
     # Environment
     # Wayland
-    # GTK   #!..added gtk4
+    # GTK
     # GDK_BACKEND=x11
     # QT_QPA_PLATFORM=wayland
     # export QT_STYLE_OVERRIDE="wayland"
@@ -193,7 +193,7 @@ env_() {
     # X11
     # QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
-    export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
+    # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     # export QT_STYLE_OVERRIDE="qt6ct"
     # export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
     # export QT_STYLE_OVERRIDE="qt5ct"
@@ -204,15 +204,18 @@ env_() {
 
     # xfce
     # export QT_QPA_PLATFORMTHEME="kvantum" # xfce4
-    # export QT_STYLE_OVERRIDE="kvantum"
+    # # export QT_STYLE_OVERRIDE="kvantum"
     # export QT_QPA_PLATFORMTHEME="kvantum-dark"
     # export QT_STYLE_OVERRIDE="kvantum-dark"
 
     # which Session
-    alias wich_session='echo $XDG_SESSION_TYPE'
-
-    alias qttest="echo The QT_QPA_PLATFORMTHEME is: $QT_QPA_PLATFORMTHEME;
-echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE"
+    wich_session() {
+        echo $XDG_SESSION_TYPE
+    }
+    qttest() {
+        echo The QT_QPA_PLATFORMTHEME is: $QT_QPA_PLATFORMTHEME
+        echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE
+    }
     # export GTK_THEME=Arc-Maia-Dark
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
     # export GTK2_RC_FILES="$HOME/.config/gtkrc-4"
@@ -221,6 +224,7 @@ echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE"
 env_
 
 ssh_() {
+
     SSH_AGENT_PID=""
     SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
     unset SSH_AGENT_PID
@@ -254,8 +258,10 @@ ssh_() {
 
     #  keychain
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
-    # eval "$(keychain --eval -q gpg ssh id_rsa)"
-    # eval "$(keychain --eval -q --agents ssh id_rsa)"
+
+    # ---> to gh_up
+    # eval "$(keychain --eval -q gpg ~/.gnupg/**/*)"
+    # eval "$(keychain --eval -q --agents ssh ~/.ssh/id_rsa*)"
 
     ssh_log() {
         journalctl | g ssh
@@ -264,6 +270,8 @@ ssh_() {
     ssh_check_agent() {
         ssh-agent
         ssh -V
+        ssh-add ~/.ssh/id_rsa*
+        eval "$(ssh-agent -s)"
         ssh-add -l
     }
 
@@ -291,13 +299,11 @@ ssh_() {
 
         echo "SSH key added successfully."
     }
-    alias ssh-keygen_status=' ssh-keygen -lf ~/.ssh/id_rsa.pub'
     #todo alias ssh='enable sshd.service; ssh; disable sshd.service'
 }
-# ssh_
+ssh_
 
 gpg_() {
-
     # GPG  https://keys.openpgp.org/
     gpg-status() {
         gpg -k
@@ -342,7 +348,7 @@ gpg_() {
     }
     encryption_
 }
-# gpg_
+gpg_
 
 powerline_() {
     # Use powerline manjaro-zsh-config #todo
@@ -375,6 +381,7 @@ powerline_() {
 powerline_
 
 zstyle_() {
+
     # ZDOTDIR="$XDG_CONFIG_HOME/zsh"    #! break terminal in vscodium
     export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
@@ -666,6 +673,7 @@ setopt PUSHD_IGNORE_DUPS
 autoload -Uz add-zsh-hook
 
 rehash_precmd() {
+
     if [[ -e /var/cache/zsh/pacman ]]; then
         local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
         if ((zshcache_time < paccache_time)); then
@@ -678,6 +686,7 @@ rehash_precmd() {
 autoload -Uz add-zsh-hook
 
 function xterm_title_precmd() {
+
     print -Pn -- '\e]2;%n@%m %~\a'
     [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
 }
@@ -695,6 +704,7 @@ function xterm_title_precmd() {
 autoload -Uz add-zsh-hook
 
 function xterm_title_precmd() {
+
     print -Pn -- '\e]2;%n@%m %~\a'
     [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
 }
@@ -773,6 +783,7 @@ plugin_() {
 plugin_
 
 userGroupdel() {
+
     if [[ $# -ne 1 ]]; then
         echo "Usage: userGroupdel <username>"
         return 1

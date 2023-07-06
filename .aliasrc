@@ -23,9 +23,6 @@ fetch_() {
 fetch_
 ############ Todo Workaround ################
 
-# for ((i = 0; i < n; i++)); do
-#     echo "${i}"
-# done
 # restart sshd
 ################## TODO #####################
 #############################################
@@ -33,7 +30,6 @@ fetch_
 ## Alias and Functions ##
 
 set_path() {
-
     # Check if user id is 1000 or higher
     id_=$(id -u) || true
     [[ "${id_}" -ge 1000 ]] || return
@@ -60,8 +56,8 @@ export home_=~/ownCloud
 export bin_=~/ownCloud/.bin
 export dotfile_=~/ownCloud/dotfile
 
-# xfce4-backup
 xfce-backup() {
+    # xfce4-backup
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
         mkdir -v ~/ownCloud/dotfile/ || true
     fi
@@ -83,9 +79,11 @@ pkglist-backup() {
     pacman -Qqe >$pkg_ && echo "$pkg_  done"
 }
 pkglist_restore() {
+
     paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt
 }
 f7-pkglist-backup() {
+
     f7_=~/ownCloud/dotfile/pkglist_f7.txt
 
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
@@ -98,8 +96,8 @@ f7-pkglist_restore() {
     Packet Blacklist / Ignorelist /etc/pacman.conf
 }
 
-# Systemclean
 cclean() {
+    # Systemclean
     sudo pacman -Sc --noconfirm
     /usr/bin/sudo journalctl --vacuum-time=14d --rotate
     sudo journalctl --vacuum-size=33M
@@ -116,8 +114,8 @@ cclean() {
     delete_packages
     ccache -C
 }
-# advance cleanup
 ccclean() {
+    # advance cleanup
     sudo find / -iname '*.bak' -type f -print -delete
     sudo find / -iname '*.old' -type f -print -delete
     sudo find / -iname /etc/ufw/*202* -type f -print -delete
@@ -133,6 +131,7 @@ findbrokenpkgs() {
     command findbrokenpkgs
 }
 findbrokesymlinks() {
+
     sudo find / -xtype l -print
 }
 
@@ -153,6 +152,7 @@ delete_packages() {
 }
 
 move_to_trash() {
+
     if [[ $# -eq 0 ]]; then
         return 0 # return success if no arguments passed
     fi
@@ -182,6 +182,7 @@ move_to_trash() {
 }
 
 rm() {
+
     if [ "$(id -u)" != "0" ]; then
         echo -e '      to delete \e[38;2;242;29;0m'"$*"'\e[0m press (y/n) or Enter: '
         stty -echo
@@ -210,6 +211,7 @@ orphans() {
 }
 
 pamacclean() {
+
     pamac clean --no-confirm --keep 1
     sudo find /tmp/* -delete -print
     sudo find /var/lib/pacman/sync/* -delete -print
@@ -228,6 +230,7 @@ pamacclean() {
 }
 
 downgrade() {
+
     command /usr/bin/sudo /usr/bin/downgrade "$@"
 }
 
@@ -235,6 +238,7 @@ downgrade() {
 alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
 arch-pamacclean() {
+
     pamac clean --no-confirm --keep 1
     sudo find /tmp/* -delete -print
     sudo find /var/lib/pacman/sync/* -delete -print
@@ -265,9 +269,10 @@ wine-config() {
     export WINEARCH=win64
     export WINEESYNC=1
     winecfg
+    # steam linux-steam-integration
 }
-# steam linux-steam-integration
 wine_clean() {
+
     yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9
     sudo find ~/steam* -delete -print
     sudo find ~/.local/share/wineprefixes/ -delete -print
@@ -299,11 +304,13 @@ alias free='free -h ' # Show sizes in MB
 alias whereami='echo $PWD'
 alias more='less --use-color'
 pacman-update() {
+
     sudo pacman-mirrors -a -P https --fasttrack &&
         sudo pacman -Syu && echo here we go Richard
 }
 alias mirror-check='pacman-mirrors --status'
 grub-update() {
+
     sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
     sudo mkinitcpio -P
     sudo update-grub && sudo tree /boot/efi
@@ -368,18 +375,18 @@ alias tcpdump_wlp59='sudo tcpdump -i wlp59s0' # wireshark cli
 alias ping='ping -c 3 '
 alias gateway-ping='ping _gateway'
 
-#Gateway
+# Gateway
 alias route='route -n'
 
-#VPN
+# VPN
 alias vpnProtonvpn='protonvpn'
 vpn-eth() {
+
     if [[ -d /opt/cisco/anyconnect ]]; then
-        sh -c sudo rm -rfv /opt/cisco/anyconnect || return 1
+        sh -c "sudo rm -rfv /opt/cisco/anyconnect" || return 1
     fi
-    sh -c sudo mkdir -pv /opt/cisco/anyconnect/
-    echo 'hi'
-    sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh
+    sh -c "sudo mkdir -pv /opt/cisco/anyconnect/" || true
+    sh -c "sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh"
 }
 # sudo dhclient -v
 # sudo airmon-ng
@@ -405,6 +412,7 @@ alias server-response='wget --server-response'        # Website/Page Speed test
 alias speed-wget-speedometer='wget --server-response' # Website/Page Speed test
 
 v() {
+
     if [[ $nvim ]]; then
         sudo nvim "$@"
     else
@@ -444,6 +452,7 @@ alias grep='grep --color=auto'
 alias g='grep --color=auto'
 
 gg() {
+
     man "$1" | grep --color=auto "$2"
 }
 
@@ -461,7 +470,23 @@ else
     export EDITOR='neovim'
 fi
 
-alias np='$EDITOR -w PKGBUILD'
+ee() {
+
+    local count=1
+    local filename="Untitled-$count"
+    while [ -e "$filename" ]; do
+        count=$((count + 1))
+        filename="Untitled-$count"
+    done
+    $EDITOR -w "$filename"
+    return
+
+}
+np() {
+    #todo
+    # find ~/ PKGBUILD_ -atime 88 -print -path '!~/Downloads'  -exec mv {} ~/Downloads \;
+    $EDITOR -w PKGBUILD
+}
 alias makepkg-si='makepkg -si' #git clone - PKGBUILD
 
 # Git
@@ -479,6 +504,7 @@ gitup() {
 }
 
 gh_website() {
+
     git remote add origin git@github.com:terashy88/website.git
     git branch -M master
     git push -u origin main master
@@ -517,6 +543,11 @@ parse_git_branch() {
     (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
 }
 
+gitdelete_() {
+    #  delete both, remote first
+    git rm --cached
+}
+
 : <<GIT
 # Delete all changes in the branch
 git checkout .
@@ -540,7 +571,8 @@ GIT
 #     sudo "$@"
 # }
 
-eee() { # Editor Quick load
+eee() {
+    # Editor Quick load
     $EDITOR ~/ownCloud/p-git/todo
     $EDITOR ~/ownCloud/dotfile/cheatsheet
     $EDITOR ~/ownCloud/dotfile/.stignore
@@ -550,8 +582,8 @@ eee() { # Editor Quick load
     $EDITOR ~/ownCloud/W-link/js/index.js
 }
 
-# Define my_touch function to create directories and files
 my_touch() {
+    # Define my_touch function to create directories and files
     for arg in "$@"; do
         if [[ -n "${arg}" ]]; then
             mkdir -p "$(dirname "${arg}")" && command touch "${arg}" && ls -ld "${arg}"
@@ -559,8 +591,8 @@ my_touch() {
             echo "Invalid argument: ${arg}"
         fi
     done
+    # Define touch function to call my_touch with -v option
 }
-# Define touch function to call my_touch with -v option
 touch() {
     # Avoid infinite recursion by not calling the touch function here
     my_touch "$@"
@@ -578,6 +610,7 @@ mkdir_() {
 }
 
 t() {
+
     if [[ ! -d ~/Downloads/test ]]; then
         mkdir -p ~/Downloads/test
     fi
@@ -586,34 +619,42 @@ t() {
 }
 
 dl() {
+
     cd ~/Downloads/ || return
     ll || ls
 }
 cd..() {
+
     cd .. || true
     ll || ls
 }
 D-link() {
+
     cd ~/ownCloud/D-link/ || true
     eval ll || ls
 }
 S-link() {
+
     cd ~/ownCloud/S-link/ || true
     eval ll || ls
 }
 M-link() {
+
     cd ~/ownCloud/M-link/ || true
     eval ll || ls
 }
 W-link() {
+
     cd ~/ownCloud/W-link/ || true
     eval ll || ls
 }
 P-link() {
+
     cd ~/ownCloud/P-link/ || true
     eval ll || ls
 }
 bin() {
+
     cd ~/ownCloud/.bin/ || true
     eval ll || ls
 }
@@ -652,6 +693,7 @@ alias powertop='sudo powertop'
 
 # swap
 swap-activate() {
+
     sudo swapoff /swapfile &&
         sh -c "sudo rm /swapfile" &&
         sudo dd if=/dev/zero of=/swapfile bs=1M count=8024 status=progress &&
@@ -748,9 +790,9 @@ qq() {
     xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
 }
 
-# Weather / Wetter
-alias wetter="weather"
 weather() {
+    # Weather / Wetter
+    alias wetter="weather"
     xfce4-terminal --hide-scrollbar --hide-menubar --maximize -x sh -c "curl wttr.in;  read -n 1 -srp 'Press any key to continue...'"
 }
 
@@ -774,6 +816,7 @@ alias diskspace='   gdu'                             # Bigest files in folder 'd
 
 # shutdown
 pwf() {
+
     xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --geometry=66x14 -x sh -c "sleep 1 ; termdown 88 && systemctl poweroff"
 }
 
@@ -785,8 +828,8 @@ alias trade='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --max
 
 alias history-grep='history | grep'
 
-# barrier new barrier keyGen
 barrier-keygen() {
+    # barrier new barrier keyGen
     if [[ ! -d ~/.local/share/barrier/SSL/Fingerprints ]]; then
         mkdir -pv ~/.local/share/barrier/SSL/Fingerprints || true
     fi
@@ -797,11 +840,11 @@ barrier-keygen() {
 
 aa() {
     # ChatGPT Terminal https://chatbot.theb.ai/
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
 }
 aaa() {
     # ChatGPT Terminal
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=66x22 -Hx bash -c "echo \"Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
 }
 
 # chatblade with OpenAPI    #!   pay
@@ -876,8 +919,8 @@ alias modprobe-test='modprobe binder_linux
 modprobe ashmem_linux
 modprobe efivarfs'
 
-# systemctl enable
 systemctl-enable() {
+    # systemctl enable
     sudo hwclock --systohc --utc
     sudo timedatectl set-ntp true
     sudo systemctl enable --now systemd-timesyncd
@@ -894,7 +937,7 @@ systemctl-enable() {
     update-mime-database ~/.local/share/mime
     sh -c "sudo ln -s /var/lib/snapd/snap /snap"
     chmod go-w ~
-    sh -c 'sudo chown -R "${USER}":"${USER}" ~/.ssh'
+    sh -c "sudo chown -R ${USER}:${USER} ~/.ssh"
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/*
     sh -c "sudo powertop --auto-tune"
@@ -919,6 +962,52 @@ Shift_L,   Down, Shift_L|Button5
 EOF
     fi
     imwheel -k
+}
+
+chroot_new() {
+    # chroot scrpt
+    ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
+    hwclock --systohc
+    # sed -i '178s/.//' /etc/locale.gen
+    locale-gen
+    echo "LANG=en_US.UTF-8" >>/etc/locale.conf
+    echo "KEYMAP=de_CH-latin1" >>/etc/vconsole.conf
+    echo "xps" >>/etc/hostname
+    if [[ ! -f /etc/hosts ]]; then
+        cat >/etc/hosts <<<EOF
+        127.0.0.1 localhost
+        ::1 localhost
+        127.0.1.1 xps.localdomain xps
+        EOF
+    fi
+    echo root:password | chpasswd
+
+    pacman -Syyu --needed grub efibootmgr networkmanager network-manager-applet mtools dosfstools base-devel linux-headers avahi xdg-user-dirs xdg-utils gvfs gvfs-smb nfs-utils inetutils dnsutils bluez bluez-utils cups hplip alsa-utils bash-completion openssh rsync acpi acpi_call tlp edk2-ovmf bridge-utils dnsmasq vde2 openbsd-netcat iptables-nft ipset sof-firmware nss-mdns acpid os-prober ntfs-3g
+    # pacman -S --noconfirm xf86-video-amdgpu
+    # pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
+
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
+
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+    systemctl enable NetworkManager
+    systemctl enable bluetooth
+    systemctl enable cups.service
+    systemctl enable sshd
+    systemctl enable avahi-daemon
+    systemctl enable tlp
+    systemctl enable fstrim.timer
+    systemctl enable libvirtd
+    systemctl enable acpid
+
+    useradd -m terashy
+    echo terashy:password | chpasswd
+    usermod -aG libvirt terashy
+
+    echo "terashy ALL=(ALL) ALL" >>/etc/sudoers.d/terashy
+
+    printf "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"
+
 }
 
 backup() {
@@ -968,8 +1057,8 @@ EOF
 #     builtin cd "$@" && ls -thaNrl --color=auto --sort=time
 # }
 
-# Easy extract
 extract() {
+    # Easy extract
     if [[ -f "$1" ]]; then
         case $1 in
         *.tar.bz2) tar xvjf "$1" ;;
@@ -991,16 +1080,17 @@ extract() {
 }
 
 search() {
+
     find ~/ -iname "*$1*"
 }
 
-# Bash completion function for PDF files
 _pdf_completion() {
+    # completion function for PDF files
     _files -g "*.pdf"
 }
 
-# IMPG PNG Define function for opening image files with system's default image opener
 function imgopen() {
+    # IMPG PNG Define function for opening image files with system's default image opener
     if command -v gio >/dev/null 2>&1; then
         if test -f "$1"; then
             setsid gio open "$1" >/dev/null 2>&1 &
@@ -1012,8 +1102,8 @@ function imgopen() {
     fi
 }
 
-# Function for opening PDF files with the default program
 opendefaultpdf() {
+    # Function for opening PDF files with the default program
     if command -v xdg-open >/dev/null 2>&1; then
         if [[ -f "$1" ]]; then
             xdg-open "$1" >/dev/null 2>&1 &
@@ -1046,6 +1136,7 @@ convert_toPDF() {
 }
 
 set_wgetrc() {
+
     if [[ -z "${XDG_CONFIG_HOME}" ]]; then
         export XDG_CONFIG_HOME="${HOME}/.config"
     fi
