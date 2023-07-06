@@ -185,7 +185,7 @@ env_() {
 
     # Environment
     # Wayland
-    # GTK   #!..added gtk4
+    # GTK
     # GDK_BACKEND=x11
     # QT_QPA_PLATFORM=wayland
     # export QT_STYLE_OVERRIDE="wayland"
@@ -204,15 +204,18 @@ env_() {
 
     # xfce
     # export QT_QPA_PLATFORMTHEME="kvantum" # xfce4
-    # export QT_STYLE_OVERRIDE="kvantum"
+    # # export QT_STYLE_OVERRIDE="kvantum"
     # export QT_QPA_PLATFORMTHEME="kvantum-dark"
     # export QT_STYLE_OVERRIDE="kvantum-dark"
 
     # which Session
-    alias wich_session='echo $XDG_SESSION_TYPE'
-
-    alias qttest="echo The QT_QPA_PLATFORMTHEME is: $QT_QPA_PLATFORMTHEME;
-echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE"
+    wich_session() {
+        echo $XDG_SESSION_TYPE
+    }
+    qttest() {
+        echo The QT_QPA_PLATFORMTHEME is: $QT_QPA_PLATFORMTHEME
+        echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE
+    }
     # export GTK_THEME=Arc-Maia-Dark
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
     # export GTK2_RC_FILES="$HOME/.config/gtkrc-4"
@@ -255,8 +258,10 @@ ssh_() {
 
     #  keychain
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
+
+    # ---> to gh_up
     # eval "$(keychain --eval -q gpg ~/.gnupg/**/*)"
-    eval "$(keychain --eval -q --agents ssh ~/.ssh/id_rsa*)"
+    # eval "$(keychain --eval -q --agents ssh ~/.ssh/id_rsa*)"
 
     ssh_log() {
         journalctl | g ssh
@@ -299,7 +304,6 @@ ssh_() {
 ssh_
 
 gpg_() {
-
     # GPG  https://keys.openpgp.org/
     gpg-status() {
         gpg -k
@@ -669,6 +673,7 @@ setopt PUSHD_IGNORE_DUPS
 autoload -Uz add-zsh-hook
 
 rehash_precmd() {
+
     if [[ -e /var/cache/zsh/pacman ]]; then
         local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
         if ((zshcache_time < paccache_time)); then
@@ -681,6 +686,7 @@ rehash_precmd() {
 autoload -Uz add-zsh-hook
 
 function xterm_title_precmd() {
+
     print -Pn -- '\e]2;%n@%m %~\a'
     [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
 }
@@ -698,6 +704,7 @@ function xterm_title_precmd() {
 autoload -Uz add-zsh-hook
 
 function xterm_title_precmd() {
+
     print -Pn -- '\e]2;%n@%m %~\a'
     [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
 }
@@ -776,6 +783,7 @@ plugin_() {
 plugin_
 
 userGroupdel() {
+
     if [[ $# -ne 1 ]]; then
         echo "Usage: userGroupdel <username>"
         return 1
