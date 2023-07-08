@@ -138,7 +138,7 @@ findbrokesymlinks() {
 delete_packages() {
     # Deleted not wanted packages >> cclean
     # List of packages to delete
-    packages=(pidgin hexchat mousepad audacious kodi nemo-emblems vuescan)
+    packages=(hexchat mousepad audacious kodi nemo-emblems vuescan)
 
     # Loop through the packages and remove them
     for package in "${packages[@]}"; do
