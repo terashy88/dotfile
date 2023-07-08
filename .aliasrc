@@ -22,7 +22,6 @@ fetch_() {
 }
 fetch_
 ############ Todo Workaround ################
-
 # restart sshd
 ################## TODO #####################
 #############################################
@@ -116,10 +115,11 @@ cclean() {
 }
 ccclean() {
     # advance cleanup
-    sudo find / -iname '*.bak' -type f -print -delete
     sudo find / -iname '*.old' -type f -print -delete
     sudo find / -iname /etc/ufw/*202* -type f -print -delete
     sudo find / -iname '*sync-conflict' -type f -print -delete
+    sudo find / -iname '*.bak' -type f -print
+    echo "  Checkout above if you want to delete some <.bak> file.."
 }
 find_oldstuff() {
     find ~/.config -atime 266 -print
@@ -323,8 +323,8 @@ alias mv='mv -iv '
 
 # paru / yay
 AUR_helper=paru
-alias zz='yy'
-alias yy='$AUR_helper'
+alias zz="yy"
+alias yy="${AUR_helper}"
 
 alias rechner-bc='   bc -ql'               #Calculator
 alias calculator-bc='bc -ql'               #Calculator
@@ -362,9 +362,9 @@ alias journalctl-live='       journalctl -f'
 alias journalctl-kernel='sudo journalctl -rp 3 -xb|more'
 alias journalctl-log='   sudo journalctl -r |more'
 alias whois='whois '                                                                                              # whois input-ip 127.0.0.1
-alias traceroute='traceroute '                                                                                    # traceroute input-ip    #traffic-backtrace info scan
-alias network_bettercap_monitoring='sudo bettercap'                                                               #network-monitoring     live-scan spoofing
-alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' #network-monitoring     live-scan
+alias traceroute='traceroute '                                                                                    # traceroute input-ip    # traffic-backtrace info scan
+alias network_bettercap_monitoring='sudo bettercap'                                                               # network-monitoring     live-scan spoofing
+alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' # network-monitoring     live-scan
 # alias netstat="sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK'"
 alias netstat-live='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo netstat -c -i eno1"'
 alias networkstatus='networkctl list'
@@ -413,7 +413,7 @@ alias speed-wget-speedometer='wget --server-response' # Website/Page Speed test
 
 v() {
 
-    if [[ $nvim ]]; then
+    if [[ "$(id -u)" != "0" ]]; then
         sudo nvim "$@"
     else
         nvim "$@"
@@ -498,7 +498,7 @@ gitup() {
     git add README.md
     git commit -m "commit"
     git commit -m update
-    git branche -M master
+    git branch -M master
     # git remote add origin git@github.com:username/reponame
     git push master
 }
@@ -845,6 +845,10 @@ aa() {
 aaa() {
     # ChatGPT Terminal
     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
+}
+bb() {
+    # Ai tool - cli
+    bito
 }
 
 # chatblade with OpenAPI    #!   pay

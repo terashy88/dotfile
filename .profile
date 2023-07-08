@@ -15,6 +15,7 @@ fi
 # Set all Java apps to use GTK+ font & theme settings
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ${_JAVA_OPTIONS}"
 
+# shellcheck source=/dev/null
 [[ -f ~/.config/zsh/.zshenv ]] && . ~/.config/zsh/.zshenv
 
 # Startup
@@ -38,3 +39,14 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 
 # Call STARTUP with commands to start   #! use system starup if syncing on different PC
 # STARTUP imwheel barrier caffeine "gammastep-indicator -t 5000:4100" /usr/bin/owncloud syncthing "telegram-desktop -- %u" "/opt/cisco/secureclient/bin/vpnui" "whatsapp-nativefier"
+
+keychain_() {
+
+    keychain ~/.ssh/id_*
+    # keychain ~/.ssh/id_ecdsa
+    # shellcheck source=/dev/null
+    [ -f ~/.keychain/"$HOSTNAME"-sh ] && . ~/.keychain/"$HOSTNAME"-sh 2>/dev/null
+    # shellcheck source=/dev/null
+    [ -f ~/.keychain/"$HOSTNAME"-sh-gpg ] && . ~/.keychain/"$HOSTNAME"-sh-gpg 2>/dev/null
+}
+keychain_
