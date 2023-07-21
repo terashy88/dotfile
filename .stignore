@@ -21,13 +21,20 @@
 .local/share/recently-used*
 .config/recently-used
 
+# safety
+.config/Portmaster/Code Cache
+.config/Portmaster/GPUCache/
+.config/Portmaster/Local Storage/
+.config/Portmaster/Session Storage
+.config/Portmaster/Network Persistent State
+
 # syncthing    #! don't delete
 #!.stfolder    #  don't delete
 !**sync-conflict*
 !**.stignore**
 .config/syncthing/*
-**.stversions*
-**.subversion*
+.stversions
+**.subversion**
 **.syncthing.**
 
 # owncloud
@@ -64,6 +71,7 @@ digikamrc
 
 #.dtrash
 (?i)**trash**
+.local/share/Trash/files
 
 # Microsoft
 *desktop.ini*
@@ -198,6 +206,7 @@ known_hosts*
 .config/xfce4/panel/
 .config/xfce4/xfconf/xfce-perchannel-xml
 .config/mimeapps.list
+.config/xfce4/desktop/
 
 # whatsapp
 .config/whatsapp*
@@ -271,4 +280,6 @@ bottles         #! not use
 .local/state/nvim/shada/
 
 # Joplin
-.config/joplin
+.config/Joplin*
+.config/joplin*
+!.config/joplin-desktop/plugins

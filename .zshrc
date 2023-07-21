@@ -120,11 +120,12 @@ setopt_
 
 export_() {
 
+    export XDG_CONFIG_HOME=/home/$USER/.config
+    export XDG_DATA_HOME="$HOME/.local/share"
+    export ZSH_CACHE_DIR="$HOME/.cache/"
     export VARIABLE="content"
     export GOPATH="$XDG_DATA_HOME"/go
-    export ZSH_CACHE_DIR="$HOME/.cache/"
     export NVM_DIR="$XDG_DATA_HOME"/nvm
-    export XDG_DATA_HOME="$HOME/.local/share"
     export XDG_STATE_HOME="$HOME/.local/state"
     export XDG_BIN_HOME="$HOME/.local/bin"
     export XDG_CACHE_DIR="$HOME/.cache"
@@ -135,7 +136,6 @@ export_() {
     export CONAN_USER_HOME="$XDG_CONFIG_HOME"
     export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
     export DVDCSS_CACHE="$XDG_DATA_HOME"/dvdcss
-    export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
     export PYTHONHISTORY="$HOME/.cache"
     export ICEAUTHORITY="$XDG_CACHE_HOME"
     export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
@@ -143,7 +143,6 @@ export_() {
     export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
     export RANDFILE=/path/to/.rnd
     export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
-    export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
     # export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority     #! not for lightDM
 
     # dirs check with ~/.config/user-dirs.dirs
@@ -163,6 +162,9 @@ export_() {
     export PATH=$PATH:"$ANDROID_HOME/tools/bin"
     export PATH=$PATH:"$ANDROID_HOME/platform-tools"
 
+    # gpodder   #! don't work
+    export GPODDER_HOME="$XDG_CONFIG_HOME"/gPodder
+
     export LD_LIBRARY_PATH="/opt/spflashtool"
 
     export ERL_AFLAGS="-kernel shell_history enabled"
@@ -177,6 +179,16 @@ export_() {
     export LESS_TERMCAP_ue=$'\E[0m'
     export LESS_TERMCAP_us=$'\E[01;36m'
     export LESS=-R
+
+    export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+
+    # export JAVA_HOME=""
+    # export _JAVA_OPTIONS=""
+    # export JAVA_HOME="/usr/lib/jvm/default"
+    # export JAVA_HOME="/usr/lib/jvm/default-runtime"
+    # export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java #! already running
+    # export PATH="/usr/lib/jvm/default/bin/:$PATH"
+    export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 
 }
 export_
@@ -216,10 +228,16 @@ env_() {
         echo The QT_QPA_PLATFORMTHEME is: $QT_QPA_PLATFORMTHEME
         echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE
     }
+
     # export GTK_THEME=Arc-Maia-Dark
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
-    # export GTK2_RC_FILES="$HOME/.config/gtkrc-4"
+    # export GTK2_RC_FILES="$HOME/.config/gtk-4.0"
     # export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+
+    # export GDK_DPI_SCALE=0.5
+    # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
+
+    # gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 }
 env_
 
@@ -238,9 +256,9 @@ ssh_() {
     fi
 
     # Source ssh-agent environment variables
-    if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-        source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-    fi
+    # if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    #     source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+    # fi
 
     if [[ ! -n ${SSH_CONNECTION} ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -350,6 +368,9 @@ gpg_() {
 }
 gpg_
 
+# prompt
+# PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
 powerline_() {
     # Use powerline manjaro-zsh-config #todo
     USE_POWERLINE="true"
@@ -382,7 +403,8 @@ powerline_
 
 zstyle_() {
 
-    # ZDOTDIR="$XDG_CONFIG_HOME/zsh"    #! break terminal in vscodium
+    # ZDOTDIR=$HOME/.config/zsh #! break terminal in vscodium
+    # compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
     export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 

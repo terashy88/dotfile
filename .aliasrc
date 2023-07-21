@@ -270,10 +270,17 @@ wine-config() {
     export WINEESYNC=1
     winecfg
     # steam linux-steam-integration
+
+    echo ""
+    echo done..
 }
 wine_clean() {
 
     yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9
+
+    .local/share/applications
+    sudo find ~/.local/share/Steam/ -delete -print
+    sudo find ~/.local/share/applications/wine -delete -print
     sudo find ~/steam* -delete -print
     sudo find ~/.local/share/wineprefixes/ -delete -print
     sudo find ~/.config/menus/applications-merged/wine* -delete -print
@@ -344,6 +351,32 @@ alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' # nmap -p 1-65535 -T4 -A -v
 # alias port-all-and-udp='nmap -sS -sU -T4 -A -v '   # nmap -sS -sU -T4 -A -v 127.0.0.1
 # alias port-nmap-input-ip='nmap -T4 -A -v '         # nmap -T4 -A -v 127.0.0.1
 
+# security check
+port_check_() {
+    echo "listening ports"
+    sudo netstat -tunlp
+}
+
+fail2ban_() {
+    # --- Enable fail2ban
+    sudo pacman -S --needed fail2ban
+
+    if [[ ! -f /etc/fail2ban/jail.local ]]; then
+        sudo sh -c 'echo  "
+[DEFAULT]
+bantime = 1d
+[sshd]
+enabled = true" >/etc/fail2ban/jail.local'
+    fi
+
+    # if [[ ! -f /etc/fail2ban/jail.local ]]; then
+    #     print '\n[DEFAULT]\nbantime = 1d\n[sshd]\nenabled = true' | sudo tee /etc/fail2ban/jail.local
+    # fi
+
+    sudo systemctl enable fail2ban
+    sudo systemctl start fail2ban
+}
+
 # speedtest
 alias speedtest="   speedtest --secure" # https
 alias h-speedtest=" speedtest "
@@ -366,6 +399,7 @@ alias traceroute='traceroute '                                                  
 alias network_bettercap_monitoring='sudo bettercap'                                                               # network-monitoring     live-scan spoofing
 alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' # network-monitoring     live-scan
 # alias netstat="sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK'"
+alias sniffglue="sudo sniffglue" # Network sniffer
 alias netstat-live='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo netstat -c -i eno1"'
 alias networkstatus='networkctl list'
 alias ufw-iptables='sudo iptables -L'
@@ -387,6 +421,8 @@ vpn-eth() {
     fi
     sh -c "sudo mkdir -pv /opt/cisco/anyconnect/" || true
     sh -c "sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh"
+
+    fail2ban_
 }
 # sudo dhclient -v
 # sudo airmon-ng
@@ -496,6 +532,7 @@ gitup() {
     # local
     git add .
     git add README.md
+    # git commit -m "$1"
     git commit -m "commit"
     git commit -m update
     git branch -M master
@@ -700,7 +737,7 @@ swap-activate() {
         sh -c "sudo chmod 600 /swapfile" &&
         sudo mkswap /swapfile &&
         sudo swapon /swapfile &&
-        cat <<'EOF' >>/etc/sysctl.d/99-swappiness.conf
+        cat <<'EOF' >/etc/sysctl.d/99-swappiness.conf
 
     vm.swappiness=6
     vm.vfs_cache_pressure=66
@@ -1156,6 +1193,14 @@ set_wgetrc() {
 #     fi
 #   done
 # }
+
+# Trim leading and trailing spaces (for scripts)
+trim() {
+    local var=$*
+    var="${var#"${var%%[![:space:]]*}"}" # remove leading whitespace characters
+    var="${var%"${var##*[![:space:]]}"}" # remove trailing whitespace characters
+    echo -n "$var"
+}
 
 # some note
 : <<EOF

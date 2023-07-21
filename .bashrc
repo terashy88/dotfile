@@ -23,7 +23,6 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh #! alias not working
 export HISTIGNORE="   :ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # bash
 export HISTCONTROL="ignoreboth:erasedups:ignorespace"
-shopt -s histappend
 
 # Browser
 if [[ -n "$DISPLAY" ]]; then
@@ -84,7 +83,7 @@ export MINIKUBE_HOME="$XDG_DATA_HOME"/minikube
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
 export MACHINE_STORAGE_PATH="$XDG_DATA_HOME"/docker-machine
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+# export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 # export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority     #! not for lightDM
 
 # dirs check with ~/.config/user-dirs.dirs
@@ -176,7 +175,10 @@ function reset_broken_terminal() {
     printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
 }
 
-if [[ -f /etc/bash_completion ]] && ! shopt -oq posix; then
+# Enable bash programmable completion features in interactive shells
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
@@ -194,11 +196,6 @@ UFW=~/ownCloud/.bin/ufwEnable.sh
 # powerlevel10k icons
 PALIASRC=$HOME/ownCloud/private-git/p-aliasrc
 [[ -f "${PALIASRC}" ]] && . "${PALIASRC}"
-# bash_completion
-[[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
-# Use bash-completion
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
-    . /usr/share/bash-completion/bash_completion
 
 : <<EO
 
