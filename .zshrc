@@ -210,9 +210,9 @@ env_() {
     # export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
     # export QT_STYLE_OVERRIDE="qt5ct"
 
-    # waydroid
-    # GBM_BACKEND=nvidia-drm
-    # __GLX_VENDOR_LIBRARY_NAME=nvidia
+    # waydroid / steam
+    # export GBM_BACKEND=nvidia-drm
+    # export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
     # xfce
     # export QT_QPA_PLATFORMTHEME="kvantum" # xfce4
@@ -757,7 +757,7 @@ plugin_() {
     # p10k #! starting zsh config
     [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
     [[ -d $HOME/.config/zsh/ ]] && source "$HOME/.config/zsh/"
-    # UFW aktivate
+    # UFW aktivate -- firewall
     [[ -f ~/ownCloud/.bin/ufwEnable.sh ]] && source ~/ownCloud/.bin/ufwEnable.sh
     [ -d /etc/profile ] && source /etc/profile
     # Pacman comand not found

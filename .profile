@@ -2,15 +2,18 @@
 
 ## startup script       #! gui tool doesn't work properly
 
-# Check if ufw is running
-if ! pgrep -x "ufw" >/dev/null; then
-    # Check if ufw is enabled
-    if ! sudo ufw status | grep -q "Status: active"; then
-        # Activate ufw
-        echo 'Your Firewall is not active'
-        sudo ufw enable
+firewall_() {
+    # Check if ufw is running
+    if ! pgrep -x "ufw" >/dev/null; then
+        # Check if ufw is enabled
+        if ! sudo ufw status | grep -q "Status: active"; then
+            # Activate ufw
+            echo 'Your Firewall is not active'
+            sudo ufw enable
+        fi
     fi
-fi
+}
+firewall_
 
 # Set all Java apps to use GTK+ font & theme settings
 # export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel ${_JAVA_OPTIONS}"

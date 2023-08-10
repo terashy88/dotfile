@@ -22,11 +22,7 @@
 .config/recently-used
 
 # safety
-.config/Portmaster/Code Cache
-.config/Portmaster/GPUCache/
-.config/Portmaster/Local Storage/
-.config/Portmaster/Session Storage
-.config/Portmaster/Network Persistent State
+.config/Portmaster/
 
 # syncthing    #! don't delete
 #!.stfolder    #  don't delete
@@ -116,14 +112,13 @@ DS_*
 #*vsliveshare*
 .config/vscode-sqltools
 .config/VSCodium/*
-.config/TabNine/
-.local/share/TabNine/*
+*TabNine*
 .local/share/kite/*
 state.*
 *QuotaManager*
 *sdb.*
 .config/systemd/user/*
-.wakatime*
+*wakatime*
 .vscode-oss/
 .codeium
 .bito
@@ -247,7 +242,7 @@ bottles         #! not use
 
 # wine
 .local/share/icons/
-*.wine
+.wine/
 
 # Packages Manager
 .cargo
