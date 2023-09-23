@@ -128,6 +128,7 @@ exfat-utils
 exiv2
 exo
 f2fs-tools
+fail2ban
 ffmpeg
 ffmpegthumbnailer
 file
@@ -149,6 +150,7 @@ gcc
 gcc-libs
 gcolor3
 gdu
+geany
 gegl
 gendesk
 geoclue
@@ -253,7 +255,7 @@ jemalloc
 jfsutils
 jnettop
 john
-joplin-beta-appimage
+joplin-appimage
 jsoncpp
 kaccounts-integration
 kactivities
@@ -455,13 +457,12 @@ lightdm-gtk-greeter
 lightdm-gtk-greeter-settings
 lightdm-slick-greeter
 linux-firmware
-linux-firmware-qlogic
 linux-wifi-hotspot
-linux63
-linux63-acpi_call
-linux63-broadcom-wl
 linux63-headers
-linux63-virtualbox-host-modules
+linux65
+linux65-acpi_call
+linux65-broadcom-wl
+linux65-virtualbox-host-modules
 log4cplus
 logrotate
 lpsolve
@@ -479,7 +480,6 @@ man-db
 man-pages
 man-pages-de
 manjaro-alsa
-manjaro-application-utility
 manjaro-base-skel
 manjaro-bluetooth
 manjaro-browser-settings
@@ -493,7 +493,7 @@ mariadb-libs
 mbedtls
 mdadm
 media-player-info
-memtest86+
+memtest86-efi
 memtester
 menulibre
 mesa-demos
@@ -741,6 +741,7 @@ rasqal
 rclone
 rclone-browser
 re2
+rebuild-detector
 redland
 reiserfsprogs
 rhash
@@ -839,7 +840,6 @@ vscodium-bin-features
 vscodium-bin-marketplace
 vulkan-intel
 vulkan-tools
-waydroid
 wd719x-firmware
 webkit2gtk-4.1
 wget

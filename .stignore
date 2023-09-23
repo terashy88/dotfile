@@ -7,274 +7,284 @@
 #'  //  ' Comment, when used at the start of a line
 #!!!	   use only '/' will Block everything       !!!#
 
+# --------------- Test --------------------
+.config/
+.local/
+# -----------------------------------------
+
 
 # allowed #
-# (?i)!**setting*
-# (?i)!**Preference*
-(?i)!**.cfg
+# (?d)(?i)!**setting*
+# (?d)(?i)!**Preference*
+(?d)(?i)!**.cfg
 #!.conf     --will brake barrier--
-!**.gnupg*
-# (?i)!**Extension
-# (?i)!**bookmark*
+(?d).gnupg
+# (?i)(?d)!**Extension
+# (?i)(?d)!**bookmark*
 
 # no katergory
-.local/share/recently-used*
-.config/recently-used
+(?d).local/share/recently-used*
+(?d).config/recently-used
+(?d).keychain/
 
 # safety
-.config/Portmaster/
+.config/Portmaster
 
 # syncthing    #! don't delete
 #!.stfolder    #  don't delete
-!**sync-conflict*
-!**.stignore**
-.config/syncthing/*
-.stversions
-**.subversion**
-**.syncthing.**
+(?d)!**sync-conflict*
+(?d)!**.stignore**
+(?d).config/syncthing
+(?d).stversions
+(?d)**.subversion**
+(?d)**.syncthing.**
 
 # owncloud
-**teramuse-rsx
-**.oscamerafaceu*
-.config/ownCloud
-**owncloud.cfg
-**.sync_journal**
-**.owncloudsync**
-**(conflicted copy *
+(?d)teramuse-rsx
+(?d)**.oscamerafaceu*
+(?d).config/ownCloud
+(?d).config/owncloud.cfg
+(?d)**.sync_journal**
+(?d)**.owncloudsync**
+(?d)**(conflicted copy *
 
 # private files
-**aatest
-M-link-raw
+(?d)**aatest
+(?d)M-link-raw
 # pkglist.txt
 
 # no catergory???
-Desktop
-Schreibtisch
-(?i)**history**
-.config/Bitwarden
-.local/share/zeitgeist/*
-.config/Debauchee/Barrier.conf
-.local/share/barrier/SSL/Fingerprints/Local.txt
-**vconsole.conf
+(?d)Desktop
+(?d)Schreibtisch
+(?d)(?i)**history**
+(?d).config/Bitwarden
+(?d).local/share/zeitgeist/*
+(?d).config/Debauchee/Barrier.conf
+(?d).local/share/barrier/SSL/Fingerprints/Local.txt
 
 # remote
-.anydesk
+(?d).anydesk
 
 # digikam
 #!don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 # digikamrc has to be ignore to sync on other PC
-digikamrc
+(?d).config/digikamrc
 
-#.dtrash
-(?i)**trash**
-.local/share/Trash/files
+# .dtrash
+# (?i)**trash**
+(?d).local/share/Trash/
 
 # Microsoft
-*desktop.ini*
-$RECYCLE.BIN
-.config/teams/
-.config/Microsoft/*
+(?d)*desktop.ini*
+(?d)$RECYCLE.BIN
+(?d).config/teams/
+(?d).config/Microsoft/*
 # System Volume Information
 
 # tmp file
-(?i)cache*/**
-.cache
-**.tmp
-**._mp
-**.old
-**.syd
+(?d)(?i)cache*/**
+(?d).cache
+(?d)**.tmp
+(?d)**._mp
+(?d)**.old
+(?d)**.syd
 # **.dir
-**.gid
-**.chk
-**.dmp
-**.nch
-**..swp
-.LCK
-.~
-**.db*
-**db.*
-**_db*
-DS_*
-*.ds
+(?d)**.gid
+(?d)**.chk
+(?d)**.dmp
+(?d)**.nch
+(?d)**..swp
+(?d).LCK
+(?d).~
+(?d)**.db*
+(?d)**db.*
+(?d)**_db*
+(?d)DS_*
+(?d)*.ds
 # *.list
-(?i)**.log**
-(?i)**log.txt**
-(?i)**cookies*
-*dconf
-**sqlite
-*.glass
+(?d)(?i)**.log**
+(?d)(?i)**log.txt**
+(?d)(?i)**cookies*
+(?d)*dconf
+(?d)**sqlite
+(?d)*.glass
 
 # file-roler
-**-SL6F6JF**
-**.fr**
+(?d)**-SL6F6JF**
+(?d)**.fr**
 
 # vscodium
 #*vsliveshare*
-.config/vscode-sqltools
-.config/VSCodium/*
-*TabNine*
-.local/share/kite/*
-state.*
-*QuotaManager*
-*sdb.*
-.config/systemd/user/*
-*wakatime*
-.vscode-oss/
-.codeium
-.bito
+(?d).config/vscode-sqltools
+(?d).config/VSCodium/*
+(?d)*TabNine*
+(?d).local/share/kite/*
+(?d).local/share/snyk*
+(?d).local/state
+(?d)*QuotaManager*
+(?d)*sdb.*
+(?d).config/systemd/user/*
+(?d)**wakatime**
+(?d).vscode-oss/
+(?d).codeium
+(?d).bito
 
 # ProtonVPN
-.cert/nm-openvpn/*
+(?d).cert/nm-openvpn/*
 
 .local/share/keyrings/*
 
 # thunderbird / Mozilla  #! don't delete
-.thunderbird/*
-!**.default-release/quicktext
-!**.default-release/ImapMail
-!**.default-release/prefs.js
-!**.default-release/TbSync
-!**.default-release/extensions
-!**.default-release/persdict.dat
+(?d).thunderbird/*
+(?d)!**.default-release/quicktext
+(?d)!**.default-release/ImapMail
+(?d)!**.default-release/prefs.js
+(?d)!**.default-release/TbSync
+(?d)!**.default-release/extensions
+(?d)!**.default-release/persdict.dat
 
 # Mozilla, firefox
-.mozilla
-.librewolf
+(?d).mozilla
+(?d).librewolf
 
-snap/*
-.zcompdump
+(?d)snap/*
+(?d).zcompdump
 (?i)*metadata*
 
 # rclone
-rclone/*
+(?d)rclone/*
 
 # VirtualBox VMs
-.config/VirtualBox
-VirtualBox VMs/*
-!VirtualBox VMs/MJ-xps
-VM-share-rsx/*
-**.vdi
+(?d).config/VirtualBox
+(?d)VirtualBox VMs/*
+(?d)!VirtualBox VMs/MJ-xps
+(?d)VM-share-rsx/*
+(?d)**.vdi
 
 # Android
 *thumbnails*
 # *.android
 
 #.ssh / security
-known_hosts*
-!.ssr
-!*.gpg*
-!.key
-!_key
-!.ssl
+(?d)known_hosts*
+(?d)!.ssr
+(?d)!*.gpg*
+(?d)!.key
+(?d)!_key
+(?d)!.ssl
 # !*_rsa
-!*.pgp*
+(?d)!*.pgp*
 
 # OpenSSL
-.rnd
+(?d).rnd
 
 # nvidia prime-run ignore
 
 # autostart at startup
-.config/autostart/*
+(?d).config/autostart/*
 
 # Telegram
-.local/share/TelegramDesktop
+(?d).local/share/TelegramDesktop
 
 # office
-.config/libreoffice/
-.local/share/onlyoffice/
-*~lock.*
+(?d).config/libreoffice/*
+(?d).local/share/onlyoffice/*
+(?d)*~lock.*
 
 # .Xauthority programm opener if delete then false
-.xinitrc
-.Xauthority
-.xsession-errors
+(?d).xinitrc
+(?d).Xauthority
+(?d).xsession-errors
 
 # manjaro
-.config/manjaro
+(?d).config/manjaro
 
 # xfce-panel
-.config/pavucontrol*
-.cache/xfce4/clipman/textsrc
-**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
-.local/share/notes/Notizen
-.config/xfce4/panel/
-.config/xfce4/xfconf/xfce-perchannel-xml
-.config/mimeapps.list
-.config/xfce4/desktop/
+(?d).config/pavucontrol*
+(?d).cache/xfce4/clipman/textsrc
+(?d)**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
+(?d).local/share/notes/Notizen
+(?d).config/xfce4/panel/*
+(?d).config/xfce4/xfconf/xfce-perchannel-xml
+(?d).config/mimeapps.list
+(?d).config/xfce4/desktop/*
 
 # whatsapp
-.config/whatsapp*
-.local/share/webkitgtk/*
+(?d).config/whatsapp*
+(?d).local/share/webkitgtk/*
 
 # chat
-.config/skypeforlinux/
-.config/Signal/
-.config/Caprine/
-.config/discord/
-.config/teams/
+(?d).config/skypeforlinux/
+(?d).config/Signal/
+(?d).config/Caprine/
+(?d).config/discord/
+(?d).config/teams/
 
 # GitHub Desktop #! dont use, use IDE instad
-*.git*
+(?d)*.git*
 
 # Brave #!don't delete
-.config/BraveSoftware/
+(?d).config/BraveSoftware/
 
 # Sound Pipewire
-.local/state/pipewire/
-.local/state/wireplumber/
+(?d).local/state/pipewire/*
+(?d).local/state/wireplumber/*
 
 # torrent
-.config/deluge
-qBittorrent
-!Downloads/torrent/
-Downloads/
+(?d).config/deluge
+(?d)qBittorrent
+(?d)!Downloads/torrent/
+# (?d)Downloads/
 
 # kde-connect
-.config/kdeconnect
+(?d).config/kdeconnect
 
 # Game
-(?i)*steam*
-*lutris*	    #! not use
-*PlayOnLinux*	#! not use
-bottles         #! not use
-*StarCraft*
+(?d).local/share/Steam/
+(?d)**lutris**	    #! not use
+(?d)**PlayOnLinux**	#! not use
+(?d)**bottles**         #! not use
+(?d)**StarCraft**
+(?d).steam
+(?d)**GUILD WARS**
+(?d)**Games**
 
 # wine
-.local/share/icons/
-.wine/
+(?d).local/share/icons/
+(?d).wine/
+(?d).local/share/desktop-directories
 
 # Packages Manager
-.cargo
-.gradle
-.conan
-.go
-.sonarlint
-.npm
-.config/Electron/
-.nuget
-.config/pamac
+(?d).cargo
+(?d).gradle
+(?d).conan
+(?d).go
+(?d).sonarlint
+(?d).npm
+(?d).config/Electron/
+(?d).nuget
+(?d).config/pamac
 
 # Popcorntime
-.config/Popcorn-Time/
+(?d).config/Popcorn-Time/
 !.config/Popcorn-Time/Default/data
 
 # crack
-.john*
+(?d).john*
 
-.wget-hsts
+(?d).wget-hsts
 
 # media
-.config/LBRY/
-.local/share/lbry/
+(?d).config/LBRY/
+(?d).local/share/lbry/
+(?d).config/vlc
 
 # OBS Studio #! don't delete
-.config/obs-studio/
+(?d).config/obs-studio/*
 
 # nvim
-.local/state/nvim/shada/
+(?d).local/state/nvim/shada/
 
 # Joplin
-.config/Joplin*
-.config/joplin*
-!.config/joplin-desktop/plugins
+(?d)(?i).config/Joplin*
+(?d)!.config/joplin-desktop/plugins

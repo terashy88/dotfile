@@ -27,14 +27,58 @@ fetch_
 portmaster_restart() {
     # sh -c "systemctl status wpa_supplicant.service"
 
-    echo "restart NetworkManager.."
-    systemctl restart NetworkManager.service
+    # echo "restart NetworkManager.."
+    # systemctl restart NetworkManager.service
 
     echo "restarting Portmaster.."
-    systemctl restart portmaster
+    systemctl restart --now portmaster
     nohup >/dev/null 2>&1 sh -c "/opt/safing/portmaster/portmaster-start app --data=/opt/safing/portmaster" &
+
+    # Debug info
+    # curl http://127.0.0.1:817/api/v1/debug/core
 }
 alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
+
+iinstall() {
+    paru -S --needed
+
+    # test
+    : <<EOF
+
+
+
+
+
+
+
+
+-------------------------------------
+
+    # F-Droid
+RethinkDNS
+Blokada
+InviZible Pro
+NetGuard
+pdnsf
+Obtanium
+
+
+EOF
+
+}
+
+safety-up() {
+
+    sudo systemctl enable --now ufw
+    sudo systemctl enable --now portmaster
+    sudo systemctl enable --now fail2ban
+}
+safety_down() {
+
+    sudo systemctl disable --now ufw
+    sudo systemctl disable --now portmaster
+    sudo systemctl disable --now fail2ban
+}
 ################## TODO #####################
 #############################################
 
@@ -113,34 +157,54 @@ cclean() {
     /usr/bin/sudo journalctl --vacuum-time=14d --rotate
     sudo journalctl --vacuum-size=33M
     sudo find ~/.cache/.fr* -delete -print
-    sudo find ~/.dtrash/* -delete -print
+    sudo find ~/.dtrash/* -atime 8 -delete -print
     fc-cache -fv
-    sudo find ~/.cache/ -atime 88 -delete -print
     sudo find /tmp/* -delete -print
     sudo find /var/tmp/* -delete -print
     sudo find /root/.cache/* -delete -print
     sudo find /var/cache/* -delete -print
     sh -c "sudo rm -rfv /var/lib/pacman/db.lck"
-    find ~/.local/share/Trash/files/* -delete -print
+    find ~/.local/share/Trash/files/* -atime 8 -delete -print
+    find ~/.local/share/Trash/info/* -atime 8 -delete -print
     delete_packages
     ccache -C
+    echo ""
+    echo "if files below then there are older then 88 Days.."
+    echo "in folder .cache"
+    sudo find ~/.cache/ -atime 88 -print
 }
 ccclean() {
     # advance cleanup
-    sudo find / -iname '*.old' -type f -print -delete
+    #   rmlint finds space waste and other broken things on your filesystem.  Its main focus lies on finding duplicate files and directories.
+
+    # sudo find / -iname '*.old' -type f -print -delete
     sudo find / -iname /etc/ufw/*202* -type f -print -delete
-    sudo find / -iname '*sync-conflict' -type f -print -delete
+    sudo find ~/.dtrash/* -delete -print
+    find ~/.local/share/Trash/files/* -delete -print
+    find ~/.local/share/Trash/info/* -delete -print
     sudo find / -iname '*.bak' -type f -print
-    sudo find / -iname '*.pacnew' -type f -print
+    sudo find / -regex /"\(proc\|tmp\|run\)" -prune -o -type f -regex ".*\.pac\(new\|save\|orig\)" -print
     echo "  Checkout above if you want to delete some <.bak and .pacnew> file.."
 }
 pacnew() {
 
-    sudo find / -iname '*.pacnew' -type f -print
+    # sudo find / -iname '*.pacnew' -type f -not \ -path '/run/'
 
     # todo try to exclude path's
-    # sudo find / -iname '*.pacnew' -type f -not -path '/proc/*' -not -path '/run/*' -not -path '/timeshift/*' -not -path '/var/log/*' -print
+    # sudo find / -iname '*.pacnew' -type f -not -path '/proc/*' -not -path '/run/*' -not -path '/timeshift/*' -not -path '/var/log/*' -not -path '.config/VSCodium/' -not -path '/timeshift/*' -print
+
+    sudo find / -regex /"\(proc\|tmp\|run\)" -prune -o -type f -regex ".*\.pac\(new\|save\|orig\|.old\)" -print
+    echo "here is some syncthing conflict:"
+    syncthing_conflict
+    # sudo find / \( -path /proc -o -path /run -o -path /tmp \) -prune -o -type f -regex ".*\.pac\(new\|save\|orig\)" -print
+
+    # pacdiff -o
 }
+syncthing_conflict() {
+
+    sudo find / -iname '*sync-conflict' -type f -print
+}
+
 find_oldstuff() {
     find ~/.config -atime 266 -print
     find ~/.local -atime 266 -print
@@ -151,8 +215,14 @@ findbrokenpkgs() {
     command findbrokenpkgs
 }
 findbrokesymlinks() {
-
+    yy -S --needed findbrokenpkgs
     sudo find / -xtype l -print
+}
+
+checkrebuild() {
+
+    sudo pacman -S --needed rebuild-detector
+    checkrebuild -v
 }
 
 delete_packages() {
@@ -198,7 +268,6 @@ move_to_trash() {
     done
     # find and delete in some days
     find ~/.local/share/Trash/files/* -atime 7 -delete -print
-    echo hi
 }
 
 rm() {
@@ -246,7 +315,7 @@ pamacclean() {
     sudo pacman-key --populate --populate archlinux manjaro
     sudo pacman-key -u --refresh-keys &&
         sudo pacman-mirrors -a -P https --fasttrack &&
-        sudo pacman -Syyu
+        sudo pacman -Syyu --disable-download-timeout
 }
 
 downgrade() {
@@ -271,50 +340,54 @@ arch-pamacclean() {
     sudo pacman -Syy
     sudo pacman-key --populate archlinux
     sudo pacman-key --refresh-keys
-    sudo pacman -Syyu
+    sudo pacman -Syyu --disable-download-timeout
 }
 # endeavouros
 alias eos-update='eos-rankmirrors; sudo pacman -Syu'
 
 wine-config() {
-    # wine game
-    sudo pacman -Sy --needed wine winetricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools
+    # wine - steam
+    sudo pacman -Sy --needed wine winetricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-faudio
 
-    # export WINEARCH=win32 WINEPREFIX=~/win32 winecfg
-    # export WINEARCH=win64
-    # export WINEARCH=win32
-    export WINEPREFIX=~/.wine wine winecfg #wineboot
+    wineserver -k 15
 
+    #arch=win32  WINEPREFIX=~/.wine winecfg
+    WINEARCH=win32 WINEPREFIX=~/.wine winecfg wine winetricks wineboot
     # WINEPREFIX=~/win64 winecfg
-
-    sh -c 'sudo chown -Rv "${USER}":"${USER}" .wine .steam'
-
-    # dotnet48
-    winetricks -q d3dcompiler_43 d3dcompiler_47 d3dx9 corefonts cjkfonts faudio dxvk dx8vb vkd3d galliumnine vcrun2017 xinput xact
+    #!
+    echo "prefix set.. "
+    echo ""
 
     sudo winetricks --self-update
-    wine --version
 
-    winecfg
-    wineboot --init
-    winetricks
+    echo "starting winetricks -q.."
+    winetricks -q d3dcompiler_43 corefonts vcrun2005 dotnet48 cjkfonts xinput xact d3dx9 d3dx10 dx8vb d3dcompiler_47 dxvk dx8vb
+    #!
+
+    sh -c 'sudo chown -Rv "${USER}":"${USER}" ~/.steam ~/.wine'
+
+    # wineboot --init
+    # winetricks
+    echo "winetricks set.."
+    echo ""
+
+    wine --version
 
     echo ""
     echo done..
 }
 
 if [[ -d ~/.wine ]]; then
-    # export WINEARCH=win32 WINEPREFIX=~/win32 winecfg
-    export WINEESYNC=1
-    export WINEPREFIX=~/.wine winecfg wine wineboot
-    # export WINEARCH=win32 WINEPREFIX=~/.local/share/wineprefixes/win32
-    # export WINEARCH=win32 WINEPREFIX=~/.wine winecfg wine wineboot
     # export WINEARCH=win64
-
+    WINEARCH=win32 WINEPREFIX=~/.wine
+    WINEESYNC=1
+    # env WINEPREFIX=~/.wine wineboot -u
 fi
 wine_clean() {
 
     # yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9 vulkan-extra-layers vulkan-extra-tools
+
+    wineserver -k 15
 
     .local/share/applications
     sudo find ~/.local/share/applications/wine -delete -print
@@ -332,13 +405,17 @@ wine_clean() {
     sudo find ~/.config/mimeapps.list/wine-extension*.desktop -delete -print
     sudo find ~/.local/share/icons/hicolor/*/*/application-x-wine-extension* -delete -print
     sudo find /root/.wine -delete -print
-    sudo find ~/.wine -delete -print
+    sudo find ~/win32 -delete -print
+    sudo find ~/win64 -delete -print
     update-desktop-database ~/.config/mimeapps.list
     update-desktop-database ~/.local/share/applications
     update-mime-database ~/.local/share/mime/
     sudo find ~/.wine/drive_c/users/"${USER}"/Temp ~/.wine/drive_c/windows/temp -delete -print
     ln -s /tmp/ ~/.wine/drive_c/users/"${USER}"/Temp
     ln -s /tmp/ ~/.wine/drive_c/windows/temp
+
+    sudo find ~/.wine -delete -print
+
 }
 steam_clean() {
 
@@ -346,6 +423,51 @@ steam_clean() {
     sudo find ~/steam* -delete -print
 
 }
+
+# alias §="xdotool - < /home/shaderico/.local/bin/magickeys.sh "
+# bindkey -s '§' "xdotool_ "
+
+xdotool_() {
+
+    /home/shaderico/.local/bin/magickeys_off.sh
+}
+
+# xdotool_() {
+#     if $toggle; then
+#         echo hi
+#         toggle=true
+#         magickeys.sh
+#     else
+#         pkill magickeys.sh
+#         toggle=false
+#         echo hiw
+
+#     fi
+# }
+
+# xdotool_() {
+#     #  keyboard input / automate / macro / xbindkeys #! not on wayland but "xte, ydotool, wtype "
+
+#     while true; do
+#         xdotool key 1
+#         xdotool key 2
+#         xdotool key 3
+#         xdotool key 4
+#         sleep 0.4
+#     done
+# }
+
+# while true; do
+# bindkey -s '1'
+# bindkey -s '2'
+# bindkey -s '3'
+# bindkey -s '4'
+# sleep 0.4
+# done
+
+# extramaus cursor / mouse
+# extramaus
+
 alias cp='cp -vi '    # Confirm before overwriting something
 alias df='df -h '     # Human-readable sizes check
 alias free='free -h ' # Show sizes in MB
@@ -354,7 +476,7 @@ alias more='less --use-color'
 pacman-update() {
 
     sudo pacman-mirrors -a -P https --fasttrack &&
-        sudo pacman -Syu && echo here we go Richard
+        sudo pacman -Syu --disable-download-timeout && echo here we go Richard
 }
 alias mirror-check='pacman-mirrors --status'
 grub-update() {
@@ -371,7 +493,7 @@ alias mv='mv -iv '
 
 # paru / yay
 AUR_helper=paru
-alias zz="yy"
+alias zz="yy --disable-download-timeout"
 alias yy="${AUR_helper}"
 
 alias rechner-bc='   bc -ql'        #Calculator
@@ -393,6 +515,7 @@ alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' # nmap -p 1-65535 -T4 -A -v
 # alias port-nmap-input-ip='nmap -T4 -A -v '         # nmap -T4 -A -v 127.0.0.1
 alias port-live="  watch -n1 'ss -tp'"
 alias port_live_2="watch -n1 'lsof -i4 -itcp'"
+alias wifi-info='iw list'
 
 # resolve check --> /etc/systemd/resolved.conf
 alias resolve_network_check='systemctl status systemd-resolved.service'
@@ -419,8 +542,8 @@ enabled = true" >/etc/fail2ban/jail.local'
     #     print '\n[DEFAULT]\nbantime = 1d\n[sshd]\nenabled = true' | sudo tee /etc/fail2ban/jail.local
     # fi
 
-    sudo systemctl enable fail2ban
-    sudo systemctl start fail2ban
+    sudo systemctl --now enable fail2ban
+    sudo systemctl --now start fail2ban
 }
 
 # speedtest
@@ -428,7 +551,7 @@ alias speedtest="   speedtest --secure" # https
 alias h-speedtest=" speedtest "
 
 # Networkinfo          #* Network Mapping status 'rpcbind'
-alias ip-c='    ip -c a' #ip-coler     ip addr      ip -br -c addr show
+alias ip-c='    ip -c a' #ip-coler     ip addr      ip -br -c addr show     ip route show   ip link show
 alias ip-cAddr='ip -br -c addr show'
 alias ifconfig='ifconfig' #same as ip-coler with netmask info
 alias nmcli='nmcli | more '
@@ -568,7 +691,7 @@ alias ka='pkill ' #'killall'
 alias e='eval "${EDITOR:=neovim}"'
 # VISUAL=EDITOR
 if [[ -n ${DISPLAY} ]]; then
-    export EDITOR="codium"
+    export EDITOR="/usr/bin/codium --unity-launch"
 elif
     export EDITOR="neovim"
 then
@@ -776,9 +899,6 @@ bin() {
     eval ll || ls
 }
 
-# Search
-alias catfish='catfish --path=/ --start  --hidden --sort=path '
-
 # mount
 alias mount='mount |column -t'
 
@@ -940,7 +1060,7 @@ alias wordy='wc -w * | sort | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
 # Gets the total disk usage on your machine
-alias diskinfo='sudo parted --list'
+alias diskinfo='sudo parted --list' # partition gpt are msdos info
 alias diskinfo2='df -hl ~'
 alias fdisk='fdisk -x' #fdisk space / UUID etc
 alias uuid-info=' lsblk -fa'
@@ -1134,7 +1254,7 @@ chroot_new() {
 
     grub-mkconfig -o /boot/grub/grub.cfg
 
-    systemctl enable NetworkManager
+    systemctl enable --now NetworkManager
     systemctl enable bluetooth
     systemctl enable cups.service
     systemctl enable sshd
@@ -1170,11 +1290,12 @@ backup() {
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf"
-    sh -c "sudo -u root ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/lightdm.conf /etc/lightdm/lightdm.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/journald.conf /etc/systemd/journald.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/resolved.conf /etc/systemd/resolved.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/wifi.config /etc/modprobe.d/wifi.conf"
+    sh -c "sudo -u root ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config"
+    sh -c "sudo -u root ln -fv ~/ownCloud/p-git/config.json /opt/safing/portmaster/config.json"
 
     ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
@@ -1229,9 +1350,13 @@ extract() {
     fi
 }
 
-search() {
+# Search
+alias catfish='catfish --path=/ --start  --hidden --sort=path '
 
+search() {
+    # grep -s "*$1*" ~/.*
     find ~/ -iname "*$1*"
+    # locate
 }
 
 _pdf_completion() {
@@ -1311,6 +1436,10 @@ trim() {
     echo -n "$var"
 }
 
+ansible-status() {
+    ansible all -m ping
+}
+
 ufw() {
     if ! [[ "$#" == "ufw" ]]; then
         sh -c "sudo ufw $*"
@@ -1319,7 +1448,20 @@ ufw() {
     fi
 }
 
-alias nohup="nohup >/dev/null 2>&1 "
+#todo alias nohup="nohup >/dev/null 2>&1 "
+
+samba_up() {
+    # smbpasswd -a "$USER"
+    # groupadd -r sambashare
+    # chown root:sambashare /var/lib/samba/usershares
+    # chmod 1770 /var/lib/samba/usershares
+    enable smb.service
+    enable avahi-daemon.service
+}
+samba_down() {
+    disable smb.service
+    disable avahi-daemon.service
+}
 
 # some note
 : <<EOF

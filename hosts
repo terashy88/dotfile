@@ -7,3 +7,5 @@ ff02::2 ip6-allrouters
 
 #0.0.0.0 facebook.com
 #127.0.0.1 google.com
+
+129.132.99.164	sslvpn.ethz.ch ###Cisco AnyConnect VPN client modified this file. Please do not modify contents until this comment is removed.

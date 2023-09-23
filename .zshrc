@@ -216,9 +216,12 @@ env_() {
 
     # xfce
     # export QT_QPA_PLATFORMTHEME="kvantum" # xfce4
-    # # export QT_STYLE_OVERRIDE="kvantum"
+    # export QT_STYLE_OVERRIDE="kvantum"
     # export QT_QPA_PLATFORMTHEME="kvantum-dark"
     # export QT_STYLE_OVERRIDE="kvantum-dark"
+
+    # export QT_QPA_PLATFORMTHEME=""
+    # export QT_STYLE_OVERRIDE=""
 
     # which Session
     wich_session() {
@@ -236,7 +239,7 @@ env_() {
 
     # export GDK_DPI_SCALE=0.5
     # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
-
+    #
     # gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 }
 env_
