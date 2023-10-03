@@ -8,8 +8,8 @@
 #!!!	   use only '/' will Block everything       !!!#
 
 # --------------- Test --------------------
-.config/
-.local/
+# .config/
+# .local/
 # -----------------------------------------
 
 
@@ -28,7 +28,7 @@
 (?d).keychain/
 
 # safety
-.config/Portmaster
+# .config/Portmaster
 
 # syncthing    #! don't delete
 #!.stfolder    #  don't delete

@@ -40,7 +40,7 @@ portmaster_restart() {
 alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
 
 iinstall() {
-    paru -S --needed
+    paru -S --needed lib32-sane
 
     # test
     : <<EOF
@@ -379,8 +379,8 @@ wine-config() {
 
 if [[ -d ~/.wine ]]; then
     # export WINEARCH=win64
-    WINEARCH=win32 WINEPREFIX=~/.wine
-    WINEESYNC=1
+    export WINEARCH=win32 WINEPREFIX=~/.wine
+    export WINEESYNC=1
     # env WINEPREFIX=~/.wine wineboot -u
 fi
 wine_clean() {
@@ -476,7 +476,7 @@ alias more='less --use-color'
 pacman-update() {
 
     sudo pacman-mirrors -a -P https --fasttrack &&
-        sudo pacman -Syu --disable-download-timeout && echo here we go Richard
+        sudo pacman -Syu --disable-download-timeout
 }
 alias mirror-check='pacman-mirrors --status'
 grub-update() {
@@ -488,13 +488,16 @@ grub-update() {
 
 alias pacman-grep='pacman -Qe | grep '
 
-# MS tracert google.ch
 alias mv='mv -iv '
 
 # paru / yay
-AUR_helper=paru
+AUR_helper="paru"
 alias zz="yy --disable-download-timeout"
 alias yy="${AUR_helper}"
+#todo if ( "$AUR_helpe" == "$AUR_helpe" ) then
+# "$AUR_helpe" else
+#  echo "" && paru --show --news && echo "here we go Richard"
+# fi
 
 alias rechner-bc='   bc -ql'        #Calculator
 alias calculator-bc='bc -ql'        #Calculator
@@ -565,7 +568,8 @@ alias journalctl-kernel='sudo journalctl -rp 3 -xb|more'
 alias journalctl-log='   sudo journalctl -r |more'
 alias whois='whois' # whois input-ip 127.0.0.1
 alias kernel_info='lsmod'
-alias traceroute='traceroute'                                                                                     # traceroute input-ip    # traffic-backtrace info scan
+alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # mdos tracert google.ch
+
 alias network_bettercap_monitoring='sudo bettercap'                                                               # network-monitoring     live-scan spoofing
 alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' # network-monitoring     live-scan
 # alias netstat="sudo netstat -tapn |  sed '1 d' | sort -r +6 | grep -v 'TIME_WAIT' | grep -v 'FIN_WAIT' | grep -v 'LISTEN' | grep -v 'CLOSING' | grep -v 'LAST_ACK'"
@@ -1226,6 +1230,7 @@ Shift_L,   Down, Shift_L|Button5
 EOF
     fi
     imwheel -k
+
 }
 
 chroot_new() {
@@ -1461,6 +1466,13 @@ samba_up() {
 samba_down() {
     disable smb.service
     disable avahi-daemon.service
+}
+
+c++++++() {
+    # todo run c++ in the terminal
+    g++ $1 -o file
+    $2 Path to file
+
 }
 
 # some note
