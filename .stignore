@@ -10,13 +10,22 @@
 # --------------- Test --------------------
 # .config/
 # .local/
+# .local/share/user-places.xbel
+# .yarnrc
+# .software/
+# .cache
+# .wakatime*
+# .rnd*
+# .sonarlint
+# .profile
+# .xsession-errors
 # -----------------------------------------
 
 
 # allowed #
 # (?d)(?i)!**setting*
 # (?d)(?i)!**Preference*
-(?d)(?i)!**.cfg
+# (?d)(?i)!**.cfg
 #!.conf     --will brake barrier--
 (?d).gnupg
 # (?i)(?d)!**Extension
@@ -27,8 +36,17 @@
 (?d).config/recently-used
 (?d).keychain/
 
+.config/caffeine/
+
 # safety
 # .config/Portmaster
+(?d).config/Portmaster/
+# (?d).config/Portmaster/Network Persistent State
+# (?d).config/Portmaster/GPUCache/
+# (?d).config/Portmaster/Code Cache/
+# (?d).config/Portmaster/Local Storage/leveldb
+# (?d).config/Portmaster/Session Storage
+# (?d).config/Portmaster/blob_storage
 
 # syncthing    #! don't delete
 #!.stfolder    #  don't delete
@@ -43,10 +61,9 @@
 (?d)teramuse-rsx
 (?d)**.oscamerafaceu*
 (?d).config/ownCloud
-(?d).config/owncloud.cfg
 (?d)**.sync_journal**
 (?d)**.owncloudsync**
-(?d)**(conflicted copy *
+(?d)**"(conflicted copy"*
 
 # private files
 (?d)**aatest
@@ -59,8 +76,12 @@
 (?d)(?i)**history**
 (?d).config/Bitwarden
 (?d).local/share/zeitgeist/*
+
+# Barrier
+(?d).config/InputLeap/
+(?d).local/share/InputLeap/
 (?d).config/Debauchee/Barrier.conf
-(?d).local/share/barrier/SSL/Fingerprints/Local.txt
+(?d).local/share/barrier/SSL/
 
 # remote
 (?d).anydesk
@@ -128,6 +149,10 @@
 (?d).vscode-oss/
 (?d).codeium
 (?d).bito
+(?d).java
+
+# VSCode Kubernet
+(?d).minikube
 
 # ProtonVPN
 (?d).cert/nm-openvpn/*
@@ -156,9 +181,17 @@
 
 # VirtualBox VMs
 (?d).config/VirtualBox
-(?d)VirtualBox VMs/*
-(?d)!VirtualBox VMs/MJ-xps
-(?d)VM-share-rsx/*
+(?d)VirtualBox\ VMs/
+(?d)!VirtualBox\ VMs/f7
+
+!VirtualBox\ VMs/xps
+
+(?d)!VirtualBox VMs/ddd
+# (?d)!VirtualBox\ VMs/ddd
+# (?d)!'VirtualBox\ VMs/ddd'
+# (?d)!"VirtualBox VMs/ddd"
+(?d)!VirtualBox\ VMs/MJ-xps/
+# (?d)VM-share-rsx/*
 (?d)**.vdi
 
 # Android
@@ -185,6 +218,7 @@
 
 # Telegram
 (?d).local/share/TelegramDesktop
+(?d)Telegram*
 
 # office
 (?d).config/libreoffice/*
@@ -195,6 +229,9 @@
 (?d).xinitrc
 (?d).Xauthority
 (?d).xsession-errors
+
+# C++
+(?d)**.class
 
 # manjaro
 (?d).config/manjaro
@@ -225,6 +262,7 @@
 
 # Brave #!don't delete
 (?d).config/BraveSoftware/
+(?d).config/xfce4/helpers.rc
 
 # Sound Pipewire
 (?d).local/state/pipewire/*
@@ -234,25 +272,38 @@
 (?d).config/deluge
 (?d)qBittorrent
 (?d)!Downloads/torrent/
-# (?d)Downloads/
+(?d)Downloads/
 
 # kde-connect
 (?d).config/kdeconnect
 
 # Game
 (?d).local/share/Steam/
-(?d)**lutris**	    #! not use
-(?d)**PlayOnLinux**	#! not use
-(?d)**bottles**         #! not use
+(?d)**lutris**
+(?d)**PlayOnLinux**
+(?d)**bottles**
 (?d)**StarCraft**
 (?d).steam
 (?d)**GUILD WARS**
-(?d)**Games**
+(?d)(?i)**Games**
+
+# Epic Game
+(?d).config/heroic/
 
 # wine
 (?d).local/share/icons/
 (?d).wine/
 (?d).local/share/desktop-directories
+(?d).local/share/wineprefixes/
+
+# bottle
+(?d).local/share/bottles/
+
+# Flatpak
+(?d).var/
+(?d).local/share/flatpak/
+
+(?d).cxoffice
 
 # Packages Manager
 (?d).cargo
@@ -279,12 +330,13 @@
 (?d).local/share/lbry/
 (?d).config/vlc
 
-# OBS Studio #! don't delete
-(?d).config/obs-studio/*
+# OBS Studio
+# (?d).config/obs-studio/*
 
 # nvim
 (?d).local/state/nvim/shada/
 
 # Joplin
+(?d)~/ownCloud/joplin
 (?d)(?i).config/Joplin*
 (?d)!.config/joplin-desktop/plugins

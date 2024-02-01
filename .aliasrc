@@ -22,6 +22,7 @@ fetch_() {
 }
 fetch_
 ############ Todo Workaround ################
+
 # restart sshd
 
 portmaster_restart() {
@@ -32,24 +33,20 @@ portmaster_restart() {
 
     echo "restarting Portmaster.."
     systemctl restart --now portmaster
-    nohup >/dev/null 2>&1 sh -c "/opt/safing/portmaster/portmaster-start app --data=/opt/safing/portmaster" &
+    #nohup >/dev/null 2>&1 sh -c "/opt/safing/portmaster/portmaster-start app --data=/opt/safing/portmaster" &
 
     # Debug info
     # curl http://127.0.0.1:817/api/v1/debug/core
 }
 alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
 
-iinstall() {
-    paru -S --needed lib32-sane
+iinstall__() {
+    # 1
+    # 0 manjaro-bluetooth
+    paru -Syu --needed input-leap-git input-leap-headless-git kdeconnect easyeffects manjaro-alsa
 
-    # test
+    # test  #todo
     : <<EOF
-
-
-
-
-
-
 
 
 -------------------------------------
@@ -156,15 +153,23 @@ cclean() {
     sudo pacman -Sc --noconfirm
     /usr/bin/sudo journalctl --vacuum-time=14d --rotate
     sudo journalctl --vacuum-size=33M
-    sudo find ~/.cache/.fr* -delete -print
-    sudo find ~/.dtrash/* -atime 8 -delete -print
+    if [ -n "$(find -maxdepth 2 -type d -iname 'fr*')" ]; then
+        # file-roller
+        sudo find ~/.cache/.fr* -delete -print
+    fi
+
     fc-cache -fv
-    sudo find /tmp/* -delete -print
-    sudo find /var/tmp/* -delete -print
-    sudo find /root/.cache/* -delete -print
+
+    for i in /var/tmp/* ~/.dtrash/* /root/.cache/*; do
+        if [ -e "$i" ]; then
+            sudo find "$i" -delete -print
+        fi
+    done
+
     sudo find /var/cache/* -delete -print
+
     sh -c "sudo rm -rfv /var/lib/pacman/db.lck"
-    find ~/.local/share/Trash/files/* -atime 8 -delete -print
+    find ~/.local/share/Trash/files/* -atime 8 -delete -print # digikam
     find ~/.local/share/Trash/info/* -atime 8 -delete -print
     delete_packages
     ccache -C
@@ -172,19 +177,34 @@ cclean() {
     echo "if files below then there are older then 88 Days.."
     echo "in folder .cache"
     sudo find ~/.cache/ -atime 88 -print
+
 }
 ccclean() {
     # advance cleanup
     #   rmlint finds space waste and other broken things on your filesystem.  Its main focus lies on finding duplicate files and directories.
 
     # sudo find / -iname '*.old' -type f -print -delete
-    sudo find / -iname /etc/ufw/*202* -type f -print -delete
-    sudo find ~/.dtrash/* -delete -print
-    find ~/.local/share/Trash/files/* -delete -print
-    find ~/.local/share/Trash/info/* -delete -print
+    ufw_() {
+        # old ufw files
+        sudo find /etc/ufw/ -iname "*202*" -type f -print -delete
+    }
+    ufw_
+
+    if [ -d ~/.dtrash ]; then
+
+        sudo find ~/.dtrash/* -delete -print
+    fi
+
+    # digikam Trash
+    for i in ~/.local/share/Trash/files/* ~/.local/share/Trash/info/*; do
+        if [ -e "$i" ]; then
+            sudo find "$i" -delete -print
+        fi
+    done
+
     sudo find / -iname '*.bak' -type f -print
     sudo find / -regex /"\(proc\|tmp\|run\)" -prune -o -type f -regex ".*\.pac\(new\|save\|orig\)" -print
-    echo "  Checkout above if you want to delete some <.bak and .pacnew> file.."
+    echo "  Checkout above if you want to handel/delete some <.bak and .pacnew> file.."
 }
 pacnew() {
 
@@ -314,7 +334,7 @@ pamacclean() {
     sudo pacman -Syy
     sudo pacman-key --populate --populate archlinux manjaro
     sudo pacman-key -u --refresh-keys &&
-        sudo pacman-mirrors -a -P https --fasttrack &&
+        sudo pacman-mirrors -a -P https --fasttrack 22 &&
         sudo pacman -Syyu --disable-download-timeout
 }
 
@@ -346,43 +366,47 @@ arch-pamacclean() {
 alias eos-update='eos-rankmirrors; sudo pacman -Syu'
 
 wine-config() {
-    # wine - steam
-    sudo pacman -Sy --needed wine winetricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-faudio
+    # wine steam
+    sudo pacman -Syu --needed wine-staging wine-nine gamescope winetricks protontricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-faudio lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils
 
     wineserver -k 15
 
-    #arch=win32  WINEPREFIX=~/.wine winecfg
-    WINEARCH=win32 WINEPREFIX=~/.wine winecfg wine winetricks wineboot
-    # WINEPREFIX=~/win64 winecfg
+    # mkdir ~/.wine
+
+    env WINEPREFIX="$HOME"/.wine wineboot
+
     #!
     echo "prefix set.. "
     echo ""
+    # export WINEARCH=win64
+    # export WINEARCH=win32
 
     sudo winetricks --self-update
 
     echo "starting winetricks -q.."
-    winetricks -q d3dcompiler_43 corefonts vcrun2005 dotnet48 cjkfonts xinput xact d3dx9 d3dx10 dx8vb d3dcompiler_47 dxvk dx8vb
+    # winetricks -q -v d3dx9 d3dcompiler_43 d3dcompiler_47 corefonts vcrun2017 cjkfonts allfonts vcrun2005 dotnet48 xinput wined3d xact dxvk d3dx11_43 d3dx11_42 vcrun2008 vcrun2010
     #!
 
-    sh -c 'sudo chown -Rv "${USER}":"${USER}" ~/.steam ~/.wine'
+    # sh -c 'sudo chown -Rv "${USER}":"${USER}" ~/.wine'
 
-    # wineboot --init
-    # winetricks
-    echo "winetricks set.."
+    echo "wineboot init"
+    wineboot --init
+
     echo ""
 
     wine --version
 
     echo ""
     echo done..
+
+    # winetricks
 }
 
-if [[ -d ~/.wine ]]; then
-    # export WINEARCH=win64
-    export WINEARCH=win32 WINEPREFIX=~/.wine
-    export WINEESYNC=1
-    # env WINEPREFIX=~/.wine wineboot -u
-fi
+# if [[ -d ~/.wine ]]; then
+
+# export WINEARCH=win32 WINEPREFIX="$HOME"/.local/share/wineprefixes/win32
+# export WINEESYNC=1
+# fi
 wine_clean() {
 
     # yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9 vulkan-extra-layers vulkan-extra-tools
@@ -391,7 +415,7 @@ wine_clean() {
 
     .local/share/applications
     sudo find ~/.local/share/applications/wine -delete -print
-    sudo find ~/.local/share/wineprefixes/ -delete -print
+    sudo find ~/.local/share/wineprefixes/* -delete -print
     sudo find ~/.config/menus/applications-merged/wine* -delete -print
     sudo find ~/.config/mimeapps.list/wine -delete -print
     sudo find ~/.config/mimeapps.list/mimeinfo.cache -delete -print
@@ -475,12 +499,12 @@ alias whereami='echo $PWD'
 alias more='less --use-color'
 pacman-update() {
 
-    sudo pacman-mirrors -a -P https --fasttrack &&
+    sudo pacman-mirrors -a -P https --fasttrack 11 &&
         sudo pacman -Syu --disable-download-timeout
 }
 alias mirror-check='pacman-mirrors --status'
 grub-update() {
-
+    # sudo grub-install --recheck && sudo update-grub
     sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
     sudo mkinitcpio -P
     sudo update-grub && sudo tree /boot/efi
@@ -490,12 +514,13 @@ alias pacman-grep='pacman -Qe | grep '
 
 alias mv='mv -iv '
 
+# pamac build "$1"
 # paru / yay
 AUR_helper="paru"
 alias zz="yy --disable-download-timeout"
 alias yy="${AUR_helper}"
-#todo if ( "$AUR_helpe" == "$AUR_helpe" ) then
-# "$AUR_helpe" else
+#todo if ( "$AUR_helper" == "$AUR_helper" ) then
+# "$AUR_helper" else
 #  echo "" && paru --show --news && echo "here we go Richard"
 # fi
 
@@ -508,6 +533,7 @@ alias defenderscan-libredefender='sudo libredefender scan ~/'
 alias defenderscan_infection='sudo libredefender infections '
 
 # Network
+# https://wiki.archlinux.org/title/Systemd
 # open port check
 alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' #port open-list
 # alias ps='ps'   # ps System Info running like 'whish shell'
@@ -551,18 +577,19 @@ enabled = true" >/etc/fail2ban/jail.local'
 
 # speedtest
 alias speedtest="   speedtest --secure" # https
-alias h-speedtest=" speedtest "
+alias h-speedtest_http=" speedtest "    # http
 
 # Networkinfo          #* Network Mapping status 'rpcbind'
-alias ip-c='    ip -c a' #ip-coler     ip addr      ip -br -c addr show     ip route show   ip link show
+alias ip-c='    ip -c a' # ip-coler     ip addr      ip -br -c addr show     ip route show   ip link show
+
 alias ip-cAddr='ip -br -c addr show'
-alias ifconfig='ifconfig' #same as ip-coler with netmask info
+alias ifconfig='ifconfig' # same as ip-coler with netmask info
 alias nmcli='nmcli | more '
 alias nmtui='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "nmtui"'
 alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
 alias whatismyip="sh -c 'curl http:/ipecho.net/plain; echo'"
 alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
-alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' #NetworkManager info scan
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' # NetworkManager info scan
 alias journalctl-live='       journalctl -f'
 alias journalctl-kernel='sudo journalctl -rp 3 -xb|more'
 alias journalctl-log='   sudo journalctl -r |more'
@@ -580,7 +607,7 @@ alias ufw-iptables='sudo iptables -L'
 alias whowatch='whowatch '                                                                      # who is on my network
 alias traffic_wavemon='xfce4-terminal --geometry=88x28 --hide-scrollbar -H -x zsh -c "wavemon"' # Network traffic strength
 alias tcpdump_wlp59='sudo tcpdump -i wlp59s0'                                                   # wireshark cli
-alias ping='ping -c 3 '
+alias ping='ping -c 3 '                                                                         # Windows nslookup
 alias gateway-ping='ping _gateway'
 
 # Gateway
@@ -613,7 +640,7 @@ alias cam-info=' v4l2-ctl --list-devices'
 
 # Downloads    youtube-dl, clipgrab
 alias yt='mkdir ~/Downloads/yt ; cd ~/Downloads/yt ; yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
-alias yta='cd ~/Downloads/; yt -x -f bestaudio/best'
+alias yta='mkdir ~/Downloads/yt ; cd ~/Downloads/; yt -x -f bestaudio/best'
 alias wget='wget -c'                                                   #web get #Commandline Homepage URL Download > index.html
 alias wget-completed='wget -m -c -r -np -p -E -k -K 'target-url-here'' #web get #Commandline Homepage URL Download > index.html
 # alias curl-completed='wget -r -k -E -l 8 '     #web get #Commandline Homepage URL Download > index.html
@@ -658,7 +685,11 @@ f() {
             nemo "$1"
         fi
     else
-        echo "Usage: $0 <folder>"
+        nemo
+        # if [[ ! /bin/nemo ]]; then
+
+        #     thunar
+        # fi
     fi
 }
 
@@ -666,11 +697,21 @@ f() {
 # alias $HOME="nope"
 
 #nvidia Proprietary
-alias nvidia0300='sudo mhwd -a pci nonfree 0300'
-alias mhwd-info='mhwd -l ; mhwd -li'
+alias nvidia0300='sudo mhwd --force --auto pci nonfree 0300'
+alias mhwd-info='vulkaninfo; mhwd -l ; mhwd -li; modprobe nvidia'
 
 # Sound    # pipewire-media-session are wireplumber
-alias sound-info='aplay -L'
+#todo speaker-test
+#todo speaker-test -dhw:0,0 -c2 -l3 -twav
+alias sound-info='aplay -L; inxi -Ax; wpctl status' # speaker-test -D pulse -c2 -l2 -t wav
+sound_cli() {
+    alsamixer
+}
+
+8888() {
+    #todo
+    for file in *.mp4; do ffmpeg -i "$file" -af "volume=3dB" "output_$file"; done
+}
 
 alias ls="ls -thaNr  --color=auto --sort=time"
 alias ll="ls -thaNrl --color=auto --sort=time"
@@ -682,7 +723,7 @@ alias grep='grep --color=auto'
 alias g='grep --color=auto'
 
 gg() {
-
+    # grep man info
     man "$1" | grep --color=auto "$2"
 }
 
@@ -692,7 +733,8 @@ alias diff='diff --color=auto'
 # These common commands are just too long! Abbreviate them.
 alias ka='pkill ' #'killall'
 
-alias e='eval "${EDITOR:=neovim}"'
+alias e='codium '
+# alias e='eval "${EDITOR:=neovim}"'
 # VISUAL=EDITOR
 if [[ -n ${DISPLAY} ]]; then
     export EDITOR="/usr/bin/codium --unity-launch"
@@ -912,9 +954,10 @@ alias disable='     sudo systemctl disable --now '
 alias status='more| sudo systemctl status  --now '
 alias restart='     sudo systemctl restart --now '
 alias stop='        sudo systemctl stop    --now '
+alias start='       sudo systemctl start   --now '
 alias sys-port='systemctl status|less --use-color'
-alias sys-status='systemctl list-unit-files|less '
-alias sys-info='pactl list cards pactl list sinks'
+alias sys-status='systemctl list-unit-files|less ' # stacer
+# alias sys-info='pactl list cards pactl list sinks'
 alias errors='          sudo systemctl --failed'
 alias failed='          sudo systemctl --failed'
 alias startup-speed_info='      systemd-analyze'
@@ -932,7 +975,7 @@ alias batterie-status='sudo tlp-stat --battery'
 alias powertop='sudo powertop'
 # powertop --calibrate
 
-# swap
+# swapfile
 swap-activate() {
 
     echo "How much MB should your swapfile have?"
@@ -968,13 +1011,19 @@ swap-activate() {
     # sudo mkinitcpio -P
 EOF
         if sh -c "sudo grep -q '/swapfile' /etc/fstab"; then
-            sudo echo "Entry already exists in /etc/fstab"
+            echo "Entry already exists in /etc/fstab"
         else
-            echo "/swapfile none swap defaults 0 0" >>/etc/fstab
-            sudo echo "Entry added to /etc/fstab"
+            #todo    sudo echo "/swapfile none swap defaults 0 0" >>/etc/fstab
+            #    echo "Entry added to /etc/fstab"
+
+            echo "need to add to fstab"
         fi
     else
         echo "swapfile cancelled.."
+    fi
+
+    if [[ -e /swapfile ]]; then
+        swapon --show
     fi
 }
 
@@ -995,7 +1044,6 @@ alias system-info='sudo sysctl --system'
 alias sensors='sensors '
 alias lspci='lspci -k ' # Grafikcard information
 alias pstree='pstree '  # systemd baum ansicht
-# alias lsmod='lsmod'
 # sudo dmesg
 # coredumpctl
 
@@ -1048,9 +1096,18 @@ alias screenoff="xset dpms force off"
 
 # lock-screen #todo test i3lock
 
+# Screen tearing reset
+zoom_xfwmScreenTearingReset() {
+    # https://wiki.archlinux.org/title/Xfwm
+    xfwm4 --replace --vblank=glx &
+
+    # Safe mode
+    # xfconf-query -c xfwm4 -p /general/vblank_mode -s glx
+}
+
 qq() {
     # xflock4 can be skip by terminate the terminal
-    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen --cursor off -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
 }
 
 weather() {
@@ -1102,16 +1159,12 @@ barrier-keygen() {
 }
 
 aa() {
-    # ChatGPT Terminal https://chatbot.theb.ai/
+    # ChatGPT Terminal https://theb.ai/
     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
 }
 aaa() {
     # ChatGPT Terminal
     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
-}
-bb() {
-    # Ai tool - cli
-    bito
 }
 
 # chatblade with OpenAPI    #!   pay
@@ -1126,7 +1179,7 @@ bb() {
 alias john='john ' #'john file'
 
 # Mariadb / fork of MySQL    'sudo mysql -u root --auto-rehash'
-alias mysql='sudo mysql -u root --auto-rehash'
+alias mariadb='echo  mariadb -u root -p;  mariadb -u root -p'
 mariadb_aktivate() {
     disable mariadb || true
     'sudo rm -fr /var/lib/mysql' || true
@@ -1279,6 +1332,53 @@ chroot_new() {
 
 }
 
+# User
+userdiag_() {
+    sudo geany /etc/shadow /etc/sudoers /etc/passwd /etc/gshadow /etc/group
+}
+
+useradd_() {
+    sudo useradd -m "$1" && echo "user $1 added!..."
+
+}
+
+userGroupdel() {
+
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: userGroupdel <username>"
+        return 1
+    fi
+
+    # Prompt the user for confirmation before deleting the user and group
+    read -r "REPLY?Are you sure you want to delete the user '$1' and its group(s)? [y/N] "
+    case $REPLY in
+    [yY][eE][sS] | [yY]) ;;
+    *)
+        echo "User and group deletion aborted"
+        return 1
+        ;;
+    esac
+
+    # Use usermod to remove the user from its groups before deleting it
+    GROUP=$(id -Gn "$1" | sed 's/ /,/g')
+    sudo usermod -G "$GROUP" -a "$1"
+
+    # Use userdel to delete the user and groupdel to delete the group
+    if
+        sudo userdel "$1"
+        sudo groupdel "$1"
+    then
+        echo "User and group for $1 have been successfully deleted"
+    else
+        echo "Error: User and group for $1 could not be deleted"
+        return 1
+    fi
+
+    # userdel / groupdel
+    # Enable zsh tab completion for this function
+    compdef '_users -S ""' userGroupdel
+}
+
 backup() {
 
     ln -fs ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
@@ -1306,6 +1406,7 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
     ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
     ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
+    ln -fv ~/ownCloud/cpp/header.h ~/ownCloud/cpp/tutorial/header.h
     ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
 }
 
@@ -1362,6 +1463,20 @@ search() {
     # grep -s "*$1*" ~/.*
     find ~/ -iname "*$1*"
     # locate
+}
+
+trans-de_en() {
+    #     # translate-shell-git
+    # https://www.soimort.org/translate-shell/
+    /bin/trans de:en "$*"
+
+}
+
+trans_en_de() {
+    #     # translate-shell-git
+    # https://www.soimort.org/translate-shell/
+    /bin/trans en:de "$*"
+
 }
 
 _pdf_completion() {
@@ -1441,6 +1556,11 @@ trim() {
     echo -n "$var"
 }
 
+flameshot_delay() {
+    flameshot gui --delay 3000
+
+}
+
 ansible-status() {
     ansible all -m ping
 }
@@ -1468,11 +1588,17 @@ samba_down() {
     disable avahi-daemon.service
 }
 
-c++++++() {
+cpp__() {
     # todo run c++ in the terminal
-    g++ $1 -o file
+    g++ "$1" -o file
     $2 Path to file
 
+}
+
+visudodiag_() {
+    # visudo
+    sudo lsof /etc/sudoers
+    visudo -c
 }
 
 # some note

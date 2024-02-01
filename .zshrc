@@ -185,10 +185,11 @@ export_() {
     # export JAVA_HOME=""
     # export _JAVA_OPTIONS=""
     # export JAVA_HOME="/usr/lib/jvm/default"
-    # export JAVA_HOME="/usr/lib/jvm/default-runtime"
-    # export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java #! already running
+    export JAVA_HOME="/usr/lib/jvm/default-runtime"
+    # export JAVA_HOME="/usr/lib/jvm/java-21-openjdk/"
+    # export _JAVA_OPTIONS=-D_JAVA_OPTIONS.util.prefs.userRoot="$XDG_CONFIG_HOME"/java #! already running
     # export PATH="/usr/lib/jvm/default/bin/:$PATH"
-    export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+    # export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 
 }
 export_
@@ -232,6 +233,10 @@ env_() {
         echo The QT_STYLE_OVERRIDE is: $QT_STYLE_OVERRIDE
     }
 
+    screen_info() {
+        xrandr --verbose
+    }
+
     # export GTK_THEME=Arc-Maia-Dark
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
     # export GTK2_RC_FILES="$HOME/.config/gtk-4.0"
@@ -241,6 +246,9 @@ env_() {
     # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
     #
     # gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+
+    # unset QT_STYLE_OVERRIDE
+
 }
 env_
 
@@ -784,43 +792,6 @@ plugin_() {
     # export ZSH_THEME="agnoster"
 }
 plugin_
-
-userGroupdel() {
-
-    if [[ $# -ne 1 ]]; then
-        echo "Usage: userGroupdel <username>"
-        return 1
-    fi
-
-    # Prompt the user for confirmation before deleting the user and group
-    read -r "REPLY?Are you sure you want to delete the user '$1' and its group(s)? [y/N] "
-    case $REPLY in
-    [yY][eE][sS] | [yY]) ;;
-    *)
-        echo "User and group deletion aborted"
-        return 1
-        ;;
-    esac
-
-    # Use usermod to remove the user from its groups before deleting it
-    GROUP=$(id -Gn "$1" | sed 's/ /,/g')
-    sudo usermod -G "$GROUP" -a "$1"
-
-    # Use userdel to delete the user and groupdel to delete the group
-    if
-        sudo userdel "$1"
-        sudo groupdel "$1"
-    then
-        echo "User and group for $1 have been successfully deleted"
-    else
-        echo "Error: User and group for $1 could not be deleted"
-        return 1
-    fi
-
-    # userdel / groupdel
-    # Enable zsh tab completion for this function
-    compdef '_users -S ""' userGroupdel
-}
 
 : <<EO
 
