@@ -42,8 +42,8 @@ alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkMa
 
 iinstall__() {
     # 1
-    # 0 manjaro-bluetooth
-    paru -Syu --needed input-leap-git input-leap-headless-git kdeconnect easyeffects manjaro-alsa
+    # 0
+    paru -Syu --needed
 
     # test  #todo
     : <<EOF
@@ -831,6 +831,9 @@ gitdelete_() {
     #  delete both, remote first
     git rm --cached
 }
+
+# Git fix chache
+alias git_fixcache="git rm -r --cached ."
 
 : <<GIT
 # Delete all changes in the branch

@@ -1,9 +1,7 @@
 install
 v4l2
 
-f7
-install
-input-leap-git
+
 
 wifi problem
 // /etc/modprobe.d/iwlwifi.conf
@@ -13,6 +11,9 @@ wifi problem
 manjaro-bluetooth
 
 test
+    virtualise
+        yy Virt-Manager
+    yy cloudflare warp
     yy Translate
     yy convert
     yy xinput
