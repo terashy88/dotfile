@@ -201,15 +201,15 @@ env_() {
     # GTK
     # GDK_BACKEND=x11
     # QT_QPA_PLATFORM=wayland
-    # export QT_STYLE_OVERRIDE="wayland"
+    #! export QT_STYLE_OVERRIDE="wayland"
 
     # X11
     # QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
     # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
-    # export QT_STYLE_OVERRIDE="qt6ct"
+    #! export QT_STYLE_OVERRIDE="qt6ct"
     # export QT_QPA_PLATFORMTHEME="qt5ct" # Gnome
-    # export QT_STYLE_OVERRIDE="qt5ct"
+    #! export QT_STYLE_OVERRIDE="qt5ct"
 
     # waydroid / steam
     # export GBM_BACKEND=nvidia-drm
@@ -217,12 +217,12 @@ env_() {
 
     # xfce
     # export QT_QPA_PLATFORMTHEME="kvantum" # xfce4
-    # export QT_STYLE_OVERRIDE="kvantum"
+    #! export QT_STYLE_OVERRIDE="kvantum"
     # export QT_QPA_PLATFORMTHEME="kvantum-dark"
-    # export QT_STYLE_OVERRIDE="kvantum-dark"
+    #! export QT_STYLE_OVERRIDE="kvantum-dark"
 
-    # export QT_QPA_PLATFORMTHEME=""
-    # export QT_STYLE_OVERRIDE=""
+    export QT_QPA_PLATFORMTHEME=""
+    export QT_STYLE_OVERRIDE=""
 
     # which Session
     wich_session() {

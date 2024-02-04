@@ -1048,7 +1048,7 @@ alias sensors='sensors '
 alias lspci='lspci -k ' # Grafikcard information
 alias pstree='pstree '  # systemd baum ansicht
 # sudo dmesg
-# coredumpctl
+# coredumpctl list |more
 
 # Data recovery
 alias ddrescue='ddrescue' # man ddrescue
@@ -1059,8 +1059,8 @@ alias xinput='xinput '                      # 'xinput -list'
 #lsusb
 
 # ~/.inputrc   #todo ^[[200~ fix
-set enable-bracketed-paste on
-# set enable-bracketed-paste off
+# set enable-bracketed-paste on
+set enable-bracketed-paste off
 
 # Faster completion
 set show-all-if-unmodified on

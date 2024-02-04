@@ -420,8 +420,6 @@ libphonenumber
 libplacebo
 libqxp
 libraw
-libreoffice-extension-texmaths
-libreoffice-extension-writer2latex
 libreoffice-fresh
 libreoffice-fresh-de
 librevenge
@@ -486,7 +484,6 @@ manjaro-alsa
 manjaro-base-skel
 manjaro-bluetooth
 manjaro-browser-settings
-manjaro-pipewire
 manjaro-release
 manjaro-settings-manager
 manjaro-settings-manager-notifier
@@ -630,6 +627,7 @@ procps-ng
 psmisc
 ptex
 pugixml
+pulseaudio-bluetooth
 purpose5
 pybind11
 pyside2
@@ -793,6 +791,7 @@ sysfsutils
 systemd-sysvcompat
 tar
 teams
+teams-for-linux
 teamspeak3
 telegram-desktop
 termdown
