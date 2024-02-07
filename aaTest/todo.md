@@ -11,6 +11,8 @@ wifi problem
 manjaro-bluetooth
 
 test
+    remote
+        yy Rustdesk
     virtualise
         yy Virt-Manager
     yy cloudflare warp

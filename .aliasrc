@@ -1576,6 +1576,18 @@ ufw() {
     fi
 }
 
+firewall_() {
+    # Check if ufw is running
+    if ufw status | grep "inactive" >/dev/null; then
+        # Activate ufw
+        echo 'Your Firewall is not active'
+        echo 'activating...'
+        sudo ufw enable || true
+
+    fi
+}
+firewall_
+
 #todo alias nohup="nohup >/dev/null 2>&1 "
 
 samba_up() {

@@ -4,7 +4,8 @@
 
 firewall_() {
     # Check if ufw is running
-    if ! sudo systemctl status "ufw" | grep "active" >/dev/null; then
+    if ufw status | grep "inactive" >/dev/null || ! systemctl status "ufw" | grep "active" >/dev/null; then
+
         # Activate ufw
         echo 'Your Firewall is not active'
         echo 'activating...'
