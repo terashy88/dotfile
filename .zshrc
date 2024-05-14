@@ -30,6 +30,10 @@ autoload_
 ## By the way if it ain't broke, break it then fix it. ##
 
 history_() {
+    # todo $HOME/.config/.zshistory is not working
+    if [[ ! -f $HOME/.config/.zshistory ]]; then
+        touch $HOME/.config/.zshistory
+    fi
 
     export HISTFILE=$HOME/.config/.zshistory
     export HISTSIZE=8888
@@ -63,7 +67,7 @@ path_() {
         export PATH="${PATH}:~/ownCloud/.bin"
     fi
 }
-path_
+# path_
 
 setopt_() {
 
@@ -120,6 +124,8 @@ setopt_
 
 export_() {
 
+    export TERM="xterm-256color"
+    export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
     export XDG_CONFIG_HOME=/home/$USER/.config
     export XDG_DATA_HOME="$HOME/.local/share"
     export ZSH_CACHE_DIR="$HOME/.cache/"
@@ -146,7 +152,7 @@ export_() {
     # export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority     #! not for lightDM
 
     # dirs check with ~/.config/user-dirs.dirs
-    export XDG_DESKTOP_DIR="$HOME/Schreibtisch"
+    export XDG_DESKTOP_DIR="$HOME/Schreibtisch" || export XDG_DESKTOP_DIR="$HOME/Desktop"
     export XDG_DOWNLOAD_DIR="$HOME/Downloads"
     # XDG_TEMPLATES_DIR="$HOME/Vorlagen"
     # XDG_PUBLICSHARE_DIR="$HOME/Öffentlich"
@@ -199,12 +205,12 @@ env_() {
     # Environment
     # Wayland
     # GTK
-    # GDK_BACKEND=x11
-    # QT_QPA_PLATFORM=wayland
+    # export GDK_BACKEND=x11
+    # export QT_QPA_PLATFORM=wayland
     #! export QT_STYLE_OVERRIDE="wayland"
 
     # X11
-    # QT_QPA_PLATFORM="wayland;xcb"
+    # export QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
     # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     #! export QT_STYLE_OVERRIDE="qt6ct"
@@ -221,8 +227,8 @@ env_() {
     # export QT_QPA_PLATFORMTHEME="kvantum-dark"
     #! export QT_STYLE_OVERRIDE="kvantum-dark"
 
-    export QT_QPA_PLATFORMTHEME=""
-    export QT_STYLE_OVERRIDE=""
+    # export QT_QPA_PLATFORMTHEME=""
+    # export QT_STYLE_OVERRIDE=""
 
     # which Session
     wich_session() {
@@ -237,14 +243,17 @@ env_() {
         xrandr --verbose
     }
 
+    # export GTK_THEME=Adwaita-dark
     # export GTK_THEME=Arc-Maia-Dark
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
     # export GTK2_RC_FILES="$HOME/.config/gtk-4.0"
+    # export GTK2_RC_FILES="$HOME/.config/gtk-2.0"
+    # export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
     # export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 
+    # https://wiki.archlinux.org/title/GTK
     # export GDK_DPI_SCALE=0.5
     # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
-    #
     # gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 
     # unset QT_STYLE_OVERRIDE
@@ -267,9 +276,9 @@ ssh_() {
     fi
 
     # Source ssh-agent environment variables
-    # if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    #     source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-    # fi
+    if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+        source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+    fi
 
     if [[ ! -n ${SSH_CONNECTION} ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -286,6 +295,16 @@ ssh_() {
     fi
 
     #  keychain
+    keychain_() {
+
+        # keychain ~/.ssh/id_*
+        # shellcheck source=/dev/null
+        [ -f ~/.keychain/"$HOSTNAME"-sh ] && . ~/.keychain/"$HOSTNAME"-sh 2>/dev/null
+        # shellcheck source=/dev/null
+        [ -f ~/.keychain/"$HOSTNAME"-sh-gpg ] && . ~/.keychain/"$HOSTNAME"-sh-gpg 2>/dev/null
+    }
+    keychain_
+
     keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
 
     # ---> to gh_up
@@ -363,7 +382,6 @@ gpg_() {
         gpg --list-keys --with-keygrip
     }
 
-    export GPG_TTY=$(tty)
     gpg-connect-agent updatestartuptty /bye >/dev/null
 
     encryption_() {
@@ -376,10 +394,16 @@ gpg_() {
         }
     }
     encryption_
+
+    # pinentry-tty
+    export GPG_TTY=$(tty)
+
 }
 gpg_
 
 # prompt
+# PS1="%B-= %{$fg[yellow]%}%n%{$fg[green]%} =-$reset_color%}$%b "
+# PS1='${SSH_CONNECTION+"%{$fg_bold[green]%}%n@%m:"}%{$fg_bold[blue]%}%c%{$reset_color%}$(git_prompt_info) %# '
 # PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
 powerline_() {
@@ -414,7 +438,7 @@ powerline_
 
 zstyle_() {
 
-    # ZDOTDIR=$HOME/.config/zsh #! break terminal in vscodium
+    # export ZDOTDIR=$HOME/.config/zsh #! break terminal in vscodium
     # compinit -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
     export fpath=(/usr/local/share/zsh-completions $fpath)
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
@@ -572,13 +596,13 @@ zstyle_() {
     # are pasting additional text on the end of the URL.
     #
     # Usage:
-    zstyle :bracketed-paste-magic paste-init backward-extend-paste
+    # zstyle :bracketed-paste-magic paste-init backward-extend-paste
     #
 
     # Handle zsh autoloading conventions
-    if [[ "$zsh_eval_context" = *loadautofunc && ! -o kshautoload ]]; then
-        bracketed-paste-magic "$@"
-    fi
+    # if [[ "$zsh_eval_context" = *loadautofunc && ! -o kshautoload ]]; then
+    #     bracketed-paste-magic "$@"
+    # fi
 
     # Autoload zsh modules when they are referenced
     zmodload -a zsh/zpty zpty
@@ -667,7 +691,7 @@ bindkey_() {
 }
 bindkey_
 
-fpath=("$HOME/.zprompts" "$fpath[@]")
+# fpath=("$HOME/.zprompts" "$fpath[@]")
 
 # Suffix alias for opening PDF files with the default program
 alias -s pdf='opendefaultpdf'
@@ -720,6 +744,58 @@ function xterm_title_precmd() {
     [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
 }
 
+.profile_() {
+
+    # Set our umask
+    umask 022
+    # Append "$1" to $PATH when not already in.
+    # This function API is accessible to scripts in /etc/profile.d
+    append_path() {
+        case ":${PATH}:" in
+        *:"$1":*) ;;
+        *)
+            PATH="${PATH:+${PATH}:}$1"
+            ;;
+        esac
+    }
+
+    # Append our default paths
+    append_path '/usr/local/sbin'
+    append_path '/usr/local/bin'
+    append_path '/usr/bin'
+
+    # Force PATH to be environment
+    export PATH
+
+    # Load profiles from /etc/profile.d
+    if test -d /etc/profile.d/; then
+        for profile in /etc/profile.d/*.sh; do
+            test -r "${profile}" && . "${profile}"
+        done
+        unset profile
+    fi
+
+    # Unload our profile API functions
+    unset -f append_path
+
+    # Source global bash config, when interactive but not posix or sh mode
+    if test "$BASH" &&
+        test "$PS1" &&
+        test -z "$POSIXLY_CORRECT" &&
+        test "${0#-}" != sh &&
+        test -r /etc/bash.bashrc; then
+        . /etc/bash.bashrc
+    fi
+
+    # Termcap is outdated, old, and crusty, kill it.
+    unset TERMCAP
+
+    # Man is much better than us at figuring this out
+    unset MANPATH
+
+}
+.profile_
+
 # function xterm_title_preexec () {
 # 	# print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${(q)1}\a"
 # 	[[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${(q)1}\e\\"; }
@@ -763,16 +839,16 @@ function xterm_title_precmd() {
 
 plugin_() {
     # Source Plugin Extension
+    # tmux
+    if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+        tmux source-file ~/.config/tmux/tmux.conf
+    fi
     # dir-colors
     [[ -f ~/.config/.dir_colors ]] && eval $(dircolors ~/.config/.dir_colors)
     # p10k #! starting zsh config
     [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
-    [[ -d $HOME/.config/zsh/ ]] && source "$HOME/.config/zsh/"
-    # UFW aktivate -- firewall
-    [[ -f ~/ownCloud/.bin/ufwEnable.sh ]] && source ~/ownCloud/.bin/ufwEnable.sh
-    [ -d /etc/profile ] && source /etc/profile
-    # Pacman comand not found
-    [ -f /usr/share/doc/pkgfile/command-not-found.zsh ] && source /usr/share/doc/pkgfile/command-not-found.zsh
+    # profile
+    [ -f /etc/profile ] && source /etc/profile
     # powerlevel10k icons
     [[ -f /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh ]] && source /usr/share/zsh-theme-powerlevel10k/internal/icons.zsh
     # zsh-autosuggestions
@@ -785,11 +861,12 @@ plugin_() {
     [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]] && source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
     [[ -f $HOME/ownCloud/p-git/p-aliasrc ]] && source "$HOME"/ownCloud/p-git/p-aliasrc
     # oh-my-zsh
-    [[ -d /usr/share/oh-my-zsh ]] && source /usr/share/oh-my-zsh
+    [[ -f /usr/share/oh-my-zsh/oh-my-zsh.sh ]] && source /usr/share/oh-my-zsh/oh-my-zsh.sh
     ZSH_THEME="random" # theme of oh-my-zsh
     # ZSH_THEME="robbyrussell"
     # export ZSH_THEME="eastwood"
     # export ZSH_THEME="agnoster"
+
 }
 plugin_
 

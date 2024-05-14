@@ -1,3 +1,4 @@
+#! /bin/bash
 # readme
 #' (?d) ' Prefix indicating that the file can be deleted if preventing directory removal  #! don't work with --> !**.stignore*
 #' (?i) ' Prefix indicating that the pattern should be matched without case sensitivity
@@ -12,13 +13,14 @@
 # .local/
 # .local/share/user-places.xbel
 # .yarnrc
-# .software/
 # .cache
 # .wakatime*
 # .rnd*
 # .sonarlint
 # .profile
 # .xsession-errors
+
+!Downloads/ddd
 # -----------------------------------------
 
 
@@ -48,7 +50,7 @@
 # (?d).config/Portmaster/Session Storage
 # (?d).config/Portmaster/blob_storage
 
-# syncthing    #! don't delete
+# syncthing
 #!.stfolder    #  don't delete
 (?d)!**sync-conflict*
 (?d)!**.stignore**
@@ -76,6 +78,7 @@
 (?d)(?i)**history**
 (?d).config/Bitwarden
 (?d).local/share/zeitgeist/*
+(?d).software
 
 # Barrier
 (?d).config/InputLeap/
@@ -98,9 +101,11 @@
 # Microsoft
 (?d)*desktop.ini*
 (?d)$RECYCLE.BIN
-(?d).config/teams/
+(?d).config/teams*
+(?d)/home/shaderico/.config/teams-for-linux/*
 (?d).config/Microsoft/*
 # System Volume Information
+(?d).mysql
 
 # tmp file
 (?d)(?i)cache*/**
@@ -159,14 +164,16 @@
 
 .local/share/keyrings/*
 
-# thunderbird / Mozilla  #! don't delete
-(?d).thunderbird/*
-(?d)!**.default-release/quicktext
-(?d)!**.default-release/ImapMail
-(?d)!**.default-release/prefs.js
-(?d)!**.default-release/TbSync
-(?d)!**.default-release/extensions
-(?d)!**.default-release/persdict.dat
+# thunderbird #! profile set with -p
+# (?d).thunderbird/*
+# (?d)!**.default-release/quicktext
+# (?d)!**.default-release/ImapMail
+# (?d)!.thunderbird/**/prefs.js
+# (?d)!.thunderbird/**/extensions.json
+# (?d)!.thunderbird/**/training.dat
+# (?d)!**.default-release/TbSync
+# (?d)!**.default-release/extensions
+# (?d)!**.default-release/persdict.dat
 
 # Mozilla, firefox
 (?d).mozilla
@@ -183,13 +190,8 @@
 (?d).config/VirtualBox
 (?d)VirtualBox\ VMs/
 (?d)!VirtualBox\ VMs/f7
-
 !VirtualBox\ VMs/xps
 
-(?d)!VirtualBox VMs/ddd
-# (?d)!VirtualBox\ VMs/ddd
-# (?d)!'VirtualBox\ VMs/ddd'
-# (?d)!"VirtualBox VMs/ddd"
 (?d)!VirtualBox\ VMs/MJ-xps/
 # (?d)VM-share-rsx/*
 (?d)**.vdi
@@ -242,9 +244,10 @@
 (?d)**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
 (?d).local/share/notes/Notizen
 (?d).config/xfce4/panel/*
-(?d).config/xfce4/xfconf/xfce-perchannel-xml
 (?d).config/mimeapps.list
 (?d).config/xfce4/desktop/*
+.config/xfce4/xfconf/xfce-perchannel-xml
+!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 
 # whatsapp
 (?d).config/whatsapp*
@@ -255,13 +258,12 @@
 (?d).config/Signal/
 (?d).config/Caprine/
 (?d).config/discord/
-(?d).config/teams/
 
-# GitHub Desktop #! dont use, use IDE instad
+# GitHub Desktop #! dont use, use IDE instead
 (?d)*.git*
 
 # Brave #!don't delete
-(?d).config/BraveSoftware/
+.config/BraveSoftware
 (?d).config/xfce4/helpers.rc
 
 # Sound Pipewire
@@ -271,8 +273,9 @@
 # torrent
 (?d).config/deluge
 (?d)qBittorrent
-(?d)!Downloads/torrent/
 (?d)Downloads/
+(?d)!Downloads/torrent/
+(?d)!Downloads/**/testtest
 
 # kde-connect
 (?d).config/kdeconnect

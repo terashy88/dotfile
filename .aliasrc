@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # LANG="UTF-8"
 fetch_() {
-    # Pfetch / Neofetch
+
+    # pfetch /neofetch
     # Define a function to check if a command exists
     command_exists() {
         command -v "$1" >/dev/null 2>&1
@@ -13,12 +14,13 @@ fetch_() {
         NEOFETCH_CONFIG="config/candies.conf" neofetch
     else
         echo "Error: Neither pfetch nor neofetch are installed."
-        exit 1
+
     fi
     # Set colors for pfetch
     if command_exists pfetch; then
         export PF_COLORS="lightblue blue"
     fi
+
 }
 fetch_
 ############ Todo Workaround ################
@@ -41,28 +43,65 @@ portmaster_restart() {
 alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
 
 iinstall__() {
-    # 1
+    # 1 xsane Ardour simple-scan
     # 0
-    paru -Syu --needed
+    # orphans: remotemouse
+    # $AUR_helper -Syu --needed
 
-    # test  #todo
+    pamac clean -b
+    sudo pacman -Scc
+    sudo pacman-mirrors -f && sudo pacman -Syu
+    pamac update --force-refresh
+    # test  #todo powerline-go instead of powerline
+    # keep pipewire-pulse
     : <<EOF
-
-
 -------------------------------------
+Info:
 
-    # F-Droid
-RethinkDNS
-Blokada
-InviZible Pro
-NetGuard
-pdnsf
-Obtanium
-
-
+Data recovery
+    photorec
 EOF
 
 }
+
+################## TODO #####################
+#############################################
+
+## Alias and Functions ##
+
+tt() {
+    # tmux start
+    profile=lena
+    # server=tlo
+    pkg=tmux
+    limit=44
+
+    if tmux has-session -t $profile >/dev/null; then
+        if [[ $TMUX == "" ]]; then
+            # tmux
+            tmux new-session
+            return
+        fi
+    else
+        if ! tmux has-session -t $profile >/dev/null; then
+
+            tmux new-session -s "$profile"
+        fi
+    fi
+
+    # Limit Max Session
+    while [ "$(tmux list-sessions | wc -l)" -gt $limit ]; do
+        oldest_session=$(tmux list-sessions -F "#{session_id},#{session_activity}" | sort -t',' -k2 | head -n 1 | cut -d ',' -f 1)
+        tmux kill-session -t "$oldest_session"
+        echo "Oldest session was closed"
+    done
+
+    # get tmux
+    if ! pacman -Qi tmux >/dev/null; then
+        sudo pacman --noconfirm -Syu $pkg || echo "error getting $pkg"
+    fi
+}
+tt
 
 safety-up() {
 
@@ -76,10 +115,6 @@ safety_down() {
     sudo systemctl disable --now portmaster
     sudo systemctl disable --now fail2ban
 }
-################## TODO #####################
-#############################################
-
-## Alias and Functions ##
 
 set_path() {
     # Check if user id is 1000 or higher
@@ -128,11 +163,23 @@ pkglist-backup() {
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
         mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qqe >$pkg_ && echo "$pkg_  done"
+    pacman -Qteq >$pkg_ && echo "$pkg_  done"
 }
-pkglist_restore() {
 
-    paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt
+# todo
+# option_=" -Syu --needed --batchinstall --noredownload --useask --topdown --sudoloop  "
+# earlyPKG_=" pfetch portmaster-stub otpclient syncthing input-leap-git input-leap-headless-git brave-browser-beta librewolf-bin owncloud-client"
+pkglist_restore() {
+    #todo try: pamac build --no-confirm
+
+    #  early packages:
+    sudo pacman -Syu --needed fakeroot yay
+
+    # AUR
+    "$AUR_helper" -Syu --needed --batchinstall --useask --topdown --sudoloop "pfetch portmaster-stub otpclient syncthing input-leap-git input-leap-headless-git brave-browser-beta librewolf-bin owncloud-client"
+    # --noredownload
+    # xargs -a ~/ownCloud/dotfile/pkglist.txt -I % pamac build -k 1 %
+    "$AUR_helper" -Syu --needed --batchinstall --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt
 }
 f7-pkglist-backup() {
 
@@ -141,37 +188,64 @@ f7-pkglist-backup() {
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
         mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qqe >$f7_ && echo "$f7_  done"
+    pacman -Qteq >$f7_ && echo "$f7_  done"
 }
 f7-pkglist_restore() {
-    paru -Syu --needed --cleanafter --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
+    $AUR_helper -Syu --needed --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
     Packet Blacklist / Ignorelist /etc/pacman.conf
 }
+brave_unlock() {
+    # brave-browser-beta
+    rm .config/BraveSoftware/Brave-Browser-Beta/SingletonLock
+}
+firmware_update() {
+    # Check if fwupd is installed
+    if ! pacman -Q fwupd >/dev/null; then
+        # If fwupd is not installed, install it
+        sudo pacman -Syu --needed fwupd
+    fi
+
+    # Refresh the list of available firmware updates
+    # This will make sure that the daemon has the most up-to-date information
+    # about available firmware updates
+    fwupdmgr refresh
+
+    # Get a list of the updates that are available for installation
+    fwupdmgr get-updates
+
+    # Install any available firmware updates
+    fwupdmgr update
+}
+alias fwupd_list="fwupdmgr get-devices"
 
 cclean() {
     # Systemclean
     sudo pacman -Sc --noconfirm
     /usr/bin/sudo journalctl --vacuum-time=14d --rotate
     sudo journalctl --vacuum-size=33M
-    if [ -n "$(find -maxdepth 2 -type d -iname 'fr*')" ]; then
+    if [ -n "$(find ~/.cache -maxdepth 2 -type d -iname 'fr*')" ]; then
         # file-roller
         sudo find ~/.cache/.fr* -delete -print
     fi
 
     fc-cache -fv
 
+    # todo
     for i in /var/tmp/* ~/.dtrash/* /root/.cache/*; do
         if [ -e "$i" ]; then
             sudo find "$i" -delete -print
         fi
     done
 
+    # minimize xsession-errors
+    truncate -s 333 ~/.xsession-errors
+
     sudo find /var/cache/* -delete -print
 
     sh -c "sudo rm -rfv /var/lib/pacman/db.lck"
     find ~/.local/share/Trash/files/* -atime 8 -delete -print # digikam
     find ~/.local/share/Trash/info/* -atime 8 -delete -print
-    delete_packages
+    delete_packages_
     ccache -C
     echo ""
     echo "if files below then there are older then 88 Days.."
@@ -205,7 +279,26 @@ ccclean() {
     sudo find / -iname '*.bak' -type f -print
     sudo find / -regex /"\(proc\|tmp\|run\)" -prune -o -type f -regex ".*\.pac\(new\|save\|orig\)" -print
     echo "  Checkout above if you want to handel/delete some <.bak and .pacnew> file.."
+    sudo systemd-tmpfiles --clean
 }
+
+delete_packages_() {
+    # Deleted not wanted packages >> cclean
+    # List of packages to delete
+    packages=(hexchat firefox audacious kodi nemo-emblems vuescan xfburn pidgin xfce4-notes-plugin snapd kodi manjaro-hello)
+
+    # Loop through the packages and remove them
+    for package in "${packages[@]}"; do
+        if "$AUR_helper" -Qs "${package}" >/dev/null; then
+            echo "${package} is installed, deleting..."
+            "$AUR_helper" -Rcns "${package}"
+        else
+            echo "$package is not installed, skipping..."
+        fi
+    done
+    echo "done"
+}
+
 pacnew() {
 
     # sudo find / -iname '*.pacnew' -type f -not \ -path '/run/'
@@ -220,48 +313,33 @@ pacnew() {
 
     # pacdiff -o
 }
-syncthing_conflict() {
+syncthing_conflict_() {
 
     sudo find / -iname '*sync-conflict' -type f -print
 }
 
-find_oldstuff() {
+find_oldstuff_() {
     find ~/.config -atime 266 -print
     find ~/.local -atime 266 -print
     find ~/.cache -atime 266 -print
+    # find ~/ -atime 266 -print
 }
-findbrokenpkgs() {
+findbrokenpkgs_() {
     # find Broke Symlinks
     command findbrokenpkgs
 }
-findbrokesymlinks() {
-    yy -S --needed findbrokenpkgs
+findbrokesymlinks_() {
+    sudo pacman -Syu --needed findbrokenpkgs
     sudo find / -xtype l -print
 }
 
-checkrebuild() {
+checkrebuild_() {
 
-    sudo pacman -S --needed rebuild-detector
-    checkrebuild -v
+    sudo pacman -Syu --needed rebuild-detector
+    command checkrebuild -v
 }
 
-delete_packages() {
-    # Deleted not wanted packages >> cclean
-    # List of packages to delete
-    packages=(hexchat mousepad audacious kodi nemo-emblems vuescan)
-
-    # Loop through the packages and remove them
-    for package in "${packages[@]}"; do
-        if paru -Qs "${package}" >/dev/null; then
-            echo "${package} is installed, deleting..."
-            paru -Rcns "${package}"
-            # else
-            # echo "$package is not installed, skipping..."
-        fi
-    done
-}
-
-move_to_trash() {
+move_to_trash_() {
 
     if [[ $# -eq 0 ]]; then
         return 0 # return success if no arguments passed
@@ -291,7 +369,7 @@ move_to_trash() {
 }
 
 rm() {
-
+    # remove with confirmation
     if [ "$(id -u)" != "0" ]; then
         echo -e '      to delete \e[38;2;242;29;0m'"$*"'\e[0m press (y/n) or Enter: '
         stty -echo
@@ -343,31 +421,9 @@ downgrade() {
     command /usr/bin/sudo /usr/bin/downgrade "$@"
 }
 
-# Arch
-alias arch-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
-alias reflector='sudo reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist '
-arch-pamacclean() {
-
-    pamac clean --no-confirm --keep 1
-    sudo find /tmp/* -delete -print
-    sudo find /var/lib/pacman/sync/* -delete -print
-    sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
-    sudo find /etc/pacman.d/gnupg -delete -print
-    sudo find /var/lib/pacman/db.lck -delete -print
-    sudo find /root/.gnupg/* -delete -print
-    sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
-    sudo pacman-key --init
-    sudo pacman -Syy
-    sudo pacman-key --populate archlinux
-    sudo pacman-key --refresh-keys
-    sudo pacman -Syyu --disable-download-timeout
-}
-# endeavouros
-alias eos-update='eos-rankmirrors; sudo pacman -Syu'
-
 wine-config() {
     # wine steam
-    sudo pacman -Syu --needed wine-staging wine-nine gamescope winetricks protontricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-faudio lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils
+    sudo pacman -Syu --needed wine-staging wine-nine gamescope winetricks protontricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-pipewire lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d
 
     wineserver -k 15
 
@@ -497,11 +553,84 @@ alias df='df -h '     # Human-readable sizes check
 alias free='free -h ' # Show sizes in MB
 alias whereami='echo $PWD'
 alias more='less --use-color'
-pacman-update() {
 
-    sudo pacman-mirrors -a -P https --fasttrack 11 &&
-        sudo pacman -Syu --disable-download-timeout
+manjaro-stable() {
+    sudo pacman-mirrors --api --set-branch stable
+    pamacclean
 }
+manjaro-testing() {
+    sudo pacman-mirrors --api --set-branch testing
+    pamacclean
+}
+
+pacman-update() {
+    # Systemupdate
+    os=$(cat /etc/arch-release)
+
+    if grep -q "Manjaro" /etc/arch-release; then
+
+        sudo pacman-mirrors -a -P https --fasttrack 11 &&
+            sudo pacman -Syu --disable-download-timeout
+
+    elif [[ $os == "Arch Linux"* ]]; then
+        sudo pacman -Syu --disable-download-timeout
+
+    elif [[ $os == "endeavour"* ]]; then
+
+        eos-rankmirrors
+        sudo pacman -Syu --disable-download-timeout
+
+    else
+        echo -n "Unknown OS"
+        for ((i = 1; i <= 3; i++)); do
+            echo -n "."
+            sleep 1
+        done
+        echo ""
+        echo "Cancel update"
+    fi
+
+}
+log_packages_() {
+    # Log packages
+    awk -F'[[T ]' '$6 == "upgraded" { print $2; }' /var/log/pacman.log | uniq -c | sort -rn
+}
+arch_() {
+    # Arch
+    os=$(cat /etc/arch-release)
+
+    arch-grub() {
+        if [[ $os == "Arch Linux"* ]]; then
+
+            sudo grub-mkconfig -o /boot/grub/grub.cfg
+        fi
+    }
+    reflector() {
+        if [[ $os == "Arch Linux"* ]]; then
+            sudo "reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist "
+        fi
+    }
+
+    arch-pamacclean() {
+        if [[ $os == "Arch Linux"* ]]; then
+
+            pamac clean --no-confirm --keep 1
+            sudo find /tmp/* -delete -print
+            sudo find /var/lib/pacman/sync/* -delete -print
+            sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
+            sudo find /etc/pacman.d/gnupg -delete -print
+            sudo find /var/lib/pacman/db.lck -delete -print
+            sudo find /root/.gnupg/* -delete -print
+            sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
+            sudo pacman-key --init
+            sudo pacman -Syy
+            sudo pacman-key --populate archlinux
+            sudo pacman-key --refresh-keys
+            sudo pacman -Syyu --disable-download-timeout
+        fi
+    }
+}
+arch_
 alias mirror-check='pacman-mirrors --status'
 grub-update() {
     # sudo grub-install --recheck && sudo update-grub
@@ -516,12 +645,17 @@ alias mv='mv -iv '
 
 # pamac build "$1"
 # paru / yay
-AUR_helper="paru"
-alias zz="yy --disable-download-timeout"
+if pacman -Qq paru >/dev/null; then
+    AUR_helper=paru
+else
+    AUR_helper=yay
+fi
+alias zz=yy # US Keyboard
+# alias zz="yy --disable-download-timeout"
 alias yy="${AUR_helper}"
 #todo if ( "$AUR_helper" == "$AUR_helper" ) then
 # "$AUR_helper" else
-#  echo "" && paru --show --news && echo "here we go Richard"
+#  echo "" && $AUR_helper --show --news && echo "here we go Richard"
 # fi
 
 alias rechner-bc='   bc -ql'        #Calculator
@@ -557,7 +691,7 @@ port_check_() {
 
 fail2ban_() {
     # --- Enable fail2ban
-    sudo pacman -S --needed fail2ban
+    sudo pacman -Sy --needed fail2ban
 
     if [[ ! -f /etc/fail2ban/jail.local ]]; then
         sudo sh -c 'echo  "
@@ -590,12 +724,25 @@ alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
 alias whatismyip="sh -c 'curl http:/ipecho.net/plain; echo'"
 alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' # NetworkManager info scan
-alias journalctl-live='       journalctl -f'
+
+journalctl-live_() {
+    # Filtert live Journalctl-logs
+    exclude=("blob")
+    echo "live Journalctl.."
+    patterns=$(
+        IFS="|"
+        echo "${exclude[*]}"
+    )
+
+    # Run journalctl in live mode and filter out specified patterns
+    sudo journalctl -f | grep -vE "$patterns"
+}
+
 alias journalctl-kernel='sudo journalctl -rp 3 -xb|more'
 alias journalctl-log='   sudo journalctl -r |more'
 alias whois='whois' # whois input-ip 127.0.0.1
 alias kernel_info='lsmod'
-alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # mdos tracert google.ch
+alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # MSDOS tracert google.ch
 
 alias network_bettercap_monitoring='sudo bettercap'                                                               # network-monitoring     live-scan spoofing
 alias network-sniffer-monitoring='xfce4-terminal --geometry=100x28 --hide-scrollbar -H -x zsh -c "sudo  sniffer"' # network-monitoring     live-scan
@@ -607,7 +754,7 @@ alias ufw-iptables='sudo iptables -L'
 alias whowatch='whowatch '                                                                      # who is on my network
 alias traffic_wavemon='xfce4-terminal --geometry=88x28 --hide-scrollbar -H -x zsh -c "wavemon"' # Network traffic strength
 alias tcpdump_wlp59='sudo tcpdump -i wlp59s0'                                                   # wireshark cli
-alias ping='ping -c 3 '                                                                         # Windows nslookup
+alias ping='ping -c 3'                                                                          # Windows nslookup
 alias gateway-ping='ping _gateway'
 
 # Gateway
@@ -615,8 +762,9 @@ alias route='route -n'
 
 # VPN
 alias vpnProtonvpn='protonvpn'
-vpn-eth() {
-
+vpn-eth_deprecate() {
+    # ! deprecate  -->> use AUR
+    # https://unlimited.ethz.ch/display/itkb/VPN
     if [[ -d /opt/cisco/anyconnect ]]; then
         sh -c "sudo rm -rfv /opt/cisco/anyconnect" || return 1
     fi
@@ -639,8 +787,18 @@ alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffm
 alias cam-info=' v4l2-ctl --list-devices'
 
 # Downloads    youtube-dl, clipgrab
-alias yt='mkdir ~/Downloads/yt ; cd ~/Downloads/yt ; yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"'
-alias yta='mkdir ~/Downloads/yt ; cd ~/Downloads/; yt -x -f bestaudio/best'
+yt() {
+    mkdir -p ~/Downloads/yt
+    cd ~/Downloads/yt || true
+    yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" "$1" || echo "failed"
+    echo "done"
+}
+yta() {
+    mkdir -p ~/Downloads/yt
+    cd ~/Downloads/yt || true
+    yt-dlp -x -f bestaudio/best "$1" || exit
+    echo "done"
+}
 alias wget='wget -c'                                                   #web get #Commandline Homepage URL Download > index.html
 alias wget-completed='wget -m -c -r -np -p -E -k -K 'target-url-here'' #web get #Commandline Homepage URL Download > index.html
 # alias curl-completed='wget -r -k -E -l 8 '     #web get #Commandline Homepage URL Download > index.html
@@ -731,27 +889,20 @@ alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 alias diff='diff --color=auto'
 # These common commands are just too long! Abbreviate them.
-alias ka='pkill ' #'killall'
+alias ka='pkill -5 ' #'killall'
 
-alias e='codium '
-# alias e='eval "${EDITOR:=neovim}"'
-# VISUAL=EDITOR
+alias e='eval "${EDITOR:=neovim}"'
+export VISUAL=$EDITOR
 if [[ -n ${DISPLAY} ]]; then
-    export EDITOR="/usr/bin/codium --unity-launch"
+    export EDITOR="/usr/bin/codium"
+    # export EDITOR=" /usr/bin/codium --unity-launch "
 elif
-    export EDITOR="neovim"
+    [[ -z ${DISPLAY} ]]
 then
+    export EDITOR="neovim"
+else
     export EDITOR="kate"
 fi
-
-# todo
-# if command -v codium; then
-#     echo "codium run"
-# elif command -v neovim; then
-#     echo "neovim run"
-# else
-#     echo "kate"
-# fi
 
 ee() {
 
@@ -827,13 +978,13 @@ parse_git_branch() {
     (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
 }
 
-gitdelete_() {
+git_delete_() {
     #  delete both, remote first
     git rm --cached
 }
 
-# Git fix chache
-alias git_fixcache="git rm -r --cached ."
+# Git fix cache
+alias git_fix_cache="git rm -r --cached ."
 
 : <<GIT
 # Delete all changes in the branch
@@ -888,15 +1039,18 @@ touch() {
     my_touch "$@"
 }
 
-#alias mkdir='mkdir_'
-mkdir() {
-    # make directory if not exist
-    for dir in "$@"; do
-        if [[ ! -d "$dir" ]]; then
-            command mkdir -pv "$dir" || true
-        fi
-    done
-}
+# mkdir() {
+#     # Check if at least one argument is provided
+#     if [[ $# -eq 1 ]]; then
+
+#         # make directory and subdirectories if not exist
+#         for dir in "$@"; do
+#             if [[ ! -d "$dir" ]]; then
+#                 command /bin/mkdir -pv "$dir" || true
+#             fi
+#         done
+#     fi
+# }
 
 t() {
 
@@ -959,7 +1113,7 @@ alias restart='     sudo systemctl restart --now '
 alias stop='        sudo systemctl stop    --now '
 alias start='       sudo systemctl start   --now '
 alias sys-port='systemctl status|less --use-color'
-alias sys-status='systemctl list-unit-files|less ' # stacer
+alias sys-status='systemctl list-unit-files|less ' # stacer, <who>
 # alias sys-info='pactl list cards pactl list sinks'
 alias errors='          sudo systemctl --failed'
 alias failed='          sudo systemctl --failed'
@@ -978,58 +1132,119 @@ alias batterie-status='sudo tlp-stat --battery'
 alias powertop='sudo powertop'
 # powertop --calibrate
 
-# swapfile
 swap-activate() {
+    # swapfile
+    set -e
 
-    echo "How much MB should your swapfile have?"
-    echo "Enter here: "
-    read -r i
+    # set swapfile path
+    path_="/swapfile"
 
-    while ! [[ "$i" =~ ^[0-9]+$ ]]; do
-        echo "memory size, has to be numbers"
-        echo "try again: "
+    # convert diskspace to MB
+    diskspace="$(df --output=avail -B1 / | tail -n 1)"
+    diskspace=$((diskspace / 1024 / 1024)) # Convert GB to MB
+
+    while true; do
+
+        echo "How much MB should your swapfile have?"
+        echo "Free space is $diskspace MB"
+        echo "  Enter here: "
         read -r i
+
+        # number check
+        if ! [[ "$i" =~ ^[0-9]+$ ]]; then
+
+            echo "Memory size must be numbers"
+            continue
+        fi
+
+        # Diskspace check
+        if [[ $i -ge $diskspace ]]; then
+
+            echo "Not enough disk space to create a swapfile of ${i} MB."
+            continue
+        fi
+
+        # lesser then 1
+        if [[ $i -le 0 ]]; then
+            echo "${i} MB is a invalid value."
+            continue
+        fi
+
+        break
     done
 
-    echo -e 'Do you want to use \e[38;2;242;29;0m'"${i}"'\e[0mMB?'
+    echo -e 'Do you want to use \e[38;2;242;29;0m'"${i}"'\e[0m MB?'
     echo "Press y are Enter to continue"
 
     read -r r
 
     if [[ "$r" =~ ^[Yy]$ ]] || [[ "$r" == "" ]]; then
 
-        sudo swapoff /swapfile &&
-            sh -c "sudo rm /swapfile" &&
-            sudo dd if=/dev/zero of=/swapfile bs=1M count="$i" status=progress &&
-            sh -c "sudo chmod 600 /swapfile" &&
-            sudo mkswap /swapfile &&
-            sudo swapon /swapfile &&
-            cat <<'EOF' >/etc/sysctl.d/99-swappiness.conf
+        # Trap signals to perform cleanup actions
+        cleanup_() {
+            if swapon --show | grep -q "file"; then
+                sudo swapoff $path_ || true
+                sh -c "sudo rm $path_"
+            fi
+        }
+        cleanup_
 
-    vm.swappiness=6
+        # build swapfile
+        sudo dd if=/dev/zero of=$path_ bs=1M count="$i" status=progress || {
+            echo "Error creating swapfile"
+            sleep 3
+            exit 1
+        }
+        # set permission
+        if sh -c "sudo chmod 600 $path_"; then
+            echo "chmod 600 $path_"
+        else
+            echo "Error changing permissions"
+            sleep 3
+            exit 1
+        fi
+        # create swapfile
+        sudo mkswap $path_ || {
+            echo "Error setting up swap"
+            sleep 3
+            exit 1
+        }
+        # aktive swap
+        sudo swapon $path_ || {
+            echo "Error activating swap"
+            sleep 3
+            exit 1
+        }
+
+        # config swap
+        sudo sh -c " cat <<'EOF' >/etc/sysctl.d/99-swappiness.conf
+
+    vm.swappiness=11
     vm.vfs_cache_pressure=66
     vm.dirty_ratio=3
     # sudo sysctl vm.vfs_cache_pressure=100
-    # sudo sysctl vm.swappiness=8
+    # sudo sysctl vm.swappiness=60
     # sudo mkinitcpio -P
+    # sudo sysctl --system
 EOF
-        if sh -c "sudo grep -q '/swapfile' /etc/fstab"; then
+"
+
+        # set fstab
+        if sudo sh -c "grep -q $path_ /etc/fstab"; then
             echo "Entry already exists in /etc/fstab"
         else
-            #todo    sudo echo "/swapfile none swap defaults 0 0" >>/etc/fstab
-            #    echo "Entry added to /etc/fstab"
-
-            echo "need to add to fstab"
+            sudo sh -c "echo \"$path_ none swap defaults 0 0\" >> /etc/fstab"
+            echo "Entry added to /etc/fstab"
         fi
     else
         echo "swapfile cancelled.."
     fi
 
-    if [[ -e /swapfile ]]; then
+    # show swap
+    if [[ -e $path_ ]]; then
         swapon --show
     fi
 }
-
 alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio -P'
 alias swapStatus='swapon --show'
 
@@ -1046,12 +1261,17 @@ alias monitor-dedector-xrandr='xrandr' #monitor-dedector
 alias system-info='sudo sysctl --system'
 alias sensors='sensors '
 alias lspci='lspci -k ' # Grafikcard information
-alias pstree='pstree '  # systemd baum ansicht
+alias pstree='pstree '  # systemd tree views
 # sudo dmesg
+# sudo sensors-detect
 # coredumpctl list |more
 
 # Data recovery
-alias ddrescue='ddrescue' # man ddrescue
+# alias ddrescue='ddrescue' # man ddrescue
+recovery_() {
+    # Recover corrupt files
+    sudo e2fsck -v -f "$1"
+}
 
 # Input-Info
 alias libinput-info='libinput list-devices' # USB, Touchpad, etc
@@ -1133,9 +1353,9 @@ alias uuid-blkid='blkid'
 #more uuid info 'lsblk -o PATH,LABEL,NAME,UUID'
 
 #Gives you what is using the most space. Both directories and files. Varies on current directory
-alias most='        du -hsx * | sort -rh | head -15' # Bigest files in folder
-alias bigest-file=' du -hsx * | sort -rh | head -15' # Bigest files in folder
-alias diskspace='   gdu'                             # Bigest files in folder 'd'=delete
+alias most='        du -hsx * | sort -rh | head -15'  # Biggest files in folder
+alias biggest-file=' du -hsx * | sort -rh | head -15' # Biggest files in folder
+alias diskspace='   gdu'                              # Biggest files in folder 'd'=delete
 
 # shutdown
 pwf() {
@@ -1150,6 +1370,19 @@ alias htop='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --maxi
 alias trade='xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --maximize -x sh -c "cointop"'
 
 alias history-grep='history | grep'
+
+InputLeap_() {
+    # new barrier
+
+    while pgrep -x "input-leap | wc -l -gt 1" >/dev/null; do
+        pkill -f input-leap -n 1
+    done
+    if ! pgrep -x input-leap >/dev/null; then
+        /bin/input-leap &
+    fi
+
+}
+InputLeap_
 
 barrier-keygen() {
     # barrier new barrier keyGen
@@ -1183,10 +1416,10 @@ alias john='john ' #'john file'
 
 # Mariadb / fork of MySQL    'sudo mysql -u root --auto-rehash'
 alias mariadb='echo  mariadb -u root -p;  mariadb -u root -p'
-mariadb_aktivate() {
+mariadb_activate() {
     disable mariadb || true
     'sudo rm -fr /var/lib/mysql' || true
-    sudo pacman -S mariadb --needed || true
+    sudo pacman -Sy mariadb --needed || true
     sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql || true
     if [[ ! -d /var/lib/mysqltmp ]]; then
         sh -c "sudo mkdir -pv /var/lib/mysqltmp" || true
@@ -1201,13 +1434,13 @@ sudo mysqlcheck --all-databases -u root -p -r;
 sudo mysqlcheck --all-databases -u root -p -o'
 
 # Drucker / Printer CUPS
-alias print-aktivate='sudo pacman -S --needed  cups avahi; sudo gpasswd -a "$USER" sys;
+alias print-activate='sudo pacman -Sy --needed  cups avahi; sudo gpasswd -a "$USER" sys;
 sudo systemctl enable --now cups.service;
 sudo systemctl enable --now cups.socket;
 sudo systemctl enable --now cups.path;
 sudo systemctl enable --now avahi-daemon.service'
 
-alias print_deaktivate='sudo pacman -Rc
+alias print_deactivate='sudo pacman -Rc
 sudo systemctl disable --now cups.service
 sudo systemctl disable --now cups.socket
 sudo systemctl disable --now cups.path'
@@ -1221,35 +1454,37 @@ alias printer-show='lpstat -p -d'
 # sudo sane-find-scanner
 # sudo scanimage -vvL
 
-# Anbox snap #! deprecated
-alias anbox_snap_aktiv='git clone https://github.com/anbox/anbox.git --recurse-submodules
+anbox_() {
+    # Anbox snap #! deprecated
+    alias anbox_snap_aktiv='git clone https://github.com/anbox/anbox.git --recurse-submodules
 cd anbox
 mkdir build
 cd build
 cmake ..
 make'
-alias anbox_snap_delete='yy -Rc glm gtest properties-cpp'
-# Anbox AUR
-alias anbox-aktivate='sudo mkdir /dev/binderfs
+    alias anbox_snap_delete='yy -Rc glm gtest properties-cpp'
+    # Anbox AUR
+    alias anbox-activate='sudo mkdir /dev/binderfs
 mount -t binder binder /dev/binderfs
 systemctl enable --now anbox-container-manager.service
 systemctl enable --now systemd-networkd anbox-container-manager'
-# Add in to fstab:
-#   binder    /dev/binderfs    binder    nofail    0    0
+    # Add in to fstab:
+    #   binder    /dev/binderfs    binder    nofail    0    0
 
-# modprobe
-alias modprobe-test='modprobe binder_linux
+    # modprobe
+    alias modprobe-test='modprobe binder_linux
 modprobe ashmem_linux
 modprobe efivarfs'
+}
 
 systemctl-enable() {
     # systemctl enable
+    echo "Set Home Permission to ${USER}..."
+    sh -c "sudo chown -R ${USER}:${USER} $HOME" &
     sudo hwclock --systohc --utc
     sudo timedatectl set-ntp true
     sudo systemctl enable --now systemd-timesyncd
-    sudo systemctl enable --now auto-cpufreq.service
     sudo systemctl enable --now NetworkManager
-    sudo systemctl enable lightdm
     sudo systemctl enable --now ufw.service
     sudo systemctl enable --now fstrim.timer
     sudo systemctl enable --now tlp
@@ -1258,17 +1493,16 @@ systemctl-enable() {
     sudo update-ca-trust
     update-desktop-database ~/.config/mimeapps.list
     update-mime-database ~/.local/share/mime
-    sh -c "sudo ln -s /var/lib/snapd/snap /snap"
-    chmod go-w ~
-    sh -c "sudo chown -R ${USER}:${USER} ~/.ssh"
+    update-mime-database
+    if [[ -d "$(/var/lib/snapd/snap)" ]]; then
+        sh -c "sudo ln -s /var/lib/snapd/snap /snap"
+    fi
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/*
-    sh -c "sudo powertop --auto-tune"
     sh -c "sudo ln -fL ~/ownCloud/dotfile/hosts /etc/hosts"
     xdg-mime default nemo.desktop inode/directory
     xdg-mime default nemo.desktop x-directory/normal
     xdg-mime default nemo-autorun-software.desktop x-content/unix-software
-    update-desktop-database "${HOME}"/.local/share/applications
     localectl set-locale LANG=en_US.UTF-8
     sudo locale-gen
     sudo locale -a
@@ -1287,9 +1521,11 @@ EOF
     fi
     imwheel -k
 
+    timedatectl show
 }
 
 chroot_new() {
+    # todo refactor
     # chroot script
     ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
     hwclock --systohc
@@ -1325,17 +1561,35 @@ chroot_new() {
     systemctl enable libvirtd
     systemctl enable acpid
 
-    useradd -m terashy
-    echo terashy:password | chpasswd
-    usermod -aG libvirt terashy
+    useradd -m shaderico
+    echo shaderico:password | chpasswd
+    usermod -aG libvirt shaderico
 
-    echo "terashy ALL=(ALL) ALL" >>/etc/sudoers.d/terashy
+    if ! grep -q shaderico /etc/sudoers.d/shaderico, /etc/sudoers && ! grep -q shaderico /etc/sudoers; then
+        echo "shaderico ALL=(ALL:ALL) ALL" >>/etc/sudoers.d/shaderico
+        echo "shaderico ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers.d/shaderico
+    fi
 
     printf "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"
 
 }
 
 # User
+newUserGroupSet() {
+    # Start group
+    array=("wheel" "video" "vboxsf" "sys" "lp" "storage" "scanner" "audio" "video" "input" "users" "power" "optical" "network")
+
+    for i in "${array[@]}"; do
+        if ! getent group "$i" | grep -q "\b$USER\b"; then
+            if sudo usermod -aG "$i" "$USER"; then
+                echo "Added $USER to group $i"
+            else
+                echo "Failed to add $USER to group $i"
+            fi
+        fi
+    done
+}
+
 userdiag_() {
     sudo geany /etc/shadow /etc/sudoers /etc/passwd /etc/gshadow /etc/group
 }
@@ -1348,14 +1602,15 @@ useradd_() {
 userGroupdel() {
 
     if [[ $# -ne 1 ]]; then
-        echo "Usage: userGroupdel <username>"
+        echo "User from <group>"
+        sudo gpasswd -d
         return 1
     fi
 
     # Prompt the user for confirmation before deleting the user and group
     read -r "REPLY?Are you sure you want to delete the user '$1' and its group(s)? [y/N] "
     case $REPLY in
-    [yY][eE][sS] | [yY]) ;;
+    [yY][eE][sS][""] | [yY]) ;;
     *)
         echo "User and group deletion aborted"
         return 1
@@ -1371,7 +1626,7 @@ userGroupdel() {
         sudo userdel "$1"
         sudo groupdel "$1"
     then
-        echo "User and group for $1 have been successfully deleted"
+        echo "User and group for $1 have been deleted"
     else
         echo "Error: User and group for $1 could not be deleted"
         return 1
@@ -1383,15 +1638,15 @@ userGroupdel() {
 }
 
 backup() {
-
-    ln -fs ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
-    ln -fv ~/ownCloud/dotfile/.zshrc ~/.zshrc
+    # Backup
+    ln -fs ~/.config/mimeapps.list "$HOME"/.local/share/applications/mimeapps.list
+    ln -fv ~/ownCloud/dotfile/.zshrc "$HOME"/.zshrc
+    ln -fv ~/ownCloud/dotfile/tmux.conf "$HOME"/.config/tmux/tmux.conf
 
     # todo .p10k change from ~/ to .config
-    ln -fv ~/ownCloud/dotfile/.p10k.zsh ~/.config/zsh/.p10k.zsh
-    ln -fv ~/ownCloud/dotfile/.bashrc ~/.bashrc
-    ln -fv ~/ownCloud/dotfile/.profile ~/.profile
-    ln -fv ~/ownCloud/dotfile/.stignore ~/.stignore
+    ln -fv ~/ownCloud/dotfile/.p10k.zsh "$HOME"/.config/zsh/.p10k.zsh
+    ln -fv ~/ownCloud/dotfile/.bashrc "$HOME"/.bashrc
+    ln -fv ~/ownCloud/dotfile/.stignore "$HOME"/.stignore
 
     # todo change to root
     sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
@@ -1408,7 +1663,7 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
     ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
-    ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
+    # ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
     ln -fv ~/ownCloud/cpp/header.h ~/ownCloud/cpp/tutorial/header.h
     ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
 }
@@ -1464,7 +1719,14 @@ alias catfish='catfish --path=/ --start  --hidden --sort=path '
 
 search() {
     # grep -s "*$1*" ~/.*
-    find ~/ -iname "*$1*"
+    exclude=("/run/user/1000" "/usr/share/icons")
+    path_="/"
+    exclude_args=()
+    for dir in "${exclude[@]}"; do
+        exclude_args+=(-path "$dir" -prune -o)
+    done
+
+    sudo find $path_ \( "${exclude_args[@]}" -false \) -o -iname "$1*" -print
     # locate
 }
 
@@ -1542,16 +1804,23 @@ set_wgetrc() {
     echo "WGETRC is now set to ${WGETRC}"
 }
 
-# colormap() {
-#   for i in {0..255}; do
-#     print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f "
-#     if [[ $((i%6)) -eq 3 ]]; then
-#       print -P $'\n'
-#     fi
-#   done
-# }
+colormap_() {
+    # Colormap
+    for i in {0..255}; do
+        print -Pn "%K{$i}  %k%F{$i}$(printf "%03d" "$i")%f "
+        if [[ "$((i % 6))" -eq 3 ]]; then
+            print -P $'\n'
+        fi
+    done
+}
+colorcode_() {
+    # Colorcode
+    for i in {0..255}; do
+        printf "\x1b[38;5;${i}mcolor%-5i\x1b[0m" "$i"
+        if ! ((("$i" + 1) % 8)); then echo; fi
+    done
+}
 
-# Trim leading and trailing spaces (for scripts)
 trim() {
     local var=$*
     var="${var#"${var%%[![:space:]]*}"}" # remove leading whitespace characters
@@ -1560,46 +1829,51 @@ trim() {
 }
 
 flameshot_delay() {
-    flameshot gui --delay 3000
-
+    local delay=3000 # seconds
+    flameshot gui --delay "$delay"
 }
 
 ansible-status() {
     ansible all -m ping
 }
 
-ufw() {
-    if ! [[ "$#" == "ufw" ]]; then
-        sh -c "sudo ufw $*"
-    else
-        sh -c "ufw $*"
-    fi
-}
+# ufw() {
+#     if ! [[ "$#" == "ufw" ]]; then
+#         sh -c "sudo ufw $*"
+#     else
+#         sh -c "ufw $*"
+#     fi
+# }
 
 firewall_() {
+    # todo
     # Check if ufw is running
-    if ufw status | grep "inactive" >/dev/null; then
+    if systemctl ufw | grep "inactive" >/dev/null; then
         # Activate ufw
         echo 'Your Firewall is not active'
         echo 'activating...'
-        sudo ufw enable || true
-
+        sudo systemctl enable ufw --now
+        # sh -c 'sudo ufw enable'
     fi
 }
-firewall_
+# firewall_
 
 #todo alias nohup="nohup >/dev/null 2>&1 "
 
-samba_up() {
-    # smbpasswd -a "$USER"
-    # groupadd -r sambashare
-    # chown root:sambashare /var/lib/samba/usershares
-    # chmod 1770 /var/lib/samba/usershares
-    enable smb.service
-    enable avahi-daemon.service
+samba-up() {
+    # samba setup
+    sudo sh -c 'mkdir -p /var/lib/samba/usershares'
+    sudo groupadd -r sambashare
+    sh -c 'sudo chown root:sambashare /var/lib/samba/usershares'
+    sh -c 'sudo chmod 1770 /var/lib/samba/usershares'
+    sudo testparm /etc/samba/smb.conf
+    sudo gpasswd sambashare -a "$USER"
+    sudo systemctl restart smb nmb
+    sudo systemctl enable avahi-daemon.service avahi-daemon.socket
+
 }
 samba_down() {
-    disable smb.service
+    disable smb.service nmb.service
     disable avahi-daemon.service
 }
 
@@ -1610,6 +1884,11 @@ cpp__() {
 
 }
 
+terminal_info() {
+    #  Function to retrieve terminal information.
+    "$(tty)"
+}
+
 visudodiag_() {
     # visudo
     sudo lsof /etc/sudoers
@@ -1618,8 +1897,8 @@ visudodiag_() {
 
 # some note
 : <<EOF
-# spamassassin_aktivate    #! don't use this
-# alias spamassassin_aktivate='sudo mkdir /etc/mail/spamassassin/sa-update-keys
+# spamassassin_activate    #! don't use this
+# alias spamassassin_activate='sudo mkdir /etc/mail/spamassassin/sa-update-keys
 # sudo chown spamd:spamd /etc/mail/spamassassin/sa-update-keys
 # sudo chmod 700 /etc/mail/spamassassin/sa-update-keys
 # sudo systemctl enable --now spamassassin.service

@@ -14,4 +14,4 @@ ff02::2 ip6-allrouters
 10.10.66.100 archleft.localdomain archleft
 10.10.66.105 archright.localdomain archright
 
-129.132.99.164	sslvpn.ethz.ch ###Cisco AnyConnect VPN client modified this file. Please do not modify contents until this comment is removed.
+129.132.99.164 sslvpn.ethz.ch ###Cisco AnyConnect VPN client modified this file. Please do not modify contents until this comment is removed.
