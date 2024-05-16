@@ -108,6 +108,7 @@
 (?d).mysql
 
 # tmp file
+(?d).zcompdump
 (?d)(?i)cache*/**
 (?d).cache
 (?d)**.tmp
@@ -180,17 +181,16 @@
 (?d).librewolf
 
 (?d)snap/*
-(?d).zcompdump
 (?i)*metadata*
 
 # rclone
 (?d)rclone/*
 
 # VirtualBox VMs
+!VirtualBox\ VMs/xps
 (?d).config/VirtualBox
 (?d)VirtualBox\ VMs/
 (?d)!VirtualBox\ VMs/f7
-!VirtualBox\ VMs/xps
 
 (?d)!VirtualBox\ VMs/MJ-xps/
 # (?d)VM-share-rsx/*
@@ -239,6 +239,7 @@
 (?d).config/manjaro
 
 # xfce-panel
+!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 (?d).config/pavucontrol*
 (?d).cache/xfce4/clipman/textsrc
 (?d)**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
@@ -247,7 +248,6 @@
 (?d).config/mimeapps.list
 (?d).config/xfce4/desktop/*
 .config/xfce4/xfconf/xfce-perchannel-xml
-!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 
 # whatsapp
 (?d).config/whatsapp*
@@ -273,8 +273,8 @@
 # torrent
 (?d).config/deluge
 (?d)qBittorrent
-(?d)Downloads/
 (?d)!Downloads/torrent/
+(?d)Downloads/
 (?d)!Downloads/**/testtest
 
 # kde-connect
@@ -320,8 +320,8 @@
 (?d).config/pamac
 
 # Popcorntime
-(?d).config/Popcorn-Time/
 !.config/Popcorn-Time/Default/data
+(?d).config/Popcorn-Time/
 
 # crack
 (?d).john*
@@ -340,6 +340,6 @@
 (?d).local/state/nvim/shada/
 
 # Joplin
+(?d)!.config/joplin-desktop/plugins
 (?d)~/ownCloud/joplin
 (?d)(?i).config/Joplin*
-(?d)!.config/joplin-desktop/plugins

@@ -30,16 +30,16 @@ autoload_
 ## By the way if it ain't broke, break it then fix it. ##
 
 history_() {
-    # todo $HOME/.config/.zshistory is not working
-    if [[ ! -f $HOME/.config/.zshistory ]]; then
-        touch $HOME/.config/.zshistory
-    fi
+    #! if .zshistory is not working check --->> manjaro-zsh-config
+    # if [[ ! -f $HOME/.config/.zshistory ]]; then
+    #     touch $HOME/.config/.zshistory
+    # fi
 
     export HISTFILE=$HOME/.config/.zshistory
     export HISTSIZE=8888
     export SAVEHIST=8888
     export HISTTIMEFORMAT="[%F %T] "
-    export HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh #! alias not working
+    export HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh
     export HISTIGNORE="   :ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # bash
     export HISTCONTROL="ignoreboth:erasedups:ignorespace"
 }
@@ -407,12 +407,12 @@ gpg_
 # PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
 powerline_() {
-    # Use powerline manjaro-zsh-config #todo
+    # Use powerline manjaro-zsh-config
     USE_POWERLINE="true"
-    # Source manjaro-zsh-configuration
-    if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-        source /usr/share/zsh/manjaro-zsh-config
-    fi
+    # Source manjaro-zsh-configuration #! conflict with .zshrc settings
+    # if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
+    #     source /usr/share/zsh/manjaro-zsh-config
+    # fi
     # Use manjaro zsh prompt
     if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
         source /usr/share/zsh/manjaro-zsh-prompt
