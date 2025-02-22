@@ -332,6 +332,8 @@ ssh_() {
 
     # SSH
     ssh-keygen_() {
+
+        # todo
         # Prompt for email address
         echo "Enter your email address: "
         read -r email
