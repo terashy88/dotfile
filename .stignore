@@ -16,11 +16,21 @@
 # .cache
 # .wakatime*
 # .rnd*
-# .sonarlint
 # .profile
 # .xsession-errors
 
-!Downloads/ddd
+**/node_modules/**
+**/.git/**
+**/.idea/**
+**/bower_components/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/temp/**
+**/tmp/**
+**/logs/**
+**/flow-typed/**
+
 # -----------------------------------------
 
 
@@ -28,9 +38,9 @@
 # (?d)(?i)!**setting*
 # (?d)(?i)!**Preference*
 # (?d)(?i)!**.cfg
-#!.conf     --will brake barrier--
+#! .conf     --will brake barrier--
 (?d).gnupg
-# (?i)(?d)!**Extension
+# (?d)(?i)**Extension
 # (?i)(?d)!**bookmark*
 
 # no katergory
@@ -53,7 +63,7 @@
 # syncthing
 #!.stfolder    #  don't delete
 (?d)!**sync-conflict*
-(?d)!**.stignore**
+!**.stignore**
 (?d).config/syncthing
 (?d).stversions
 (?d)**.subversion**
@@ -67,18 +77,19 @@
 (?d)**.owncloudsync**
 (?d)**"(conflicted copy"*
 
-# private files
+# private filesnline Tag Naviga
 (?d)**aatest
 (?d)M-link-raw
 # pkglist.txt
 
-# no catergory???
+# no catergory??? --
 (?d)Desktop
 (?d)Schreibtisch
 (?d)(?i)**history**
 (?d).config/Bitwarden
 (?d).local/share/zeitgeist/*
-(?d).software
+(?d).config/softwareArch
+.m2
 
 # Barrier
 (?d).config/InputLeap/
@@ -142,6 +153,8 @@
 
 # vscodium
 #*vsliveshare*
+**/.vscode/**
+.vscode-oss/extensions/
 (?d).config/vscode-sqltools
 (?d).config/VSCodium/*
 (?d)*TabNine*
@@ -150,12 +163,14 @@
 (?d).local/state
 (?d)*QuotaManager*
 (?d)*sdb.*
-(?d).config/systemd/user/*
+(?d).config/systemd/user/
 (?d)**wakatime**
 (?d).vscode-oss/
 (?d).codeium
 (?d).bito
 (?d).java
+(?d).sonarlint
+
 
 # VSCode Kubernet
 (?d).minikube
@@ -165,16 +180,24 @@
 
 .local/share/keyrings/*
 
-# thunderbird #! profile set with -p
+# Thunderbird
 # (?d).thunderbird/*
-# (?d)!**.default-release/quicktext
-# (?d)!**.default-release/ImapMail
-# (?d)!.thunderbird/**/prefs.js
-# (?d)!.thunderbird/**/extensions.json
-# (?d)!.thunderbird/**/training.dat
-# (?d)!**.default-release/TbSync
-# (?d)!**.default-release/extensions
-# (?d)!**.default-release/persdict.dat
+# (?d).thunderbird/qp5rf7dh.thunderbird/ImapMail/
+.thunderbird/qp5rf7dh.thunderbird/Mail/
+.thunderbird/qp5rf7dh.thunderbird/folderCache.json
+.thunderbird/qp5rf7dh.thunderbird/datareporting/
+
+# test
+(?d).thunderbird/
+
+# AI
+(?d).lmstudio
+
+# Betterbird
+# (?d).thunderbird/9kzo32e6.betterbird/ImapMail/
+(?d)!.thunderbird/**/extensions.json
+(?d)!.thunderbird/**/training.dat
+
 
 # Mozilla, firefox
 (?d).mozilla
@@ -187,14 +210,9 @@
 (?d)rclone/*
 
 # VirtualBox VMs
-!VirtualBox\ VMs/xps
 (?d).config/VirtualBox
 (?d)VirtualBox\ VMs/
-(?d)!VirtualBox\ VMs/f7
-
-(?d)!VirtualBox\ VMs/MJ-xps/
-# (?d)VM-share-rsx/*
-(?d)**.vdi
+# (?d)VM-share-rsx/
 
 # Android
 *thumbnails*
@@ -214,6 +232,7 @@
 (?d).rnd
 
 # nvidia prime-run ignore
+(?d)**prime-run**
 
 # autostart at startup
 (?d).config/autostart/*
@@ -258,9 +277,19 @@
 (?d).config/Signal/
 (?d).config/Caprine/
 (?d).config/discord/
+(?d).config/Ferdium
 
 # GitHub Desktop #! dont use, use IDE instead
 (?d)*.git*
+
+.config/figma-linux
+
+# ai
+.ollama
+.local/share/ollama/
+
+# geany
+.config/geany/session.conf
 
 # Brave #!don't delete
 .config/BraveSoftware
@@ -269,13 +298,13 @@
 # Sound Pipewire
 (?d).local/state/pipewire/*
 (?d).local/state/wireplumber/*
+(?d).config/pulse/
 
 # torrent
 (?d).config/deluge
 (?d)qBittorrent
 (?d)!Downloads/torrent/
-(?d)Downloads/
-(?d)!Downloads/**/testtest
+Downloads/
 
 # kde-connect
 (?d).config/kdeconnect
@@ -286,9 +315,11 @@
 (?d)**PlayOnLinux**
 (?d)**bottles**
 (?d)**StarCraft**
-(?d).steam
 (?d)**GUILD WARS**
 (?d)(?i)**Games**
+
+(?d).steam
+(?d).local/share/vulkan
 
 # Epic Game
 (?d).config/heroic/
@@ -313,7 +344,6 @@
 (?d).gradle
 (?d).conan
 (?d).go
-(?d).sonarlint
 (?d).npm
 (?d).config/Electron/
 (?d).nuget
@@ -340,6 +370,19 @@
 (?d).local/state/nvim/shada/
 
 # Joplin
-(?d)!.config/joplin-desktop/plugins
+.config/Joplin*
+(?d)!.config/joplin-desktop/settings.json
+!ownCloud/joplin/info.json
+!.config/joplin-desktop/keymap-desktop.json
+!.config/joplin-desktop/plugins
 (?d)~/ownCloud/joplin
-(?d)(?i).config/Joplin*
+!.config/Joplin/Preferences
+!.config/joplin-desktop/profiles.json
+!.config/joplin-desktop/userchrome.css
+!.config/joplin-desktop/userstyle.css
+
+# Docker
+dist/
+data/
+assets/
+*.ipynb

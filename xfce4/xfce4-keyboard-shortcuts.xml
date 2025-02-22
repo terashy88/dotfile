@@ -53,27 +53,27 @@
       <property name="XF86Display" type="string" value="xfce4-display-settings --minimal" />
       <property name="override" type="bool" value="true" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;z" type="string"
-        value="prime-run exo-open --launch TerminalEmulator --drop-down --hide-menubar --hide-toolbar --hide-borders --geometry 77x11" />
-      <property name="&lt;Alt&gt;t" type="string" value="prime-run exo-open --launch MailReader" />
-      <property name="&lt;Alt&gt;o" type="string" value="prime-run deluge-gtk %U" />
+        value="exo-open --launch TerminalEmulator --drop-down --hide-menubar --hide-toolbar --hide-borders --geometry 77x11" />
+      <property name="&lt;Alt&gt;t" type="string" value="exo-open --launch MailReader" />
+      <property name="&lt;Alt&gt;o" type="string" value="deluge-gtk %U" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string"
-        value="prime-run exo-open --launch TerminalEmulator --hide-menubar --hide-toolbar" />
-      <property name="&lt;Alt&gt;b" type="string" value="prime-run exo-open --launch WebBrowser" />
+        value="exo-open --launch TerminalEmulator --hide-menubar --hide-toolbar" />
+      <property name="&lt;Alt&gt;b" type="string" value="exo-open --launch WebBrowser" />
       <property name="&lt;Primary&gt;Print" type="string" value="xfce4-screenshooter -r" />
-      <property name="Print" type="string" value="prime-run flameshot gui" />
-      <property name="&lt;Alt&gt;p" type="string" value="prime-run popcorntime" />
+      <property name="Print" type="string" value="flameshot gui" />
+      <property name="&lt;Alt&gt;p" type="string" value="popcorntime" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;x" type="string" value="xkill" />
       <property name="&lt;Alt&gt;h" type="string"
-        value="prime-run xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c &quot; htop&quot;" />
+        value="xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c &quot; htop&quot;" />
       <property name="&lt;Alt&gt;k" type="string"
-        value="prime-run prime-run gapplication launch org.gnome.Maps %U" />
+        value="gapplication launch org.gnome.Maps %U" />
       <property name="&lt;Alt&gt;j" type="string"
-        value="prime-run env DESKTOPINTEGRATION=0 APPIMAGELAUNCHER_DISABLE=1 /usr/bin/joplin-desktop --no-sandbox %U" />
+        value="env DESKTOPINTEGRATION=0 APPIMAGELAUNCHER_DISABLE=1 /usr/bin/joplin-desktop --no-sandbox %U" />
       <property name="Super_L" type="string" value="/usr/bin/xfce4-popup-whiskermenu" />
-      <property name="&lt;Primary&gt;&lt;Alt&gt;c" type="string" value="prime-run catfish" />
+      <property name="&lt;Primary&gt;&lt;Alt&gt;c" type="string" value="catfish" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;e" type="string"
-        value="prime-run /opt/vscodium-bin/bin/codium --no-sandbox --unity-launch" />
-      <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="prime-run nemo" />
+        value="/opt/vscodium-bin/bin/codium --no-sandbox --unity-launch" />
+      <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="nemo" />
     </property>
   </property>
   <property name="xfwm4" type="empty">
@@ -285,27 +285,27 @@
       <property name="XF86Display" type="string" value="xfce4-display-settings --minimal" />
       <property name="override" type="bool" value="true" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;z" type="string"
-        value="prime-run exo-open --launch TerminalEmulator --drop-down --hide-menubar --hide-toolbar --hide-borders --geometry 77x11" />
-      <property name="&lt;Alt&gt;t" type="string" value="prime-run exo-open --launch MailReader" />
-      <property name="&lt;Alt&gt;o" type="string" value="prime-run deluge-gtk %U" />
+        value="exo-open --launch TerminalEmulator --drop-down --hide-menubar --hide-toolbar --hide-borders --geometry 77x11" />
+      <property name="&lt;Alt&gt;t" type="string" value="exo-open --launch MailReader" />
+      <property name="&lt;Alt&gt;o" type="string" value="deluge-gtk %U" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string"
-        value="prime-run exo-open --launch TerminalEmulator --hide-menubar --hide-toolbar" />
-      <property name="&lt;Alt&gt;b" type="string" value="prime-run exo-open --launch WebBrowser" />
+        value="exo-open --launch TerminalEmulator --hide-menubar --hide-toolbar" />
+      <property name="&lt;Alt&gt;b" type="string" value="exo-open --launch WebBrowser" />
       <property name="&lt;Primary&gt;Print" type="string" value="xfce4-screenshooter -r" />
-      <property name="Print" type="string" value="prime-run flameshot gui" />
-      <property name="&lt;Alt&gt;p" type="string" value="prime-run popcorntime" />
+      <property name="Print" type="string" value="flameshot gui" />
+      <property name="&lt;Alt&gt;p" type="string" value="popcorntime" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;x" type="string" value="xkill" />
       <property name="&lt;Alt&gt;h" type="string"
-        value="prime-run xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c &quot; htop&quot;" />
+        value="xfce4-terminal --maximize --hide-scrollbar -H -x zsh -c &quot; htop&quot;" />
       <property name="&lt;Alt&gt;k" type="string"
-        value="prime-run prime-run gapplication launch org.gnome.Maps %U" />
+        value="gapplication launch org.gnome.Maps %U" />
       <property name="&lt;Alt&gt;j" type="string"
-        value="prime-run env DESKTOPINTEGRATION=0 APPIMAGELAUNCHER_DISABLE=1 /usr/bin/joplin-desktop --no-sandbox %U" />
+        value="env DESKTOPINTEGRATION=0 APPIMAGELAUNCHER_DISABLE=1 /usr/bin/joplin-desktop --no-sandbox %U" />
       <property name="Super_L" type="string" value="/usr/bin/xfce4-popup-whiskermenu" />
-      <property name="&lt;Primary&gt;&lt;Alt&gt;c" type="string" value="prime-run catfish" />
+      <property name="&lt;Primary&gt;&lt;Alt&gt;c" type="string" value="catfish" />
       <property name="&lt;Primary&gt;&lt;Alt&gt;e" type="string"
-        value="prime-run /opt/vscodium-bin/bin/codium --no-sandbox --unity-launch" />
-      <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="prime-run nemo" />
+        value="/opt/vscodium-bin/bin/codium --no-sandbox --unity-launch" />
+      <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="nemo" />
     </property>
   </property>
   <property name="xfwm4" type="empty">

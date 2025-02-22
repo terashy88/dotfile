@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# LANG="UTF-8"
-fetch_() {
 
-    # pfetch /neofetch
-    # Define a function to check if a command exists
+fetch_() {
+    # pfetch / neofetch
+
+    # define a function to check if a command exists
     command_exists() {
         command -v "$1" >/dev/null 2>&1
     }
@@ -20,52 +20,168 @@ fetch_() {
     if command_exists pfetch; then
         export PF_COLORS="lightblue blue"
     fi
-
 }
 fetch_
+
 ############ Todo Workaround ################
 
 # restart sshd
 
 portmaster_restart() {
-    # sh -c "systemctl status wpa_supplicant.service"
-
-    # echo "restart NetworkManager.."
-    # systemctl restart NetworkManager.service
 
     echo "restarting Portmaster.."
     systemctl restart --now portmaster
-    #nohup >/dev/null 2>&1 sh -c "/opt/safing/portmaster/portmaster-start app --data=/opt/safing/portmaster" &
 
     # Debug info
     # curl http://127.0.0.1:817/api/v1/debug/core
 }
 alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
 
-iinstall__() {
-    # 1 xsane Ardour simple-scan
-    # 0
-    # orphans: remotemouse
-    # $AUR_helper -Syu --needed
+safety-up() {
 
-    pamac clean -b
-    sudo pacman -Scc
-    sudo pacman-mirrors -f && sudo pacman -Syu
-    pamac update --force-refresh
-    # test  #todo powerline-go instead of powerline
+    sudo systemctl enable --now ufw
+    sudo systemctl enable --now portmaster
+    sudo systemctl enable --now fail2ban
+}
+safety_down() {
+
+    sudo systemctl disable --now ufw
+    sudo systemctl disable --now portmaster
+    sudo systemctl disable --now fail2ban
+}
+
+iinstall__() {
+    # orphans: remotemouse
+    # Hold Pkg: manjaro-pipewire
+    # test: wn3d-desktop  AppImage tradingview kitty Citrix foliate audirvana LLaMA ai   nextcloud flutter
+
+    wrapper="$(paru -Syu --needed)"
+
+    # Install packages
+    package_=(viber vlc wireshark-qt skanlite simplescreenrecorder vulkan-extra-tools skanlite telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps input-leap-git input-leap-headless-git libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+
+        # Testing - docker:
+        nvidia-container-toolkit
+        if broken revers to:
+        libnvidia-container
+    )
+    # Array of programs to be uninstall
+    del_=(snyk)
+
+    if [[ -n "${package_[*]}" ]]; then
+        # Check if any program needs to be uninstalled
+        for package__ in "${package_[@]}"; do
+            $wrapper "$package__"
+        done
+    else
+        echo "  nothing to install"
+    fi
+
+    if [[ -n "${del_[*]}" ]]; then
+        # Check if any program needs to be uninstalled
+        for program in "${del_[@]}"; do
+            sudo pacman -Rc "$program"
+        done
+    else
+        echo "  nothing to uninstall"
+    fi
+
     # keep pipewire-pulse
     : <<EOF
 -------------------------------------
-Info:
+note:
 
-Data recovery
-    photorec
-safeeyes
-krunner
-Hypnotix
+.config/gtkrc-2.0
+.config/gtkrc
+.config/gtk-2.0/
+.config/gtk-3.0/
+.config/zsh/.zcompdump
+.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-2.0/gtkrc
+.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-3.0/gtk.css
+.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-3.20/gtk.css
 
 EOF
+}
+#############################################
 
+rrestoreBackup() {
+    # Daily test
+
+    # Define backup-related variables
+    bak=".bak"
+    testFile=""
+
+    backup=""
+    revert=""
+    del="$revert" # Delete action is to remove the .bak file
+
+    # Ensure we're in home directory
+    if [ "$PWD" != "$HOME" ]; then
+        cd "$HOME" || exit 1
+    fi
+
+    # Confirm deletion of the backup file
+    if [[ -e "$del" ]]; then
+
+        echo "Are you sure you want to Delete: $del ?"
+        printf "    y = yes \n  or \n   n = no? "
+
+        while true; do
+
+            read -r r
+
+            clear
+            sleep 0.4
+            case $r in
+            Y | y)
+                rm "$del" && echo "Deleted: $del" || exit 1
+                exit 0
+                ;;
+            n | N)
+                echo ""
+                echo "$del will not be deleted."
+                exit 1
+                ;;
+            *)
+                if [[ $r == "" ]]; then
+                    echo "there was no input..."
+                else
+                    echo ""
+                    echo "The input $r was not correct"
+                    sleep 0.3
+                    echo " To delete $del please press:"
+                    sleep 0.3
+                    printf "    [ y ] = yes or [ n ] = no...\n"
+                fi
+                ;;
+            esac
+        done
+    fi
+
+    # Perform backup
+    if [[ -e $backup ]]; then
+        {
+            mv "$backup" "$backup$bak"
+        } || {
+            echo "Could not move $backup to $backup$bak"
+            exit 1
+        }
+        echo "$backup is now at $backup$bak"
+        exit 0
+    else
+        echo "There is no $backup file..."
+    fi
+
+    # Revert if backup was successful (fail-safe)
+    if [[ -e $revert ]]; then
+
+        mv "$revert" "$testFile" || {
+            echo "Could not revert to $testFile"
+            exit 1
+        }
+        echo "$revert is now at $testFile"
+        return 0
+    fi
 }
 
 ################## TODO #####################
@@ -73,7 +189,7 @@ EOF
 
 ## Alias and Functions ##
 
-tt() {
+xumt_() {
     # tmux start
     profile=lena
     # server=tlo
@@ -101,24 +217,17 @@ tt() {
     done
 
     # get tmux
-    if ! pacman -Qi tmux >/dev/null; then
+    if ! pacman -Qq $pkg >/dev/null; then
         sudo pacman --noconfirm -Syu $pkg || echo "error getting $pkg"
     fi
-}
-tt
 
-safety-up() {
+    # tmux
+    if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+        tmux source-file ~/.config/tmux/tmux.conf
+    fi
 
-    sudo systemctl enable --now ufw
-    sudo systemctl enable --now portmaster
-    sudo systemctl enable --now fail2ban
 }
-safety_down() {
-
-    sudo systemctl disable --now ufw
-    sudo systemctl disable --now portmaster
-    sudo systemctl disable --now fail2ban
-}
+xumt_
 
 set_path() {
     # Check if user id is 1000 or higher
@@ -140,7 +249,7 @@ set_path ~/bin ~/scripts
 
 # Pretty print the path
 # alias path='echo $PATH | tr -s ':' '\n'' # ls
-alias path='echo -e ${PATH//:/\\n}' # ll
+alias path='echo -e ${PATH//:/\\n}' # ll #! don't change else it will break the prompt.
 
 # PATH
 export home_=~/ownCloud
@@ -154,7 +263,7 @@ xfce-backup() {
     fi
     xfce4-panel-profiles save ~/ownCloud/dotfile/xfce4/xfce4-panel-profiles
     update-desktop-database ~/.config/mimeapps.list
-    update-desktop-database ~/.local/share/applications #! deprecated
+    # update-desktop-database ~/.local/share/applications #! deprecated
 }
 xfce_restore() {
     ln -fv ~/ownCloud/dotfile/xfce4/xfce4-keyboard-shortcuts.xml ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
@@ -162,19 +271,19 @@ xfce_restore() {
 
 pkglist-backup() {
     # sudo pacman -Qqe > pkglist.txt       #! not use --combinedupgrade
+
     pkg_=~/ownCloud/dotfile/pkglist.txt
 
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
         mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qteq >$pkg_ && echo "$pkg_  done"
+    pacman -Qteq | sort >$pkg_ && echo "$pkg_  done"
 }
 
 # todo
 # option_=" -Syu --needed --batchinstall --noredownload --useask --topdown --sudoloop  "
 # earlyPKG_=" pfetch portmaster-stub otpclient syncthing input-leap-git input-leap-headless-git brave-browser-beta librewolf-bin owncloud-client"
 pkglist_restore() {
-    #todo try: pamac build --no-confirm
 
     #  early packages:
     sudo pacman -Syu --needed fakeroot yay
@@ -192,7 +301,7 @@ f7-pkglist-backup() {
     if [[ ! -d ~/ownCloud/dotfile/ ]]; then
         mkdir -pv ~/ownCloud/dotfile/ || true
     fi
-    pacman -Qteq >$f7_ && echo "$f7_  done"
+    pacman -Qteq | sort >$f7_ && echo "$f7_  done"
 }
 f7-pkglist_restore() {
     $AUR_helper -Syu --needed --batchinstall --noredownload --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist_f7.txt
@@ -237,14 +346,17 @@ cclean() {
     # todo
     for i in /var/tmp/* ~/.dtrash/* /root/.cache/*; do
         if [ -e "$i" ]; then
-            sudo find "$i" -delete -print
+            sudo find "$i" -atime 8 -delete -print
         fi
     done
 
     # minimize xsession-errors
     truncate -s 333 ~/.xsession-errors
 
-    sudo find /var/cache/* -delete -print
+    # vscode Sonarlint
+    find ~/.sonarlint/* -atime 8 -delete -print
+
+    sudo find /var/cache/* -atime 8 -delete -print
 
     sh -c "sudo rm -rfv /var/lib/pacman/db.lck"
     find ~/.local/share/Trash/files/* -atime 8 -delete -print # digikam
@@ -255,7 +367,6 @@ cclean() {
     echo "if files below then there are older then 88 Days.."
     echo "in folder .cache"
     sudo find ~/.cache/ -atime 88 -print
-
 }
 ccclean() {
     # advance cleanup
@@ -311,36 +422,77 @@ pacnew() {
     # sudo find / -iname '*.pacnew' -type f -not -path '/proc/*' -not -path '/run/*' -not -path '/timeshift/*' -not -path '/var/log/*' -not -path '.config/VSCodium/' -not -path '/timeshift/*' -print
 
     sudo find / -regex /"\(proc\|tmp\|run\)" -prune -o -type f -regex ".*\.pac\(new\|save\|orig\|.old\)" -print
-    echo "here is some syncthing conflict:"
-    syncthing_conflict
+
+    syncthing_conflict_
     # sudo find / \( -path /proc -o -path /run -o -path /tmp \) -prune -o -type f -regex ".*\.pac\(new\|save\|orig\)" -print
 
     # pacdiff -o
 }
 syncthing_conflict_() {
-
-    sudo find / -iname '*sync-conflict' -type f -print
+    if sudo find / -iname '*sync-conflict' -type f -print | grep -q .; then
+        echo "here is some syncthing conflict:"
+        sudo find / -iname '*sync-conflict' -type f -print
+    fi
 }
 
 find_oldstuff_() {
-    find ~/.config -atime 266 -print
-    find ~/.local -atime 266 -print
-    find ~/.cache -atime 266 -print
-    # find ~/ -atime 266 -print
-}
-findbrokenpkgs_() {
-    # find Broke Symlinks
-    command findbrokenpkgs
+    # Todo compare again's packman -Qq
+
+    find_() {
+        find ~/.config -atime 266 -print
+        find ~/.local -atime 266 -print
+        find ~/.cache -atime 266 -print
+        # find ~/ -atime 266 -print
+    }
+    find_
 }
 findbrokesymlinks_() {
-    sudo pacman -Syu --needed findbrokenpkgs
+    # find Broke Symlinks
+    yay -Syu --needed findbrokenpkgs
+
+    command findbrokenpkgs
+
     sudo find / -xtype l -print
 }
 
 checkrebuild_() {
 
-    sudo pacman -Syu --needed rebuild-detector
+    ver="3.13"
+
+    sudo pacman -Syu --needed rebuild-detector yay
     command checkrebuild -v
+
+    pamac clean
+
+    # pamac build $(pacman -Qoq /usr/lib/python$ver) --no-confirm
+    yay -Syu "$(pacman -Qoq /usr/lib/python$ver)"
+
+    pamac update --aur --force-refresh
+    # pamac update --aur --force-refresh --no-confirm
+
+    python --version
+}
+
+java_status_() {
+    # Java
+    vers="java-23-openjdk"
+    pkg="jdk-openjdk jdk-openjdk openjdk-src"
+
+    # check Package
+    for i in $pkg; do
+        if [[ ! $(pacman -Qq "$package") ]]; then
+            sudo pacman -Syu --needed "$i"
+        else
+            echo "error Package: $i"
+        fi
+    done
+
+    # set Java Version
+    if [[ "$(command -v archlinux-java)" ]]; then
+        sudo archlinux-java set "$vers"
+
+        archlinux-java status
+    fi
 }
 
 move_to_trash_() {
@@ -462,11 +614,6 @@ wine-config() {
     # winetricks
 }
 
-# if [[ -d ~/.wine ]]; then
-
-# export WINEARCH=win32 WINEPREFIX="$HOME"/.local/share/wineprefixes/win32
-# export WINEESYNC=1
-# fi
 wine_clean() {
 
     # yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9 vulkan-extra-layers vulkan-extra-tools
@@ -499,23 +646,23 @@ wine_clean() {
     ln -s /tmp/ ~/.wine/drive_c/windows/temp
 
     sudo find ~/.wine -delete -print
-
 }
 steam_clean() {
 
     sudo find ~/.local/share/Steam/ -delete -print
     sudo find ~/steam* -delete -print
-
 }
 
-# alias §="xdotool - < /home/shaderico/.local/bin/magickeys.sh "
+# alias §="xdotool - < .local/bin/magickeys.sh "
 # bindkey -s '§' "xdotool_ "
 
 xdotool_() {
 
-    /home/shaderico/.local/bin/magickeys_off.sh
+    # ~/.local/bin/magickeys_off.sh
+    .local/bin/magickeys.sh
 }
 
+# todo
 # xdotool_() {
 #     if $toggle; then
 #         echo hi
@@ -555,8 +702,8 @@ xdotool_() {
 alias cp='cp -vi '    # Confirm before overwriting something
 alias df='df -h '     # Human-readable sizes check
 alias free='free -h ' # Show sizes in MB
-alias whereami='echo $PWD'
 alias more='less --use-color'
+alias mv='mv -iv '
 
 manjaro-stable() {
     sudo pacman-mirrors --api --set-branch stable
@@ -593,8 +740,19 @@ pacman-update() {
         echo ""
         echo "Cancel update"
     fi
-
 }
+
+# pacman-fix-permissions_() {
+# ! deprecate
+#     while true; do
+#         sudo pacman-fix-permissions
+#         if sudo pacman-fix-permissions; then
+#             break
+#         fi
+#         sleep 22
+#     done
+# }
+
 log_packages_() {
     # Log packages
     awk -F'[[T ]' '$6 == "upgraded" { print $2; }' /var/log/pacman.log | uniq -c | sort -rn
@@ -643,10 +801,6 @@ grub-update() {
     sudo update-grub && sudo tree /boot/efi
 }
 
-alias pacman-grep='pacman -Qe | grep '
-
-alias mv='mv -iv '
-
 # pamac build "$1"
 # paru / yay
 if pacman -Qq paru >/dev/null; then
@@ -655,15 +809,16 @@ else
     AUR_helper=yay
 fi
 alias zz=yy # US Keyboard
-# alias zz="yy --disable-download-timeout"
 alias yy="${AUR_helper}"
-#todo if ( "$AUR_helper" == "$AUR_helper" ) then
-# "$AUR_helper" else
-#  echo "" && $AUR_helper --show --news && echo "here we go Richard"
-# fi
 
-alias rechner-bc='   bc -ql'        #Calculator
-alias calculator-bc='bc -ql'        #Calculator
+alias rechner-bc='calculator-bc'
+calculator-bc() {
+    # Calculator
+    echo 1
+    echo "calculator:"
+    bc -ql
+}
+
 alias inxi-Fnzy='LANG=C inxi -Fnzy' #Info System      #-a uuid info
 
 # Antivirus
@@ -673,49 +828,24 @@ alias defenderscan_infection='sudo libredefender infections '
 # Network
 # https://wiki.archlinux.org/title/Systemd
 # open port check
-alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' #port open-list
+alias port_open_lsof='sudo lsof -i -P -n | grep LISTEN' # port open-list
+alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
+alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' # NetworkManager info scan
 # alias ps='ps'   # ps System Info running like 'whish shell'
-alias ss='ss '                                       # like lsof
-alias port-no-ping-input-ip=' nmap -T4 -A -v -Pn '   # nmap -T4 -A -v -Pn 127.0.0.1
-alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' # nmap -p 1-65535 -T4 -A -v 127.0.0.1
+# alias ss='ss ' # like lsof
+# alias port-no-ping-input-ip=' nmap -T4 -A -v -Pn '   # nmap -T4 -A -v -Pn 127.0.0.1
+# alias port-all-input-ip='nmap -p 1-65535 -T4 -A -v ' # nmap -p 1-65535 -T4 -A -v 127.0.0.1
 # alias port-all-and-udp='nmap -sS -sU -T4 -A -v '   # nmap -sS -sU -T4 -A -v 127.0.0.1
 # alias port-nmap-input-ip='nmap -T4 -A -v '         # nmap -T4 -A -v 127.0.0.1
-alias port-live="  watch -n1 'ss -tp'"
-alias port_live_2="watch -n1 'lsof -i4 -itcp'"
+alias port-live="  watch -n2 'ss -tp'"
+alias port_live_2="watch -n2 'lsof -i4 -itcp'"
 alias wifi-info='iw list'
-
-# resolve check --> /etc/systemd/resolved.conf
-alias resolve_network_check='systemctl status systemd-resolved.service'
 
 # security check
 port_check_() {
     echo "listening ports"
     sudo netstat -tunlp
 }
-
-fail2ban_() {
-    # --- Enable fail2ban
-    sudo pacman -Sy --needed fail2ban
-
-    if [[ ! -f /etc/fail2ban/jail.local ]]; then
-        sudo sh -c 'echo  "
-[DEFAULT]
-bantime = 1d
-[sshd]
-enabled = true" >/etc/fail2ban/jail.local'
-    fi
-
-    # if [[ ! -f /etc/fail2ban/jail.local ]]; then
-    #     print '\n[DEFAULT]\nbantime = 1d\n[sshd]\nenabled = true' | sudo tee /etc/fail2ban/jail.local
-    # fi
-
-    sudo systemctl --now enable fail2ban
-    sudo systemctl --now start fail2ban
-}
-
-# speedtest
-alias speedtest="   speedtest --secure" # https
-alias h-speedtest_http=" speedtest "    # http
 
 # Networkinfo          #* Network Mapping status 'rpcbind'
 alias ip-c='    ip -c a' # ip-coler     ip addr      ip -br -c addr show     ip route show   ip link show
@@ -726,8 +856,6 @@ alias nmcli='nmcli | more '
 alias nmtui='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "nmtui"'
 alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
 alias whatismyip="sh -c 'curl http:/ipecho.net/plain; echo'"
-alias traffic-jnettop='xfce4-terminal --geometry=80x20 --hide-scrollbar -H -x zsh -c "sudo jnettop"'
-alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' # NetworkManager info scan
 
 journalctl-live_() {
     # Filtert live Journalctl-logs
@@ -792,16 +920,34 @@ alias cam-info=' v4l2-ctl --list-devices'
 
 # Downloads    youtube-dl, clipgrab
 yt() {
-    mkdir -p ~/Downloads/yt
-    cd ~/Downloads/yt || true
-    yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" "$1" || echo "failed"
-    echo "done"
+    path_="$HOME/Downloads/yt"
+    if [ ! -d "$path_" ]; then
+        mkdir -p "$path_" || echo "mkdir error"
+    fi
+
+    if [ -d "$path_" ]; then
+        cd "$path_" || true
+    else
+        echo "$path_ does not exist"
+        exit
+    fi
+    yt-dlp --add-metadata -i -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" "$1" && echo "done" || echo "failed"
 }
 yta() {
-    mkdir -p ~/Downloads/yt
-    cd ~/Downloads/yt || true
-    yt-dlp -x -f bestaudio/best "$1" || exit
-    echo "done"
+    # audio only
+    path_="$HOME/Downloads/yt"
+    if [ ! -d "$path_" ]; then
+        mkdir -p "$path_" || echo "mkdir error"
+    fi
+
+    if [ -d "$path_" ]; then
+        cd "$path_" || true
+    else
+        echo "$path_ does not exist"
+        exit
+    fi
+
+    yt-dlp -x -f bestaudio/best "$1" && echo "done" || echo "failed"
 }
 alias wget='wget -c'                                                   #web get #Commandline Homepage URL Download > index.html
 alias wget-completed='wget -m -c -r -np -p -E -k -K 'target-url-here'' #web get #Commandline Homepage URL Download > index.html
@@ -831,34 +977,62 @@ paste_ix() {
 }
 
 v() {
+    # IDE
+    ide_="nvim"
 
     if [[ "$(id -u)" != "0" ]]; then
-        sudo nvim "$@"
+        sudo $ide_ "$@"
     else
-        nvim "$@"
+        $ide_ "$@"
     fi
 }
 
 f() {
-    if [ -d "$1" ]; then
-        if [ "$(id -u)" != "$(stat -c %u "$1")" ]; then
-            sudo nemo "$1"
+    # File Manager
+    m="nemo"
+    m2="thunar"
+
+    # alternative Manager
+    if [[ ! -x "$(command -v "$m")" ]] && [[ ! -x "$(command -v "$m2")" ]]; then
+        echo "File Manager don't exist"
+        exit 1
+    elif [[ ! -x "$(command -v "$m")" ]]; then
+        m=$m2
+    fi
+
+    # Permission / input check
+    if [[ ! -e "$1" ]]; then
+        ## help correct this logic ##
+        if [[ "$m" && "$1" ]]; then
+            echo "$1 does not exist"
+            exit 1
         else
-            nemo "$1"
+            $m
         fi
     else
-        nemo
-        # if [[ ! /bin/nemo ]]; then
-
-        #     thunar
-        # fi
+        if [ "$(id -u)" != "$(stat -c %u "$1")" ]; then
+            if [[ -x $(which "$1") ]]; then
+                echo "$1 does not exist"
+                exit 1
+            else
+                sudo $m "$1"
+            fi
+        else
+            if [[ -x $(which "$1") ]]; then
+                echo 1
+                echo "$1 does not exist"
+                exit 1
+            else
+                $m "$1"
+            fi
+        fi
     fi
 }
 
 # change
 # alias $HOME="nope"
 
-#nvidia Proprietary
+# nvidia Proprietary
 alias nvidia0300='sudo mhwd --force --auto pci nonfree 0300'
 alias mhwd-info='vulkaninfo; mhwd -l ; mhwd -li; modprobe nvidia'
 
@@ -896,33 +1070,30 @@ alias diff='diff --color=auto'
 alias ka='pkill -5 ' #'killall'
 
 alias e='eval "${EDITOR:=neovim}"'
-export VISUAL=$EDITOR
 if [[ -n ${DISPLAY} ]]; then
     export EDITOR="/usr/bin/codium"
-    # export EDITOR=" /usr/bin/codium --unity-launch "
-elif
-    [[ -z ${DISPLAY} ]]
-then
+    # export EDITOR=" /usr/bin/codium --unity-launch " #! depreciate
+elif [[ -z ${DISPLAY} ]]; then
     export EDITOR="neovim"
 else
     export EDITOR="kate"
 fi
+export VISUAL=$EDITOR
 
 ee() {
-
+    # create new File
     local count=1
     local filename="Untitled-$count"
+
     while [ -e "$filename" ]; do
         count=$((count + 1))
         filename="Untitled-$count"
     done
     $EDITOR -w "$filename"
     return
-
 }
 np() {
-    #todo
-    # find ~/ PKGBUILD_ -atime 88 -print -path '!~/Downloads'  -exec mv {} ~/Downloads \;
+    # create PKGBUILD file
     $EDITOR -w PKGBUILD
 }
 alias makepkg-si='makepkg -si' #git clone - PKGBUILD
@@ -1012,10 +1183,16 @@ GIT
 # please() {
 #     sudo "$@"
 # }
+# please() {
+#     "$(command sudo !!)"
+#     echo ""
+# }
 please() {
-    command sudo !!
+    i="sudo !!"
+    echo "$i"
     echo ""
 }
+
 eee() {
     # Editor Quick load
     $EDITOR ~/ownCloud/p-git/todo
@@ -1109,7 +1286,7 @@ bin() {
 # mount
 alias mount='mount |column -t'
 
-# systemctl
+# systemd / systemctl
 alias enable='      sudo systemctl enable  --now '
 alias disable='     sudo systemctl disable --now '
 alias status='more| sudo systemctl status  --now '
@@ -1117,9 +1294,8 @@ alias restart='     sudo systemctl restart --now '
 alias stop='        sudo systemctl stop    --now '
 alias start='       sudo systemctl start   --now '
 alias sys-port='systemctl status|less --use-color'
-alias sys-status='systemctl list-unit-files|less ' # stacer, <who>
+alias sys-status='	    systemctl list-unit-files' # stacer, <who>
 # alias sys-info='pactl list cards pactl list sinks'
-alias errors='          sudo systemctl --failed'
 alias failed='          sudo systemctl --failed'
 alias startup-speed_info='      systemd-analyze'
 alias startup-speed2_info='     systemd-analyze blame'
@@ -1151,8 +1327,7 @@ swap-activate() {
 
         echo "How much MB should your swapfile have?"
         echo "Free space is $diskspace MB"
-        echo "  Enter here: "
-        read -r i
+        read -r "  Enter here: " i
 
         # number check
         if ! [[ "$i" =~ ^[0-9]+$ ]]; then
@@ -1255,7 +1430,7 @@ alias swapStatus='swapon --show'
 # Get server cpu info
 alias env='env ' # environment information
 # unset $(env | cut -d= -f1)
-# alias printenv="printenv "        # same as env
+# alias at-spi-dbus-bus="printenv "        # same as env
 alias cpuinfo='cat /proc/cpuinfo' # shortform 'lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
 alias monitor-cpu='sudo cpupower monitor'
@@ -1339,9 +1514,9 @@ qq() {
 
 weather() {
     # Weather / Wetter
-    alias wetter="weather"
     xfce4-terminal --hide-scrollbar --hide-menubar --maximize -x sh -c "curl wttr.in;  read -n 1 -srp 'Press any key to continue...'"
 }
+alias wetter="weather"
 
 # sort files in current directory by the number of words they contain
 alias wordy='wc -w * | sort | tail -n10'
@@ -1384,7 +1559,6 @@ InputLeap_() {
     if ! pgrep -x input-leap >/dev/null; then
         /bin/input-leap &
     fi
-
 }
 InputLeap_
 
@@ -1397,11 +1571,109 @@ barrier-keygen() {
     fingerprint=$(openssl x509 -fingerprint -sha256 -noout -in ~/.local/share/barrier/SSL/Barrier.pem | cut -d"=" -f2)
     echo "v2:sha256:$fingerprint" >~/.local/share/barrier/SSL/Fingerprints/Local.txt
 }
+webui_ollama_docker() {
+    # https://github.com/open-webui/open-webui
+    # https://docs.openwebui.com/
+
+    echo "don't use: Exit.."
+    exit
+}
+llama_() {
+    # AI Meta Facebook #! --
+    # https://github.com/ollama/ollama
+
+    echo "don't use: Exit.."
+    exit
+
+    # model="F7"
+    # inxi=$(inxi -M)
+    # pkg="ollama"
+    # b8="llama3.1" # 8B 4.9GB
+
+    # # get ollama
+    # if ! pacman -Qq $pkg >/dev/null; then
+    #     sudo pacman --noconfirm -Syu $pkg || echo "error getting $pkg" && exit
+    # fi
+
+    # # status check
+    # if systemctl status ollama | grep "inactive"; then
+    #     systemctl enable --now ollama
+    # fi
+
+    # if [[ "$inxi" == *"$model"* ]]; then
+    #     ollama run gemma2:2b
+    # else
+    #     ollama run "$b8"
+    # fi
+}
+deepseek-coder-v2_test() {
+    vers="deepseek-coder-v2" # 16b 8.9 GB No reasoning
+
+    echo "16b 8.9 GB"
+    ollama run "$vers"
+}
+deepseek-coder_test() {
+    ollama run deepseek-coder:6.7b
+}
+ollama_docker() {
+    # localaipilot-api
+    # https://github.com/nagaraj-real/localaipilot-api#2-document-qa-rag-chat
+
+    echo "don't use: Exit.."
+    exit
+
+    # docker run --gpus=all -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+    # docker exec -it ollama ollama run deepseek-coder-v2
+    # # docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+    # docker exec -it ollama ollama run deepseek-coder-v2
+}
 
 aa() {
-    # ChatGPT Terminal https://theb.ai/
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
+    # AI
+    # https://github.com/deepseek-ai/DeepSeek-R1
+    # https://ollama.com/library/deepseek-r1:8b
+    # 7b default
+    # ollama run deepseek-r1:7b
+    # alternative: https://console.groq.com/playground
+
+    model="F7"
+    inxi=$(inxi -M)
+    pkg="ollama"
+    r1="deepseek-r1:8b" # 4.7GB
+
+    # get ollama
+    if ! pacman -Qq $pkg >/dev/null; then
+        sudo pacman --noconfirm -Syu $pkg || echo "error getting $pkg" && exit
+    fi
+
+    # status check
+    if systemctl status ollama | grep "inactive"; then
+
+        echo "$pkg is disable, enable now.. "
+        if ! systemctl enable --now "$pkg"; then
+            echo "Failed to enable $pkg"
+            exit 1
+        fi
+
+        # Check if service is still inactive after enabling
+        if systemctl status ollama | grep "inactive)"; then
+            echo "$pkg error"
+            exit 1
+        fi
+    fi
+
+    # Run model
+    if [[ "$inxi" == *"$model"* ]]; then
+        "$pkg" run deepseek-r1:1.5b
+    else
+        "$pkg" run "$r1"
+    fi
 }
+# aa() {
+#     # ChatGPT Terminal https://theb.ai/
+#     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -i "
+# }
 aaa() {
     # ChatGPT Terminal
     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
@@ -1503,7 +1775,7 @@ systemctl-enable() {
     fi
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/*
-    sh -c "sudo ln -fL ~/ownCloud/dotfile/hosts /etc/hosts"
+    sh -c "sudo ln -fL ~/ownCloud/p-git/hosts /etc/hosts"
     xdg-mime default nemo.desktop inode/directory
     xdg-mime default nemo.desktop x-directory/normal
     xdg-mime default nemo-autorun-software.desktop x-content/unix-software
@@ -1528,56 +1800,6 @@ EOF
     timedatectl show
 }
 
-chroot_new() {
-    # todo refactor
-    # chroot script
-    ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
-    hwclock --systohc
-    # sed -i '178s/.//' /etc/locale.gen
-    locale-gen
-    echo "LANG=en_US.UTF-8" >>/etc/locale.conf
-    echo "KEYMAP=de_CH-latin1" >>/etc/vconsole.conf
-    echo "xps" >>/etc/hostname
-    if [[ ! -f /etc/hosts ]]; then
-        cat >/etc/hosts <<<EOF
-        127.0.0.1 localhost
-        ::1 localhost
-        127.0.1.1 xps.localdomain xps
-        EOF
-    fi
-    echo root:password | chpasswd
-
-    pacman -Syyu --needed grub efibootmgr networkmanager network-manager-applet mtools dosfstools base-devel linux-headers avahi xdg-user-dirs xdg-utils gvfs gvfs-smb nfs-utils inetutils dnsutils bluez bluez-utils cups hplip alsa-utils bash-completion openssh rsync acpi acpi_call tlp edk2-ovmf bridge-utils dnsmasq vde2 openbsd-netcat iptables-nft ipset sof-firmware nss-mdns acpid os-prober ntfs-3g
-    # pacman -S --noconfirm xf86-video-amdgpu
-    # pacman -S --noconfirm nvidia nvidia-utils nvidia-settings
-
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
-
-    grub-mkconfig -o /boot/grub/grub.cfg
-
-    systemctl enable --now NetworkManager
-    systemctl enable bluetooth
-    systemctl enable cups.service
-    systemctl enable sshd
-    systemctl enable avahi-daemon
-    systemctl enable tlp
-    systemctl enable fstrim.timer
-    systemctl enable libvirtd
-    systemctl enable acpid
-
-    useradd -m shaderico
-    echo shaderico:password | chpasswd
-    usermod -aG libvirt shaderico
-
-    if ! grep -q shaderico /etc/sudoers.d/shaderico, /etc/sudoers && ! grep -q shaderico /etc/sudoers; then
-        echo "shaderico ALL=(ALL:ALL) ALL" >>/etc/sudoers.d/shaderico
-        echo "shaderico ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers.d/shaderico
-    fi
-
-    printf "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"
-
-}
-
 # User
 newUserGroupSet() {
     # Start group
@@ -1600,7 +1822,6 @@ userdiag_() {
 
 useradd_() {
     sudo useradd -m "$1" && echo "user $1 added!..."
-
 }
 
 userGroupdel() {
@@ -1641,7 +1862,7 @@ userGroupdel() {
     compdef '_users -S ""' userGroupdel
 }
 
-backup() {
+backup_() {
     # Backup
     ln -fs ~/.config/mimeapps.list "$HOME"/.local/share/applications/mimeapps.list
     ln -fv ~/ownCloud/dotfile/.zshrc "$HOME"/.zshrc
@@ -1653,7 +1874,10 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.stignore "$HOME"/.stignore
 
     # todo change to root
-    sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
+    if [[ -d "$(/var/lib/snapd/snap)" ]]; then
+        sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
+    fi
+
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf"
@@ -1667,7 +1891,6 @@ backup() {
     ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
     ln -fv ~/ownCloud/dotfile/.bashrc ~/VM-share-rsx/.bashrc
-    # ln -fv ~/ownCloud/dotfile/.profile ~/VM-share-rsx/.profile
     ln -fv ~/ownCloud/cpp/header.h ~/ownCloud/cpp/tutorial/header.h
     ln -fv ~/ownCloud/p-git/vscodium-setting/settings.json ~/.config/VSCodium/User/settings.json
 }
@@ -1738,14 +1961,12 @@ trans-de_en() {
     #     # translate-shell-git
     # https://www.soimort.org/translate-shell/
     /bin/trans de:en "$*"
-
 }
 
 trans_en_de() {
     #     # translate-shell-git
     # https://www.soimort.org/translate-shell/
     /bin/trans en:de "$*"
-
 }
 
 _pdf_completion() {
@@ -1841,14 +2062,6 @@ ansible-status() {
     ansible all -m ping
 }
 
-# ufw() {
-#     if ! [[ "$#" == "ufw" ]]; then
-#         sh -c "sudo ufw $*"
-#     else
-#         sh -c "ufw $*"
-#     fi
-# }
-
 firewall_() {
     # todo
     # Check if ufw is running
@@ -1862,12 +2075,38 @@ firewall_() {
 }
 # firewall_
 
+fail2ban_() {
+    # --- Enable fail2ban
+
+    if ! pacman -Qq fail2ban; then
+        sudo pacman -Syu --needed fail2ban
+    fi
+
+    if [[ ! -f /etc/fail2ban/jail.local ]]; then
+        sudo sh -c 'echo  "
+[DEFAULT]
+bantime = 1d
+[sshd]
+enabled = true" >/etc/fail2ban/jail.local'
+    fi
+
+    sudo systemctl --now enable fail2ban
+    sudo systemctl --now start fail2ban
+}
+
+# speedtest
+alias speedtest="   speedtest --secure" # https
+alias h-speedtest_http=" speedtest "    # http
+
 #todo alias nohup="nohup >/dev/null 2>&1 "
 
 samba-up() {
     # samba setup
-    sudo sh -c 'mkdir -p /var/lib/samba/usershares'
-    sudo groupadd -r sambashare
+
+    if [[ ! -d /var/lib/samba/usershares ]]; then
+        sudo sh -c 'mkdir -p /var/lib/samba/usershares'
+    fi
+    groupadd -r sambashare
     sh -c 'sudo chown root:sambashare /var/lib/samba/usershares'
     sh -c 'sudo chmod 1770 /var/lib/samba/usershares'
     sudo testparm /etc/samba/smb.conf
@@ -1875,6 +2114,7 @@ samba-up() {
     sudo systemctl restart smb nmb
     sudo systemctl enable avahi-daemon.service avahi-daemon.socket
 
+    testparm
 }
 samba_down() {
     disable smb.service nmb.service
@@ -1885,7 +2125,6 @@ cpp__() {
     # todo run c++ in the terminal
     g++ "$1" -o file
     $2 Path to file
-
 }
 
 terminal_info() {
