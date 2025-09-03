@@ -1,5 +1,5 @@
 # readme
-#' (?d) ' Prefix indicating that the file can be deleted if preventing directory removal  #! don't work with --> !**.stignore*
+#' (?d) ' Prefix indicating that the file can be deleted if preventing directory removal #! don't work with --> !**.stignore*
 #' (?i) ' Prefix indicating that the pattern should be matched without case sensitivity
 #'   !  ' Inversion of the given condition (i.e. do not exclude)
 #'   *  ' Single level wildcard (matches within a directory only)
@@ -12,15 +12,13 @@
 # .local/
 # .local/share/user-places.xbel
 # .yarnrc
-# .software/
 # .cache
 # .wakatime*
 # .rnd*
-# .sonarlint
+
 # .profile
 # .xsession-errors
 # -----------------------------------------
-
 
 # allowed #
 # (?d)(?i)!**setting*
@@ -37,6 +35,8 @@
 (?d).keychain/
 
 .config/caffeine/
+
+.local/share/gk/
 
 # safety
 # .config/Portmaster
@@ -76,20 +76,26 @@
 (?d)(?i)**history**
 (?d).config/Bitwarden
 (?d).local/share/zeitgeist/*
+(?d).software
 
 # Barrier
 (?d).config/InputLeap/
+(?d).config/Deskflow/
 (?d).local/share/InputLeap/
 (?d).config/Debauchee/Barrier.conf
 (?d).local/share/barrier/SSL/
 
 # remote
 (?d).anydesk
+(?d).config/remmina/
 
 # digikam
 #!don't delete '.dtrash/files' otherwise trash in digikam dosn't work
 # digikamrc has to be ignore to sync on other PC
 (?d).config/digikamrc
+
+# Gimp
+.config/GIMP/
 
 # .dtrash
 # (?i)**trash**
@@ -98,9 +104,11 @@
 # Microsoft
 (?d)*desktop.ini*
 (?d)$RECYCLE.BIN
-(?d).config/teams/
+(?d).config/teams*
+(?d)/home/shaderico/.config/teams-for-linux/*
 (?d).config/Microsoft/*
 # System Volume Information
+(?d).mysql
 
 # tmp file
 (?d)(?i)cache*/**
@@ -135,21 +143,27 @@
 (?d)**.fr**
 
 # vscodium
+**/.vscode/**
 #*vsliveshare*
 (?d).config/vscode-sqltools
-(?d).config/VSCodium/*
+(?d).config/VSCodium/
+(?d).config/Code/
+(?d).local/share/CircleCI*
 (?d)*TabNine*
-(?d).local/share/kite/*
-(?d).local/share/snyk*
+(?d).local/share/kite/
+(?d).local/share/snyk
+(?d).config/snyk/
 (?d).local/state
-(?d)*QuotaManager*
+(?d)*QuotaManager
 (?d)*sdb.*
-(?d).config/systemd/user/*
+(?d).config/systemd/user/
 (?d)**wakatime**
 (?d).vscode-oss/
 (?d).codeium
 (?d).bito
 (?d).java
+(?d).platformio/
+(?d).sonarlint
 
 # VSCode Kubernet
 (?d).minikube
@@ -159,14 +173,17 @@
 
 .local/share/keyrings/*
 
+# LLM
+.config/xyz.chatboxapp.app
+
 # thunderbird / Mozilla  #! don't delete
-(?d).thunderbird/*
 (?d)!**.default-release/quicktext
 (?d)!**.default-release/ImapMail
 (?d)!**.default-release/prefs.js
 (?d)!**.default-release/TbSync
 (?d)!**.default-release/extensions
 (?d)!**.default-release/persdict.dat
+# (?d).thunderbird/*
 
 # Mozilla, firefox
 (?d).mozilla
@@ -184,12 +201,8 @@
 (?d)VirtualBox\ VMs/
 (?d)!VirtualBox\ VMs/f7
 
-!VirtualBox\ VMs/xps
+!VirtualBox\ VMs/Arch
 
-(?d)!VirtualBox VMs/ddd
-# (?d)!VirtualBox\ VMs/ddd
-# (?d)!'VirtualBox\ VMs/ddd'
-# (?d)!"VirtualBox VMs/ddd"
 (?d)!VirtualBox\ VMs/MJ-xps/
 # (?d)VM-share-rsx/*
 (?d)**.vdi
@@ -212,6 +225,7 @@
 (?d).rnd
 
 # nvidia prime-run ignore
+(?d)**prime-run**
 
 # autostart at startup
 (?d).config/autostart/*
@@ -224,6 +238,7 @@
 (?d).config/libreoffice/*
 (?d).local/share/onlyoffice/*
 (?d)*~lock.*
+(?d).cxoffice
 
 # .Xauthority programm opener if delete then false
 (?d).xinitrc
@@ -239,7 +254,7 @@
 # xfce-panel
 (?d).config/pavucontrol*
 (?d).cache/xfce4/clipman/textsrc
-(?d)**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
+(?d)**xfce4-keyboard-shortcuts.xml**         #! if you have different Keyboard layouts
 (?d).local/share/notes/Notizen
 (?d).config/xfce4/panel/*
 (?d).config/xfce4/xfconf/xfce-perchannel-xml
@@ -255,10 +270,19 @@
 (?d).config/Signal/
 (?d).config/Caprine/
 (?d).config/discord/
-(?d).config/teams/
+(?d).config/Ferdium
 
 # GitHub Desktop #! dont use, use IDE instad
 (?d)*.git*
+
+.config/figma-linux
+
+# ai
+.ollama
+.local/share/ollama/
+
+# geany
+.config/geany/session.conf
 
 # Brave #!don't delete
 (?d).config/BraveSoftware/
@@ -267,10 +291,12 @@
 # Sound Pipewire
 (?d).local/state/pipewire/*
 (?d).local/state/wireplumber/*
+(?d).config/pulse/
 
 # torrent
 (?d).config/deluge
 (?d)qBittorrent
+(?d)!"$HOME"/Downloads/test
 (?d)!Downloads/torrent/
 (?d)Downloads/
 
@@ -286,6 +312,7 @@
 (?d).steam
 (?d)**GUILD WARS**
 (?d)(?i)**Games**
+(?d).local/share/vulkan
 
 # Epic Game
 (?d).config/heroic/
@@ -303,14 +330,11 @@
 (?d).var/
 (?d).local/share/flatpak/
 
-(?d).cxoffice
-
 # Packages Manager
 (?d).cargo
 (?d).gradle
 (?d).conan
 (?d).go
-(?d).sonarlint
 (?d).npm
 (?d).config/Electron/
 (?d).nuget
@@ -340,3 +364,8 @@
 (?d)~/ownCloud/joplin
 (?d)(?i).config/Joplin*
 (?d)!.config/joplin-desktop/plugins
+# Docker
+dist/
+data/
+# assets/
+*.ipynb
