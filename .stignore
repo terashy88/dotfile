@@ -1,3 +1,4 @@
+#! /bin/bash
 # readme
 #' (?d) ' Prefix indicating that the file can be deleted if preventing directory removal #! don't work with --> !**.stignore*
 #' (?i) ' Prefix indicating that the pattern should be matched without case sensitivity
@@ -15,18 +16,30 @@
 # .cache
 # .wakatime*
 # .rnd*
-
 # .profile
 # .xsession-errors
+
+**/node_modules/**
+**/.git/**
+**/.idea/**
+**/bower_components/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/temp/**
+**/tmp/**
+**/logs/**
+**/flow-typed/**
+
 # -----------------------------------------
 
 # allowed #
 # (?d)(?i)!**setting*
 # (?d)(?i)!**Preference*
 # (?d)(?i)!**.cfg
-#!.conf     --will brake barrier--
+#! .conf     --will brake barrier--
 (?d).gnupg
-# (?i)(?d)!**Extension
+# (?d)(?i)**Extension
 # (?i)(?d)!**bookmark*
 
 # no katergory
@@ -48,10 +61,10 @@
 # (?d).config/Portmaster/Session Storage
 # (?d).config/Portmaster/blob_storage
 
-# syncthing    #! don't delete
+# syncthing
 #!.stfolder    #  don't delete
 (?d)!**sync-conflict*
-(?d)!**.stignore**
+!**.stignore**
 (?d).config/syncthing
 (?d).stversions
 (?d)**.subversion**
@@ -70,7 +83,7 @@
 (?d)M-link-raw
 # pkglist.txt
 
-# no catergory???
+# no catergory??? --
 (?d)Desktop
 (?d)Schreibtisch
 (?d)(?i)**history**
@@ -111,6 +124,7 @@
 (?d).mysql
 
 # tmp file
+(?d).zcompdump
 (?d)(?i)cache*/**
 (?d).cache
 (?d)**.tmp
@@ -145,6 +159,8 @@
 # vscodium
 **/.vscode/**
 #*vsliveshare*
+**/.vscode/**
+.vscode-oss/extensions/
 (?d).config/vscode-sqltools
 (?d).config/VSCodium/
 (?d).config/Code/
@@ -190,7 +206,6 @@
 (?d).librewolf
 
 (?d)snap/*
-(?d).zcompdump
 (?i)*metadata*
 
 # rclone
@@ -252,14 +267,15 @@
 (?d).config/manjaro
 
 # xfce-panel
+!/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 (?d).config/pavucontrol*
 (?d).cache/xfce4/clipman/textsrc
 (?d)**xfce4-keyboard-shortcuts.xml**         #! if you have different Keyboard layouts
 (?d).local/share/notes/Notizen
 (?d).config/xfce4/panel/*
-(?d).config/xfce4/xfconf/xfce-perchannel-xml
 (?d).config/mimeapps.list
 (?d).config/xfce4/desktop/*
+.config/xfce4/xfconf/xfce-perchannel-xml
 
 # whatsapp
 (?d).config/whatsapp*
@@ -272,7 +288,7 @@
 (?d).config/discord/
 (?d).config/Ferdium
 
-# GitHub Desktop #! dont use, use IDE instad
+# GitHub Desktop #! dont use, use IDE instead
 (?d)*.git*
 
 .config/figma-linux
@@ -285,7 +301,7 @@
 .config/geany/session.conf
 
 # Brave #!don't delete
-(?d).config/BraveSoftware/
+.config/BraveSoftware
 (?d).config/xfce4/helpers.rc
 
 # Sound Pipewire
@@ -298,7 +314,7 @@
 (?d)qBittorrent
 (?d)!"$HOME"/Downloads/test
 (?d)!Downloads/torrent/
-(?d)Downloads/
+Downloads/
 
 # kde-connect
 (?d).config/kdeconnect
@@ -309,9 +325,11 @@
 (?d)**PlayOnLinux**
 (?d)**bottles**
 (?d)**StarCraft**
-(?d).steam
 (?d)**GUILD WARS**
 (?d)(?i)**Games**
+(?d).local/share/vulkan
+
+(?d).steam
 (?d).local/share/vulkan
 
 # Epic Game
@@ -341,8 +359,8 @@
 (?d).config/pamac
 
 # Popcorntime
-(?d).config/Popcorn-Time/
 !.config/Popcorn-Time/Default/data
+(?d).config/Popcorn-Time/
 
 # crack
 (?d).john*
@@ -361,6 +379,11 @@
 (?d).local/state/nvim/shada/
 
 # Joplin
+.config/Joplin*
+(?d)!.config/joplin-desktop/settings.json
+!ownCloud/joplin/info.json
+!.config/joplin-desktop/keymap-desktop.json
+!.config/joplin-desktop/plugins
 (?d)~/ownCloud/joplin
 (?d)(?i).config/Joplin*
 (?d)!.config/joplin-desktop/plugins

@@ -42,6 +42,7 @@ history_() {
     export HISTORY_IGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh" # zsh
     export HISTIGNORE="ls:bg:fg:exit:reset:clear:cd:ll:yt:sudo:ssh"     # bash
     export HISTCONTROL="ignoreboth:erasedups:ignorespace"
+
 }
 history_
 
