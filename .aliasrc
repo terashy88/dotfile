@@ -29,7 +29,7 @@ fetch_() {
             fi
         else
             echo "-= [ offline ] =-"
-        fi
+           fi
     }
     helper_
 
@@ -43,12 +43,18 @@ fetch_() {
                 $fetch
         else
             echo "$fetch is not installed"
-        fi
+          fi
     # fi
 }
 fetch_
 
 ############ Todo Workaround ################
+
+
+
+#############################################
+
+
 
 # restart sshd
 
@@ -101,7 +107,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop  AppImage tradingview kitty Citrix foliate audirvana LLaMA ai   nextcloud flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla  noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -115,7 +121,7 @@ iinstall__() {
     # wrapper="$(paru -S --needed)"
 
     # Install packages
-    package_=(ttf-ms-fonts viber vlc wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+    package_=(ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
 
 
     )
@@ -124,6 +130,7 @@ iinstall__() {
         wallpapers-2018
         wallpapers-juhraya
         fcitx # LANG problem
+        vlc
     )
 
     if [[ -n "${package_[*]}" ]]; then
@@ -185,7 +192,7 @@ nvidiaInstall() {
             lib32-nvidia-utils
             lib32-opencl-nvidia
 
-            # mhwd-nvidia
+             mhwd-nvidia
         )
         # pkgIgnore=("video-nvidia" )
 
@@ -230,7 +237,6 @@ lightdmInstallslicker_() {
         echo "  nothing to install"
     fi
 }
-#############################################
 
 rrestoreBackup() {
     # Daily test
@@ -613,6 +619,7 @@ delete_packages_() {
         xfce4-notes-plugin
         snapd
         manjaro-hello
+        vlc
 
         # KDE
         drkonqi
@@ -667,7 +674,7 @@ find_oldstuff_() {
 }
 findbrokesymlinks_() {
     # find Broke Symlinks
-    yay -Syu --needed findbrokenpkgs
+    yay -Sy --needed findbrokenpkgs
 
     command findbrokenpkgs
 
@@ -1143,6 +1150,10 @@ alias journalctl-log='   sudo journalctl -r |more'
 alias whois='whois' # whois input-ip 127.0.0.1
 # alias kernel_info='lsmod'
 alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # MSDOS tracert google.ch
+dkms_status()
+{
+    dkms status
+}
 
 alias network_bettercap_monitoring='sudo bettercap' # network-monitoring     live-scan spoofing
 alias sniffglue="sudo sniffglue"                    # Network sniffer
@@ -1254,8 +1265,7 @@ piHole_UP() {
                         echo "adding to hosts File:"
                         echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" | sudo tee -a /etc/hosts
                         echo 'ip.address.of.pihole   pi.hole $HOST' | sudo tee -a /etc/hosts
-                    fi
-
+                      fi
                 }
                 hostsFile
 
@@ -1264,8 +1274,7 @@ piHole_UP() {
                 fi
             fi
         fi
-    fi
-
+     fi
 }
 piHole_DOWN() {
     service=pihole-FTL
@@ -1388,11 +1397,22 @@ alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffm
 # cam-info
 alias cam-info=' v4l2-ctl --list-devices'
 
-# Downloads    youtube-dl, clipgrab
 yt() {
+# Downloads    youtube-dl, clipgrab
+# https://wiki.archlinux.org/title/Yt-dlp
+# https://github.com/yt-dlp/yt-dlp
+
     path_="$HOME/Downloads/yt"
+    pkg_=yt-dlp
+
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -Sy "$pkg"|| echo "failed to get $pkg..."
+        fi
+    done
+
     if [ ! -d "$path_" ]; then
-        mkdir -p "$path_" || echo "mkdir error"
+        mkdir -p "$path_" || echo "mkdir error: $path_"
     fi
 
     if [ -d "$path_" ]; then
@@ -1405,9 +1425,18 @@ yt() {
 }
 yta() {
     # audio only
+
     path_="$HOME/Downloads/yt"
+    pkg_=yt-dlp
+
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -Sy "$pkg"|| echo "failed to get $pkg..."
+        fi
+    done
+
     if [ ! -d "$path_" ]; then
-        mkdir -p "$path_" || echo "mkdir error"
+        mkdir -p "$path_" || echo "mkdir error: $path_"
     fi
 
     if [ -d "$path_" ]; then
@@ -1504,7 +1533,7 @@ f() {
                 exit 1
             else
                 $m "$1"
-            fi
+             fi
         fi
     fi
 }
@@ -1594,7 +1623,7 @@ testOFF=(
 # FMOD games crashing under PipeWire
 # Some games that use an old version of the FMOD audio engine, like Pillars of Eternity, invoke pulseaudio --check and crash if the PulseAudio binary is not present. A workaround is to symlink /bin/pulseaudio to /bin/true
 # Note that if you wish to reinstall PulseAudio, you need to remove the symlink.
-    sudo ln -s /bin/true /bin/pulseaudio
+    sh -c "sudo ln -s /bin/true /bin/pulseaudio"
 
 }
 # todo speaker-test
@@ -1703,8 +1732,8 @@ gitup() {
     git add README.md
     # git commit -m "$1"
     git commit -m "commit"
-    git commit -m update
-    git branch -M master
+    git commit -m  update
+    git branch -M  master
     # git remote add origin git@github.com:username/reponame
     git push master
 }
@@ -2059,7 +2088,8 @@ zoom_xfwmScreenTearingReset() {
 
 qq() {
     # xflock4 can be skip by terminate the terminal
-    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen --cursor off -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
+    # xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen --cursor off -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen  -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
 }
 
 weather() {
@@ -2069,12 +2099,12 @@ weather() {
 alias wetter="weather"
 
 # sort files in current directory by the number of words they contain
-alias wordy='wc -w * | sort | tail -n10'
+alias wordy='wc -w * | sort   | tail -n10'
 alias filecount='sudo ls -aRF | wc -l'
 
 # Gets the total disk usage on your machine
 alias diskinfo='sudo parted --list' # partition gpt are msdos info
-alias fdisk='fdisk -x'              # fdisk space / UUID etc
+alias fdisk='     fdisk -x'         # fdisk space / UUID etc
 alias uuid-info=' lsblk -fa'
 alias uuid-blkid='blkid'
 # alias disk-uuid='    df -hTl'
@@ -2109,14 +2139,14 @@ alias history-grep='history | grep'
 autostart_() {
 
     InputLeap_() {
-        #  barrier, input-leap
+        # barrier, input-leap
         remote_="deskflow"
         # remote_="input-leap"
 
 if command -v "$remote_" >/dev/null 2>&1;then
         if ! pacman -Qq "$remote_" >/dev/null 2>&1; then
             sudo pacman -Syu "$remote_"
-        fi
+         fi
 
         while (($(pgrep -xc "$remote_") > 1)); do
             # while pgrep -x "$remote_ | wc -l -gt 1"; do
@@ -2135,7 +2165,7 @@ if command -v "$remote_" >/dev/null 2>&1;then
         fi
         fi
     }
-    InputLeap_
+    # InputLeap_
 
 }
 autostart_
@@ -2227,7 +2257,7 @@ aa() {
     model="F7"
     inxi=$(inxi -M)
     pkg_="ollama"
-    r1=" deepseek-r1:8b"     # 4.7GB          reasoning
+    r1="deepseek-r1:8b"     # 4.7GB          reasoning
     vers=deepseek-coder:6.7b # 3.8 GB         No reasoning
     # vers2="deepseek-coder-v2" # 16b 8.9 GB  No reasoning
 
@@ -2315,6 +2345,8 @@ aa() {
 # }
 aaa() {
     # ChatGPT Terminal
+
+
     exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
 }
 
@@ -2865,7 +2897,12 @@ alias h-speedtest_http=" speedtest "    # http
 docker_up() {
     # todo
 
-    pkg=(docker docker-compose drone-runner-docker kompose)
+    pkg=(
+        docker
+         docker-compose
+          drone-runner-docker
+          kompose
+          )
 
     # Get Package
     for i in "${pkg[@]}"; do
@@ -2886,6 +2923,61 @@ docker_up() {
     fi
 }
 
+ kubernetes_UP()
+ {
+    # todo
+    # https://wiki.archlinux.org/title/Kubernetes
+
+    pkg=(
+        # kubeadm
+          )
+
+    # Get Package
+    for i in "${pkg[@]}"; do
+        if pacman -Qq "$i" >/dev/null 2>&1; then
+            # echo "$i skipped"
+            continue
+        else
+            if ! paru -Syu --needed --noconfirm "$i"; then
+                echo "Failed to get $i..."
+            fi
+        fi
+    done
+
+
+# kubelet.service.
+
+
+# checkservices
+ }
+
+
+ v4l2loopback_UP()
+ {
+    # todo
+    # https://wiki.archlinux.org/title/V4l2loopback
+
+    pkg=(
+        v4l2loopback-dkms
+        v4l2loopback-utils
+          )
+
+    # Get Package
+    for i in "${pkg[@]}"; do
+        if pacman -Qq "$i" >/dev/null 2>&1; then
+            # echo "$i skipped"
+            continue
+        else
+            if ! paru -Syu --needed --noconfirm "$i"; then
+                echo "Failed to get $i..."
+            fi
+        fi
+    done
+
+modprobe v4l2loopback
+v4l2-ctl --list-devices
+ }
+
 samba-up() {
     # samba setup
 
@@ -2903,6 +2995,7 @@ samba-up() {
     sudo systemctl enable --now avahi-daemon.service avahi-daemon.socket
 
     testparm
+    sudo smbstatus
 }
 samba_down() {
     disable smb.service nmb.service
@@ -3111,6 +3204,10 @@ soft_reboot() {
     # faster reboot replacement
     systemctl soft-reboot
 }
+reboot()
+{
+    xfce4-session-logout --reboot --fast
+}
 
 # some note
 : <<EOF
@@ -3121,6 +3218,5 @@ soft_reboot() {
 # sudo systemctl enable --now spamassassin.service
 # sudo -u spamd /usr/bin/vendor_perl/sa-update && sudo -u spamd /usr/bin/vendor_perl/sa-compile
 # '
-
 
 EOF

@@ -11,6 +11,7 @@ alsa-utils
 amd-ucode
 android-studio
 ansible
+anydesk-bin
 archivetools
 arc-maia-icon-theme
 arduino-cli
@@ -91,7 +92,6 @@ gamescope
 gammastep
 gcolor3
 gdu
-geeqie
 gendesk
 gimp-help-de
 gimp-help-en
@@ -139,8 +139,6 @@ jack_utils
 jellyfin-server
 joplin-appimage
 kactivities5
-kate
-kcalendarcore5
 kcmutils5
 kcontacts5
 kdenlive
@@ -202,7 +200,6 @@ libtermkey
 libtg_owt
 libtiff4
 libuninameslist
-libva-nvidia-driver
 libvirt-dbus
 libvpx1.3
 lightdm-settings
@@ -269,9 +266,7 @@ nicotine+
 nodejs-material-design-icons
 ntp
 nuget
-nvidia-550xx-dkms
-nvidia-container-toolkit
-nvidia-driver-assistant
+nvidia-open-dkms
 nyx
 obs-3d-effect
 obs-backgroundremoval
