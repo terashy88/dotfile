@@ -1745,6 +1745,7 @@ gh_website() {
     git push -u origin main master
 }
 
+alias gitpush_force='git push --all --force'
 alias gitstatus='git status'
 alias gitlog-info='git log --pretty=on'
 alias gitremotestatus='git remote -v'
