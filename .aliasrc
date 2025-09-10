@@ -1723,12 +1723,12 @@ np() {
 }
 alias makepkg-si='makepkg -si' #git clone - PKGBUILD
 
-# Git
-## create git
-alias gitinit='git init'
+
 
 gitGH_up() {
-    # local
+# Git
+        # https://wiki.archlinux.org/title/Git
+
 user=terashy88
 branche=master
 remote=gh
@@ -1767,7 +1767,8 @@ repo="$(cat $rpath)"
 }
 
 gitGL_up() {
-    # local
+# Git
+
 user=terashy
 branche=master
 remote=gl
