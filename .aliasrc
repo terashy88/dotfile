@@ -1726,28 +1726,102 @@ alias makepkg-si='makepkg -si' #git clone - PKGBUILD
 # Git
 ## create git
 alias gitinit='git init'
-gitup() {
+
+gitGH_up() {
     # local
+user=terashy88
+branche=master
+remote=gh
+rpath=.git/repo
+
+
+if  [[ -n "$1" ]];then
+touch "$rpath"
+echo "$1" > "$rpath"
+fi
+
+if ! [[ -e "$rpath" ]];then
+echo "please add your repositorie name.."
+else
+
+    git init
+
+if ! [[ -e readme.md ]];then
+touch readme.md
+fi
+
+repo="$(cat $rpath)"
+
     git add .
-    git add README.md
+    # git add README.md
+
     # git commit -m "$1"
     git commit -m "commit"
-    git commit -m  update
-    git branch -M  master
-    # git remote add origin git@github.com:username/reponame
-    git push master
+
+    git branch -M  "$branche"
+
+    git remote add "$remote" git@github.com:"$user"/"$repo".git
+
+         git push -u "$remote" "$branche"
+         fi
 }
 
-gh_website() {
+gitGL_up() {
+    # local
+user=terashy
+branche=master
+remote=gl
+rpath=.git/repo
 
-    git remote add origin git@github.com:terashy88/website.git
-    git branch -M master
-    git push -u origin main master
+
+if  [[ -n "$1" ]];then
+touch "$rpath"
+echo "$1" > "$rpath"
+fi
+
+if ! [[ -e "$rpath" ]];then
+echo "please add your repositorie name.."
+else
+
+    git init
+
+if ! [[ -e readme.md ]];then
+touch readme.md
+fi
+
+repo="$(cat $rpath)"
+
+    git add .
+    # git add README.md
+
+    # git commit -m "$1"
+    git commit -m "commit"
+
+    git branch -M  "$branche"
+
+    git remote add "$remote" git@gitlab.com:"$user"/"$repo".git
+
+         git push -u "$remote" "$branche"
+         fi
 }
 
-alias gitpush_force='git push --all --force .'
-alias gitstatus='git status'
-alias gitlog-info='git log --pretty=on'
+
+
+
+
+ gitstatus(){
+
+echo "Remote:"
+git remote -v
+
+  git status
+ git config --list --show-origin
+
+
+ }
+
+alias gitpush_force='git push --all --force'
+alias gitlog='git log --pretty=on'
 alias gitremotestatus='git remote -v'
 
 alias gitdiff='git diff'
@@ -1789,7 +1863,7 @@ git_delete_() {
 }
 
 # Git fix cache
-alias git_fix_cache="git rm -r --cached ."
+alias git_fix_cache="git rm -r --cached"
 
 : <<GIT
 # Delete all changes in the branch
