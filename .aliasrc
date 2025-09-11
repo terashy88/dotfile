@@ -1093,6 +1093,7 @@ dnsleaktest_() {
 
     echo ""
     echo "drill Test:"
+    drill @127.0.0.1 archlinux.org
     drill archlinux.org | grep "Query time"
 }
 
@@ -1205,14 +1206,15 @@ i2pd_UP() {
     fi
 }
 wireguard_UP() {
-
-    # wireguard-tools
+# https://wiki.archlinux.org/title/WireGuard
+# todo
 
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
 
     pkg_=wireguard-tools
-    debug=off
+    service=
+    debug=on
 
     if [[ $debug == "on" ]]; then
         echo "Todo: $pkg_..."
@@ -1221,7 +1223,7 @@ wireguard_UP() {
             sudo pacman -Syu "$pkg_"
         fi
         if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg_"
+            sudo systemctl enable --now "$service"
         fi
 
     fi
@@ -2961,7 +2963,6 @@ enabled = true" >/etc/fail2ban/jail.local'
     fi
 
     sudo systemctl --now enable fail2ban
-    sudo systemctl --now start fail2ban
 }
 
 # speedtest
