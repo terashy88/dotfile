@@ -5,124 +5,60 @@ adobe-source-han-sans-cn-fonts
 adobe-source-han-sans-jp-fonts
 adobe-source-han-sans-kr-fonts
 adobe-source-sans-fonts
-<<<<<<< HEAD
-=======
-aic94xx-firmware
-akonadi-notes
->>>>>>> gl/master
 alsa-firmware
-alsa-oss
 alsa-tools
 alsa-utils
 amd-ucode
-<<<<<<< HEAD
-android-studio
-ansible
-anydesk-bin
-archivetools
-arc-maia-icon-theme
-arduino-cli
-arduino-ide-bin
-=======
-android-apktool
-android-ndk
-androidscreencast-bin
-android-sdk
 android-studio
 ansible
 anydesk-bin
 apparmor
 archivetools
 arc-maia-icon-theme
-ardour
-arduino
->>>>>>> gl/master
+arduino-cli
+arduino-ide-bin
 asciidoc
-asp
 aspell-de
 aspell-en
 aur-auto-vote-git
 auto-auto-complete
-<<<<<<< HEAD
-=======
-autokey-gtk
->>>>>>> gl/master
 b43-fwcutter
 benchmark
 betterbird-bin
 bettercap
-<<<<<<< HEAD
 bitwarden
 bleachbit
 blender
-=======
-bito-cli
-bitrix24
-bitwarden
-bleachbit
-blender
-blueman
-bluez-cups
->>>>>>> gl/master
 blur-effect
 bolt
 boost
 box2d
 bpf
 brave-browser-beta
-<<<<<<< HEAD
 bridge-utils
 brscan4
 caffeine-ng
 calibre
-=======
-brother-cups-wrapper-common
-brother-dcpl2520dw
-brscan2
-brscan3
-brscan5
-brscan-skey
-caffeine-ng
-calibre
-caprine
-cassandra
->>>>>>> gl/master
 ccache
 celluloid
 chatbox-bin
 chrpath
-<<<<<<< HEAD
 cloudflared
-=======
-cisco-anyconnect
->>>>>>> gl/master
 cmake-extras
 cmatrix
 cpupower
 crane
 csound
 cuda-tools
-<<<<<<< HEAD
 dbeaver
 ddrescue
 deluge-gtk
 deskflow
-=======
-davinci-resolve
-dbeaver
-ddrescue
-deluge-gtk
-dhclient
->>>>>>> gl/master
 digikam
 discord
 discover
 dmraid
-<<<<<<< HEAD
 dnsleaktest
-=======
-docker
->>>>>>> gl/master
 docker-compose
 docker-machine
 dotnet-sdk
@@ -137,16 +73,11 @@ ecryptfs-utils
 efitools
 electron
 element-web
-<<<<<<< HEAD
-=======
-emote
->>>>>>> gl/master
 erlang-docs
 etcher-bin
 etherape
 exfat-utils
 fail2ban
-ferdium-bin
 ffnvcodec-headers
 figma-linux
 filezilla
@@ -162,33 +93,20 @@ gamescope
 gammastep
 gcolor3
 gdu
-<<<<<<< HEAD
-=======
-geeqie
->>>>>>> gl/master
 gendesk
-geocode-glib
 gimp-help-de
 gimp-help-en
 gimp-plugin-gmic
 glew1.10
 glibc-locales
 glpk
-gnome-icon-theme
 gnome-maps
 gnucash
 go
-<<<<<<< HEAD
 gparted
 gpodder
 gradle
 grantlee
-=======
-google-webdesigner
-gparted
-gpodder
-gradle
->>>>>>> gl/master
 grilo
 grsync
 grub-theme-manjaro
@@ -196,42 +114,27 @@ gst-plugin-gtk
 gstreamer-vaapi
 gtkhash-nemo
 gufw
-<<<<<<< HEAD
 guvcview
 handbrake
 haproxy
 haskell-safecopy
 hip-runtime-nvidia
-=======
-handbrake
-haproxy
-haskell-safecopy
-helvum
->>>>>>> gl/master
 homebank
 htop
 hunspell-de
 hyphen-de
 hyphen-en
-<<<<<<< HEAD
 i2pd
 imwheel
 inkscape
 input-leap
-=======
-imwheel
-inkscape
-input-leap-git
->>>>>>> gl/master
 intel-ucode
-intltool
 inxi
 ipscan-bin
 irssi
 istio
 itstool
 iucode-tool
-<<<<<<< HEAD
 jack_utils
 jellyfin-server
 joplin-appimage
@@ -247,51 +150,22 @@ knotifyconfig5
 kompose
 kotlin
 kqtquickcharts
-=======
-jameica
-jdownloader2
-jnettop
-joplin-appimage
-kdelibs4support
-kdenlive
-kdiagram5
-keychain
-keycloak
-kholidays5
-kotlin
-kqtquickcharts
-kquickimageeditor
-kquickimageeditor5
->>>>>>> gl/master
 krita
 ktoblzcheck
 kturtle
 kubectl
 kvantum-manjaro
 lbry-desktop-bin
-<<<<<<< HEAD
 lib32-alsa-oss
 lib32-dbus-glib
 lib32-fakeroot
 lib32-gst-plugins-base
 lib32-gst-plugins-good
 lib32-libappindicator-gtk2
-=======
-lib32-dbus-glib
-lib32-fakeroot
-lib32-gamescope-plus
-lib32-gst-plugins-base
-lib32-gst-plugins-good
->>>>>>> gl/master
 lib32-libcurl-compat
 lib32-libcurl-gnutls
 lib32-libidn11
 lib32-libindicator-gtk2
-<<<<<<< HEAD
-=======
-lib32-libjpeg6-turbo
-lib32-libnm
->>>>>>> gl/master
 lib32-libpng12
 lib32-librtmp0
 lib32-libtiff4
@@ -300,11 +174,7 @@ lib32-libvpx1.3
 lib32-libxslt
 lib32-mesa-demos
 lib32-mesa-utils
-<<<<<<< HEAD
 lib32-ocl-icd
-=======
-lib32-openal
->>>>>>> gl/master
 lib32-sdl2_image
 lib32-sdl2_mixer
 lib32-sdl2_ttf
@@ -312,7 +182,6 @@ lib32-sdl_image
 lib32-sdl_mixer
 lib32-sdl_ttf
 lib32-smpeg
-<<<<<<< HEAD
 libalkimia
 libappindicator-gtk2
 libcurl-compat
@@ -321,23 +190,13 @@ libgcrypt15
 libidn11
 libiptcdata
 libkleo
+libnvidia-container
 libopenshot
 libphonenumber
 libpng12
-=======
-libcurl-compat
-libcurl-gnutls
-libfprint-goodix-521d
-libgcrypt15
-libidn11
-libiptcdata
-libjpeg6-turbo
-libphonenumber
->>>>>>> gl/master
 libreoffice-fresh-de
-librewolf
+librewolf-bin
 librtmp0
-<<<<<<< HEAD
 libtermkey
 libtg_owt
 libtiff4
@@ -356,31 +215,7 @@ manjaro-browser-settings
 manjaro-gstreamer
 manjaro-modem
 manjaro-pipewire
-=======
-libsane-dsseries
-libtg_owt
-libtiff4
-libuninameslist
-libvpx1.3
-lightdm-gtk-greeter-settings
-lightdm-settings
-linssid
-linux612-broadcom-wl
-linux612-nvidia
-linux66-acpi_call
-linux66-broadcom-wl
-linux66-nvidia
-linux-firmware-qlogic
-linux-steam-integration
-linux-wifi-hotspot
-logmein-hamachi
-manjaro-application-utility
-manjaro-browser-settings
-manjaro-gstreamer
-manjaro-modem
->>>>>>> gl/master
 manjaro-printer
-manjaro-pulse
 manjaro-release
 manjaro-settings-samba
 manjaro-system
@@ -389,11 +224,7 @@ manjaro-xfce-settings
 manjaro-zsh-config
 man-pages
 man-pages-de
-<<<<<<< HEAD
 masterpdfeditor
-=======
-masterpdfeditor-free
->>>>>>> gl/master
 mastodon
 maven
 memtest86+
@@ -403,22 +234,11 @@ memtester
 menulibre
 meson
 mingw-w64-gcc
-<<<<<<< HEAD
 mixxx
 mkinitcpio-openswap
 monero
 motion
 mtpfs
-=======
-miraclecast-git
-mixxx
-mkinitcpio-openswap
-mongodb-bin
-mongodb-compass
-motion
-mtpfs
-mugshot
->>>>>>> gl/master
 mysql++
 mysql-workbench
 mythes-de
@@ -426,17 +246,11 @@ mythes-en
 nanomsg
 nano-syntax-highlighting
 nasm
-ncdu
-<<<<<<< HEAD
 neatvnc
 nebula
 nemo-audio-tab
 nemo-engrampa
 nemo-fileroller
-=======
-nemo-audio-tab
-nemo-engrampa
->>>>>>> gl/master
 nemo-image-converter
 nemo-preview
 nemo-seahorse
@@ -452,8 +266,7 @@ nicotine+
 nodejs-material-design-icons
 ntp
 nuget
-<<<<<<< HEAD
-nvidia-open-dkms
+nvidia-550xx-dkms
 nyx
 obs-3d-effect
 obs-backgroundremoval
@@ -461,21 +274,6 @@ ollama-cuda
 openjdk-src
 otpclient
 owncloud-client
-=======
-nvidia-container-toolkit
-nvidia-prime
-nyx
-obs-3d-effect
-obs-backgroundremoval
-oh-my-zsh-git
-olive
-ollama-cuda
-opencollada
-openjdk-src
-otpclient
-owncloud-client
-pacman-fix-permissions
->>>>>>> gl/master
 papirus-folders
 paru-bin
 pass-otp
@@ -487,45 +285,27 @@ pfetch
 php-apache
 php-gd
 phpmyadmin
-<<<<<<< HEAD
 pi-hole-core
 plymouth-theme-manjaro
 popcorntime-bin
 portmaster
-=======
-plymouth-theme-manjaro
-podget
-popcorntime
-portmaster-stub
-postman-bin
->>>>>>> gl/master
 powerline
 powerline-go
 powertop
-<<<<<<< HEAD
 proton-ge-custom-bin
-=======
-preload
->>>>>>> gl/master
 protontricks
 protonutils
 proxychains-ng
-<<<<<<< HEAD
 purpose5
-=======
->>>>>>> gl/master
 python-adblock
 python-click-completion
 python-flasgger
 python-gevent-websocket
 python-gtts
 python-jedi
-<<<<<<< HEAD
 python-magic
-=======
-python-mock
->>>>>>> gl/master
 python-pymediainfo
+python-pytorch
 python-pyzmq
 python-sphinx
 python-stopit
@@ -536,7 +316,6 @@ python-yara
 python-zope-component
 python-zope-deferredimport
 python-zope-deprecation
-<<<<<<< HEAD
 qjackctl
 qpwgraph
 qt5-charts
@@ -548,70 +327,32 @@ rebuild-detector
 remmina
 rmlint-shredder-git
 sayonara-player
-=======
-qpwgraph
-qt5-webkit
-qt6ct
-rclone-browser
-rebuild-detector
-reiserfsprogs
-remmina
-remotemouse
-rmlint-shredder-git
-sayonara-player-git
->>>>>>> gl/master
 scratch
 scrcpy
 screenfetch
 sdl2_ttf
-<<<<<<< HEAD
-=======
-shairplay
->>>>>>> gl/master
-shfmt
 shotcut
 signal-desktop
 simplescreenrecorder
-<<<<<<< HEAD
 skanpage
 smb4k
 snapd-glib
 snd
-=======
-smb4k
-snapd-glib
->>>>>>> gl/master
 sniffglue
-snyk
 sof-firmware
 speedtest-cli
-<<<<<<< HEAD
 sqlcipher
 stacer-bin
 syncthing
 syntax-highlighting5
 sysfsutils
 tcpdump
-=======
-spflashtool-bin
-sqlcipher
-stacer-bin
-starship
-structorizer
-superproductivity-bin
-syncthing
-sysfsutils
-tcpdump
-teams
-teams-for-linux
->>>>>>> gl/master
 tenacity
 tensorflow
 termdown
 terminus-font
 testdisk
 tgpt
-<<<<<<< HEAD
 threadweaver5
 thunderbird-i18n-de
 thunderbird-i18n-en-us
@@ -619,36 +360,18 @@ tigervnc
 timer
 timeshift-autosnap-manjaro
 tinyxml
-=======
-thunderbird-i18n-de
-thunderbird-i18n-en-us
-tiger
-timer
-timeshift-autosnap-manjaro
->>>>>>> gl/master
 tlp
-torbrowser-launcher
 tracer
 traceroute
-<<<<<<< HEAD
-=======
-tradingview
-translate-shell-git
->>>>>>> gl/master
 ts-node
 ttf-carlito
 ttf-inconsolata
 ttf-indic-otf
-<<<<<<< HEAD
 ttf-opensans
 udev-usb-sync
 udiskie
 ufw-extras
 upscayl-bin
-=======
-udiskie
-ufw-extras
->>>>>>> gl/master
 uv
 v4l2loopback-utils
 vala
@@ -661,48 +384,25 @@ vim-spell-en
 virt-manager
 virtualbox
 virtualbox-guest-utils
-<<<<<<< HEAD
 virt-viewer
-=======
->>>>>>> gl/master
 vkd3d
 vscodium-bin-features
 vscodium-bin-marketplace
 vulkan-extra-layers
 vulkan-extra-tools
-<<<<<<< HEAD
 vulkan-utility-libraries
 vulkan-validation-layers
 warpinator
+wasistlos
 wavemon
-whatsapp-for-linux
-=======
-wallpapers-2018
-warpinator
-wavemon
-wd719x-firmware
-webui
-whalebird-bin
-whatsapp-for-linux
-whatsapp-nativefier
->>>>>>> gl/master
 whitedb
 whowatch
 wifite
 wine-nine
-<<<<<<< HEAD
 wireguard-tools
 wireshark-qt
 wordpress
 wpscan
-=======
-wireframesketcher
-wireshark-qt
-wordpress
-wpscan
-wyrd
-xampp
->>>>>>> gl/master
 xbindkeys
 xbitmaps
 xclicker
@@ -711,15 +411,11 @@ xcursor-vanilla-dmz-aa
 xf86-input-elographics
 xf86-input-evdev
 xf86-input-void
-<<<<<<< HEAD
 xf86-video-amdgpu
 xf86-video-ati
 xf86-video-fbdev
 xf86-video-intel
 xf86-video-nouveau
-=======
-xf86-video-intel
->>>>>>> gl/master
 xfce4-appfinder
 xfce4-artwork
 xfce4-battery-plugin
@@ -753,7 +449,6 @@ xfce4-wavelan-plugin
 xfce4-weather-plugin
 xfce4-whiskermenu-plugin
 xfce4-xkb-plugin
-xfce-simple-dark
 xfdesktop
 xfwm4
 xnviewmp
@@ -761,12 +456,6 @@ xorg-server-xvfb
 xorg-xkill
 yasm
 yay
-<<<<<<< HEAD
 zensu
-=======
-yed
-zenmap
-zotero-bin
->>>>>>> gl/master
 zshdb
 zsh-lovers

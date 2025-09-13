@@ -1,4 +1,7 @@
 #! /bin/bash
+
+# ln -fv ~/ownCloud/dotfile/.stignore "$HOME"/.stignore
+
 # readme
 #' (?d) ' Prefix indicating that the file can be deleted if preventing directory removal #! don't work with --> !**.stignore*
 #' (?i) ' Prefix indicating that the pattern should be matched without case sensitivity
@@ -270,7 +273,7 @@
 !/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 (?d).config/pavucontrol*
 (?d).cache/xfce4/clipman/textsrc
-(?d)**xfce4-keyboard-shortcuts.xml**         #! if you have different Keyboard layouts
+(?d)**xfce4-keyboard-shortcuts.xml**                                                   #! if you have different Keyboard layouts
 (?d).local/share/notes/Notizen
 (?d).config/xfce4/panel/*
 (?d).config/mimeapps.list
@@ -385,8 +388,8 @@ Downloads/
 !.config/joplin-desktop/keymap-desktop.json
 !.config/joplin-desktop/plugins
 (?d)~/ownCloud/joplin
-(?d)(?i).config/Joplin*
 (?d)!.config/joplin-desktop/plugins
+
 # Docker
 dist/
 data/

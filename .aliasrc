@@ -75,6 +75,7 @@ safety-up() {
         portmaster
         fail2ban
         i2pd
+        pihole-FTL
         # ufw
     )
 
@@ -86,10 +87,11 @@ safety_down() {
 
     pkg=(
         portmaster
+        pihole-FTL
         fail2ban
         i2pd
         ufw
-    )
+     )
 
     for pkg_ in "${pkg[@]}"; do
         sudo systemctl disable --now "$pkg_"
@@ -100,7 +102,7 @@ fail2ban_status() {
     # https://wiki.archlinux.org/title/Fail2ban
     # /etc/fail2ban/jail.local
 
-    sudo fail2ban-client status
+     sudo fail2ban-client status
 }
 
 iinstall__() {
@@ -124,13 +126,16 @@ iinstall__() {
     package_=(ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
 
 
-    )
+     )
     # Array of programs to be uninstall
     del_=(
         wallpapers-2018
         wallpapers-juhraya
         fcitx # LANG problem
         vlc
+
+        # KDE
+        plasma-workspace-wallpapers
     )
 
     if [[ -n "${package_[*]}" ]]; then
@@ -155,14 +160,6 @@ iinstall__() {
 -------------------------------------
 note:
 
-.config/gtkrc-2.0
-.config/gtkrc
-.config/gtk-2.0/
-.config/gtk-3.0/
-.config/zsh/.zcompdump
-.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-2.0/gtkrc
-.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-3.0/gtk.css
-.local/share/themes/Xfce-Simple-Dark/Xfce-Simple-Dark_widgets/gtk-3.20/gtk.css
 
 EOF
 }
@@ -176,6 +173,8 @@ nvidiaInstall() {
         echo "Nvidia update is off..."
     else
         sudo pacman -Sy
+
+
 
         Install packages
         package_=(
@@ -1191,18 +1190,16 @@ i2pd_UP() {
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
     if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-        sudo pacman -Syu "$pkg_"
+        sudo pacman -Sy "$pkg_"
+    fi
 
         if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$pkg_"
-            exo-open http://127.0.0.1:7070/ &
+        fi
 
-        fi
-    else
-        if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg_"
-        fi
+        if systemctl status "$pkg_" | grep "running" >/dev/null 2>&1; then
         exo-open http://127.0.0.1:7070/ &
+    i2pd
     fi
 }
 wireguard_UP() {
@@ -1240,12 +1237,12 @@ piHole_UP() {
     if pacman -Q "$pkg_" >/dev/null 2>&1; then
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
-        fi
 
         # update
         sudo pihole -g
+        fi
 
-        sudo pihole status
+         pihole status
 
     else
         if [[ $debug == "on" ]]; then
@@ -1283,7 +1280,7 @@ piHole_DOWN() {
 
     sudo systemctl disable --now "$service"
 
-    sudo pihole status
+     pihole status
 }
 
 cloudflared_UP() {
@@ -1389,9 +1386,19 @@ vpn-eth_deprecate() {
 # sudo dhclient -v
 # sudo airmon-ng
 
-# Find / Help /forget
+# Find / Help / forget / man
 alias help_apropos='  apropos '
 alias forget_apropos='apropos '
+
+gg() {
+    # grep man info
+    info_="man"
+    # info_="tldr"  # alternative
+
+    $info_ "$1" | grep --color=auto "$2"
+}
+
+
 
 # Convert
 alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
@@ -1587,9 +1594,9 @@ testOFF=(
 ~/.config/wireplumber/wireplumber.conf.d/alsa-config.conf # fix sound stuttering while pavucontrol is open
 
 ~/.config/wireplumber/wireplumber.conf.d/update-rate-and-format.conf
-#~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
-#~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf
-#~/.config/wireplumber/wireplumber.conf.d/device-rename.conf
+# ~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
+# ~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf
+# ~/.config/wireplumber/wireplumber.conf.d/device-rename.conf
 # ~/.config/wireplumber/wireplumber.conf.d/disable-logind.conf
 # ~/.config/wireplumber/wireplumber.conf.d/bluez-config.conf
 
@@ -1667,14 +1674,6 @@ alias chown='chown -c '
 alias chmod='chmod -c '
 alias grep='grep --color=auto'
 alias g='grep --color=auto'
-
-gg() {
-    # grep man info
-    info_="man"
-    # info_="tldr"  # alternative
-
-    $info_ "$1" | grep --color=auto "$2"
-}
 
 
 
@@ -2115,7 +2114,6 @@ openGL_info() {
     eglinfo -B
 }
 alias pstree='pstree ' # systemd tree views
-# sudo dmesg
 # sudo sensors-detect
 # coredumpctl list |more
 
@@ -3284,6 +3282,17 @@ soft_reboot() {
 reboot()
 {
     xfce4-session-logout --reboot --fast
+}
+
+timeshift_status()
+{
+    sudo timeshift --list
+}
+
+# Gadget
+gpg_list()
+{
+gpg --list-keys
 }
 
 # some note
