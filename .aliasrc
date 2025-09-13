@@ -811,48 +811,125 @@ downgrade() {
 
 wine-config() {
     # wine steam
-    sudo pacman -Syu --needed wine wine-nine gamescope winetricks protontricks wine-mono vulkan-tools linux-steam-integration wine-gecko steam giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
+    # https://wiki.archlinux.org/title/Wine
+    # https://www.winehq.org/
 
-    wineserver -k 15
+    path_="$HOME"/.wine
 
-    # mkdir ~/.wine
+    # winetricks option
+    winetricks_=(
+        # DLL
+    d3dx9 d3dcompiler_43 d3dcompiler_47 corefonts vcrun2017 cjkfonts  vcrun2005 dotnet48 xinput xact dxvk d3dx11_43 d3dx11_42 vcrun2008 vcrun2010
+    dxvk_nvapi
+    vkd3d
+    # fonts
+    allfonts
 
-    env WINEPREFIX="$HOME"/.wine wineboot
+    #! wined3d
+     )
 
-    #!
-    echo "prefix set.. "
-    echo ""
+    pkg_=(
+    # wine version
+    wine
+    # wine-staging
+
+    # steam
+    steam
+    linux-steam-integration
+
+    gamescope
+
+    wine-gecko
+    wine-nine
+    winetricks
+    protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
+    )
+
+    set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+        fi
+    done
+
+
+    if pgrep -x "wineserver" > /dev/null; then
+        wineserver -k 15
+    fi
+
+    if ! [[ -d "$path_" ]];then
+        mkdir "$path_"
+    fi
+
+    env WINEPREFIX="$path_" wineboot
+
+    # echo "prefix set.. " # deprecate
+    # echo ""
     # export WINEARCH=win64
     # export WINEARCH=win32
 
+    echo ""
+    wine winecfg -v win10
+    # winetricks -q win10
+
     sudo winetricks --self-update
 
+    echo ""
     echo "starting winetricks -q.."
-    # winetricks -q -v d3dx9 d3dcompiler_43 d3dcompiler_47 corefonts vcrun2017 cjkfonts allfonts vcrun2005 dotnet48 xinput wined3d xact dxvk d3dx11_43 d3dx11_42 vcrun2008 vcrun2010
-    #!
 
-    # sh -c 'sudo chown -Rv "${USER}":"${USER}" ~/.wine'
+    for option in "${winetricks_[@]}";do
+    winetricks -q "$option"
+    done
 
-    echo "wineboot init"
-    wineboot --init
+    # sh -c 'sudo chown -Rv "${USER}":"${USER}" "$pkg"'
 
+    # echo "wineboot init"
+    # wineboot --init
+
+    # To enable ESync
     export WINEESYNC=1
 
-    echo ""
+    # FSync
+    # export WINEFSYNC=1
+
+
 
     wine --version
+
+    sh -c 'winetricks &'
 
     echo ""
     echo done..
 
-    # winetricks
+
+
+    # missing pkg
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            echo "$pkg does not exist!.."
+        fi
+    done
+
+    # wine cmd
+    # winedbg --gdb winecfg
 }
 
 wine_clean() {
 
     # yy -Rc wine dxvk-bin wine-mono vulkan-tools lutris wine-gecko lib32-vkd3d winetricks vkd3d d3dx9 vulkan-extra-layers vulkan-extra-tools
 
-    wineserver -k 15
+    path_="$HOME"/.wine
+
+    if pgrep -x "wineserver" > /dev/null; then
+        wineserver -k 15
+    fi
 
     .local/share/applications
     sudo find ~/.local/share/applications/wine -delete -print
@@ -875,11 +952,11 @@ wine_clean() {
     update-desktop-database ~/.config/mimeapps.list
     update-desktop-database ~/.local/share/applications
     update-mime-database ~/.local/share/mime/
-    sudo find ~/.wine/drive_c/users/"${USER}"/Temp ~/.wine/drive_c/windows/temp -delete -print
-    ln -s /tmp/ ~/.wine/drive_c/users/"${USER}"/Temp
-    ln -s /tmp/ ~/.wine/drive_c/windows/temp
+    sudo find "$path_"/drive_c/users/"${USER}"/Temp "$path_"/drive_c/windows/temp -delete -print
+    ln -s /tmp/ "$path_"/drive_c/users/"${USER}"/Temp
+    ln -s /tmp/ "$path_"/drive_c/windows/temp
 
-    sudo find ~/.wine -delete -print
+    sudo find "$path_" -delete -print
 }
 steam_clean() {
 

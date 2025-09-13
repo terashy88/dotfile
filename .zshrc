@@ -178,6 +178,10 @@ export_() {
     export LESS_TERMCAP_us=$'\E[01;36m'
     export LESS=-R
 
+
+if ! [[ -e "$XDG_CONFIG_HOME/wgetrc" ]];then  
+ln -fs /etc/wgetrc "$XDG_CONFIG_HOME/wgetrc"
+fi
     export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 
     # export JAVA_HOME=""
