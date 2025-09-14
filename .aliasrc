@@ -62,12 +62,19 @@ portmaster_restart() {
     # https://wiki.safing.io/en/Portmaster/App/DNSConfiguration
     # https://quad9.net/support/faq/
     echo "restarting Portmaster.."
-    systemctl restart portmaster
+    sudo systemctl restart portmaster
+
+    NetworkManager_restart
+
+    sh -c 'portmaster &'
 
     # Debug info
     # curl http://127.0.0.1:817/api/v1/debug/core
 }
-alias NetworkManager_restart='echo "restart NetworkManager.."; restart NetworkManager'
+NetworkManager_restart(){
+    echo "restart NetworkManager.."
+     sudo systemctl restart NetworkManager
+}
 
 safety-up() {
 
@@ -815,6 +822,7 @@ wine-config() {
     # https://www.winehq.org/
 
     path_="$HOME"/.wine
+    winV=win10
 
     # winetricks option
     winetricks_=(
@@ -824,8 +832,6 @@ wine-config() {
     vkd3d
     # fonts
     allfonts
-
-    #! wined3d
      )
 
     pkg_=(
@@ -842,7 +848,13 @@ wine-config() {
     wine-gecko
     wine-nine
     winetricks
-    protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-gst-plugins-base-libs lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
+
+
+    lib32-gst-plugins-base
+    lib32-gst-plugins-good
+    lib32-pcsclite
+
+    protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
     )
 
     set -e
@@ -865,10 +877,12 @@ wine-config() {
     fi
 
     if ! [[ -d "$path_" ]];then
-        mkdir "$path_"
+        mkdir "$path_"|| echo "mkdir $path_ error.."&& exit 1
     fi
 
+    if  [[ -d "$path_" ]];then
     env WINEPREFIX="$path_" wineboot
+    fi
 
     # echo "prefix set.. " # deprecate
     # echo ""
@@ -876,7 +890,7 @@ wine-config() {
     # export WINEARCH=win32
 
     echo ""
-    wine winecfg -v win10
+    wine winecfg -v "$winV"
     # winetricks -q win10
 
     sudo winetricks --self-update
@@ -919,6 +933,7 @@ wine-config() {
 
     # wine cmd
     # winedbg --gdb winecfg
+    # wineconsole cmd
 }
 
 wine_clean() {
@@ -966,6 +981,29 @@ steam_clean() {
 
 # alias §="xdotool - < .local/bin/magickeys.sh "
 # bindkey -s '§' "xdotool_ "
+
+crossover_up()
+{
+# --
+    # https://wiki.archlinux.org/title/CrossOver
+    # https://www.codeweavers.com/
+    echo "--"
+}
+game_tweak()
+{
+    # https://wiki.archlinux.org/title/Gaming#Getting_games
+    echo ""
+}
+crossover_down()
+{
+
+if ! pacman -Qq crossover >/dev/null 2>&1;then
+    if [[ -e ~/.cxoffice ]];then
+        sudo find  ~/.cxoffice -delete -print
+    fi
+    fi
+}
+crossover_down
 
 xdotool_() {
 
@@ -1262,19 +1300,29 @@ i2pd_UP() {
     # I2P DataTransfer Encryption
     # https://wiki.archlinux.org/title/I2P
     # https://github.com/PurpleI2P/i2pd
-    pkg_=i2pd
+    pkg_=(
+        i2pd
+    )
 
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-        sudo pacman -Sy "$pkg_"
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
     fi
 
-        if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg_"
+        for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+        fi
+    done
+
+
+        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$pkg"
         fi
 
-        if systemctl status "$pkg_" | grep "running" >/dev/null 2>&1; then
+        if systemctl status "$pkg" | grep "running" >/dev/null 2>&1; then
         exo-open http://127.0.0.1:7070/ &
     i2pd
     fi
@@ -1286,47 +1334,69 @@ wireguard_UP() {
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
 
-    pkg_=wireguard-tools
+    pkg_=(
+        wireguard-tools
+    )
+
     service=
     debug=on
 
+
+    for pkg in "${pkg_[@]}";do
     if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg_..."
+        echo "Todo: $pkg..."
     else
-        if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            sudo pacman -Syu "$pkg_"
+        set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
         fi
-        if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
+
+
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
         fi
 
     fi
+    done
+
 }
 piHole_UP() {
     # Pi-hole   https://wiki.archlinux.org/title/Pi-hole
     # does not really have a good Monitoring
 
-    pkg_=pi-hole-core
+    pkg_=(
+        pi-hole-core
+    )
 
     debug=off
     service=pihole-FTL
 
-    if pacman -Q "$pkg_" >/dev/null 2>&1; then
-        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$service"
+        set -e
 
-        # update
-        sudo pihole -g
-        fi
-
-         pihole status
-
-    else
-        if [[ $debug == "on" ]]; then
-            echo "Todo: $pkg_..."
+    if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..."
         else
-            if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-                pamac build "$pkg_"
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            pamac build "$pkg"|| echo "failed to get $pkg..."
+        fi
+done
+
+if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                pamac build "$pkg"
 
                 hostsFile() {
                     # if ! grep -q "ip.address.of.pihole" /etc/hosts; then
@@ -1344,13 +1414,23 @@ piHole_UP() {
                       fi
                 }
                 hostsFile
+fi
 
-                if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-                    sudo systemctl enable --now "$service"
-                fi
-            fi
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$service"
         fi
-     fi
+
+        # update
+        sudo pihole -g
+
+
+         pihole status
+
+
+fi
+
+
+
 }
 piHole_DOWN() {
     service=pihole-FTL
@@ -1363,33 +1443,54 @@ piHole_DOWN() {
 cloudflared_UP() {
     # Cloudflare / Pi-Hole
 
-    pkg_=cloudflared
+    pkg_=(
+        cloudflared
+    )
     debug=on
 
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg_..."
-    else
-        if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            sudo pacman -Syu "$pkg_"
+    for pkg in "${pkg_[@]}";do
 
-            if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-                sudo systemctl enable --now "$pkg_"
-            fi
-        fi
+    if [[ $debug == "on" ]]; then
+        echo "Todo: $pkg..."&& exit 1
+    else
+        set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
     fi
-}
+
+
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+        fi
+        fi
+    done
+
+    }
 opensnitch_UP() {
     # opensnitch https://github.com/evilsocket/opensnitch
 
-    pkg_=opensnitch
+    pkg_=(
+        opensnitch
+    )
     debug=on
     service=opensnitchd
 
-    if [[ $debug == "on" ]]; then
-        echo "$pkg_ is not great, it does not follow my GTK-THEME and GUI Position"
+set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
+        if [[ $debug == "on" ]]; then
+        echo "$pkg is not great, it does not follow my GTK-THEME and GUI Position"&& exit 1
     else
-        if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            sudo pacman -Syu "$pkg_"
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -S "$pkg"
         fi
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
@@ -1398,58 +1499,93 @@ opensnitch_UP() {
         if systemctl status "$service" | grep "running" >/dev/null 2>&1; then
             opensnitch-ui &
         else
-            echo "error: $pkg_"
+            echo "error: $pkg"
         fi
     fi
+
+    done
 }
 
 nebula_UP() {
     # Nebula #todo
     # https://wiki.archlinux.org/title/Nebula
-    pkg_=nebula
+    pkg_=(
+        nebula
+    )
 
     debug=on
 
+set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
     if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg_..."
+        echo "Todo: $pkg..."
     else
-        if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            sudo pacman -Syu "$pkg_"
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -S "$pkg"
         fi
 
-        if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg_"
+        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$pkg"
         fi
     fi
+    done
 }
 ProtonVPN_UP() {
     #! inoffiziell
     # https://protonvpn.com/support/linux-vpn-setup/
     # https://wiki.archlinux.org/title/ProtonVPN
 
-    pkg_=systemd-resolvconf
+    pkg_=(
+        systemd-resolvconf
+    )
     debug=on
 
+set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
     if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg_..."
+        echo "Todo: $pkg..."
     else
-        if ! pacman -Qq "$pkg_"; then
-            sudo pacman -Syu "$pkg_"
+        if ! pacman -Qq "$pkg"; then
+            sudo pacman -S "$pkg"
         fi
 
-        if systemctl status "$pkg_" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg_"
+        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$pkg"
         fi
     fi
+    done
 }
 vpn-eth_deprecate() {
     # ! deprecate  -->> use AUR
     # https://unlimited.ethz.ch/display/itkb/VPN
-    pkg_="Script deprecate.."
+    pkg_=()
     debug=on
 
+set -e
+
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
     if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg_..."
+        echo "Todo: $pkg..."
     else
         if [[ -d /opt/cisco/anyconnect ]]; then
             sh -c "sudo rm -rfv /opt/cisco/anyconnect" || return 1
@@ -1459,6 +1595,7 @@ vpn-eth_deprecate() {
 
         fail2ban_
     fi
+    done
 }
 # sudo dhclient -v
 # sudo airmon-ng
@@ -1489,11 +1626,17 @@ yt() {
 # https://github.com/yt-dlp/yt-dlp
 
     path_="$HOME/Downloads/yt"
-    pkg_=yt-dlp
+    pkg_=(
+        yt-dlp
+    )
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
 
     for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Sy "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -1513,11 +1656,18 @@ yta() {
     # audio only
 
     path_="$HOME/Downloads/yt"
-    pkg_=yt-dlp
+    pkg_=(
+        yt-dlp
+    )
+
+        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
+
 
     for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Sy "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -3250,8 +3400,9 @@ VM_UP_() {
 
 
 pkg=(
+    # linux612-virtualbox-host-modules
     virtualbox-guest-utils
-    virtualbox-host-dkms
+    # virtualbox-host-dkms
 )
 
     sudo pacman -Sy
@@ -3274,7 +3425,10 @@ done
     if [[ ! -d  /media ]];then
     sudo mkdir /media
     sh -c "sudo chmod 755 /media"
+    else
+        sh -c "sudo chmod 755 /media"
 fi
+
 
  sudo vboxreload
 
