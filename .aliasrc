@@ -7,7 +7,7 @@ fetch_() {
     helper_() {
         # AUR helper
 
-        # check connection
+        # check connection / internet up
         # if ping -c 1 google.com -q >/dev/null 2>&1; then
         if ip link show | grep 'state UP' >/dev/null 2>&1; then
 
@@ -98,12 +98,21 @@ portmaster-log()
 NetworkManager_restart(){
     echo "restart NetworkManager.."
      sudo systemctl restart NetworkManager
+
+     for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
 }
 
 safety-up() {
 
     pkg=(
-        portmaster
+        # portmaster
         fail2ban
         # i2pd #! problem with snyk
         pihole-FTL
@@ -181,7 +190,8 @@ iinstall__() {
     # wrapper="$(paru -S --needed)"
 
     # Install packages
-    package_=(ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+    package_=(
+        ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
 
 
      )
@@ -273,7 +283,8 @@ lightdmInstallslicker_() {
     package_=(
         lightdm
         lightdm-settings
-        lightdm-slick-greeter)
+        lightdm-slick-greeter
+        )
 
     if pacman -Qq lightdm-slick-greeter >/dev/null 2>&1; then
         # todo
@@ -854,26 +865,6 @@ orphans() {
     fi
 }
 
-pamacclean() {
-
-    sudo find /var/lib/pacman/db.lck -delete -print
-    pamac clean --no-confirm --keep 1
-    sudo find /tmp/* -delete -print
-    sudo find /var/lib/pacman/sync/* -delete -print
-    sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
-    sudo find /etc/pacman.d/gnupg -delete -print
-    sudo find /root/.gnupg/* -delete -print
-    sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
-
-    sudo pacman -Sy gnupg archlinux-keyring manjaro-keyring
-    sudo pacman-key --init
-    sudo pacman -Syy
-    sudo pacman-key --populate --populate archlinux manjaro
-    sudo pacman-key -u --refresh-keys &&
-        sudo pacman-mirrors -a -P https --fasttrack 33 &&
-        sudo pacman -Syyu --disable-download-timeout
-}
-
 downgrade() {
 
     command /usr/bin/sudo /usr/bin/downgrade "$@"
@@ -1115,14 +1106,6 @@ alias cp='cp -vi ' # Confirm before overwriting something
 alias more='less --use-color'
 alias mv='mv -iv '
 
-manjaro-stable() {
-    sudo pacman-mirrors --api --set-branch stable
-    pamacclean
-}
-manjaro-testing() {
-    sudo pacman-mirrors --api --set-branch testing
-    pamacclean
-}
 
 pacman-update() {
     # Systemupdate
@@ -1154,6 +1137,38 @@ echo " 100 =-"
         echo "Cancel update"
     fi
 }
+
+manjaro-stable() {
+    sudo pacman-mirrors --api --set-branch stable
+    pamacclean
+}
+manjaro-testing() {
+    sudo pacman-mirrors --api --set-branch testing
+    pamacclean
+}
+
+
+pamacclean() {
+
+    sudo find /var/lib/pacman/db.lck -delete -print
+    pamac clean --no-confirm --keep 1
+    sudo find /tmp/* -delete -print
+    sudo find /var/lib/pacman/sync/* -delete -print
+    sudo find /var/tmp/pamac/dbs/sync/*.* -delete -print
+    sudo find /etc/pacman.d/gnupg -delete -print
+    sudo find /root/.gnupg/* -delete -print
+    sudo find /var/cache/pacman/pkg/*.tar.zst.sig -delete -print
+
+    sudo pacman -Sy gnupg archlinux-keyring manjaro-keyring
+    sudo pacman-key --init
+    sudo pacman -Syy
+    sudo pacman-key --populate --populate archlinux manjaro
+    sudo pacman-key -u --refresh-keys &&
+        sudo pacman-mirrors -a -P https --fasttrack 33 &&
+        sudo pacman -Syyu --disable-download-timeout
+}
+
+
 
 # pacman-fix-permissions_() {
 # ! deprecate
@@ -1229,11 +1244,18 @@ alias defenderscan-libredefender='sudo libredefender scan ~/'
 alias defenderscan_infection='sudo libredefender infections '
 
 # Network
+
 trafficTracker() {
     sudo tcpdump -l
 }
 # https://wiki.archlinux.org/title/Systemd
 # Realtime Journal-log
+wifi_nearby()
+{
+    # https://wiki.archlinux.org/title/NetworkManager#DNS_management
+    nmcli device wifi list
+    nmcli connection show
+}
 alias networkmanagerlog='journalctl --boot 0 --unit NetworkManager.service --follow' # NetworkManager info scan
 
 # Port check
@@ -1289,6 +1311,262 @@ alias ip-c='    ip -c a' # ip-coler     ip addr      ip -br -c addr show     ip 
 alias nmtui='xfce4-terminal --geometry=115x30 --hide-scrollbar -H -x zsh -c "nmtui"'
 alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
 alias whatismyip=myip
+
+NetworkManager_UP() {
+    # NetworkManager
+    # https://wiki.archlinux.org/title/NetworkManager
+
+pkg_=(
+    networkmanager
+)
+    service="NetworkManager"
+    disable_=(
+dhcpcd
+dnsmasq
+iptables
+avahi-daemon
+avahi-daemon.socket
+systemd-resolved
+    )
+
+if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+        for pkg in "${pkg_[@]}";do
+
+    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+sudo pacman -Su "$pkg"
+        fi
+done
+
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    else
+    cat /etc/resolv.conf
+    fi
+}
+resolved_UP() {
+    # https://wiki.archlinux.org/title/Systemd-resolved
+    # /etc/systemd/resolved.conf
+
+pkg_=systemd    # base
+         service="systemd-resolved"
+    disable_=(
+dhcpcd
+dnsmasq
+iptables
+avahi-daemon
+avahi-daemon.socket
+    )
+
+    debug=off
+
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
+
+
+
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
+
+
+        fi
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    fi
+fi
+}
+dnsmasq_UP() {
+    # https://wiki.archlinux.org/title/Dnsmasq
+    # /etc/dnsmasq.conf
+# set -e
+
+service=dnsmasq
+pkg_=$service     # conflict with pi-hole-ftl
+conflict=pi-hole-core
+piholeFTL_service=pihole-FTL
+            disable_=(
+dhcpcd
+systemd-resolved
+iptables
+avahi-daemon
+avahi-daemon.socket
+    )
+
+    debug=off
+
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
+
+
+
+    if ! pacman -Qq |grep "$pkg" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+        if  pacman -Qq "$conflict" >/dev/null 2>&1; then
+        echo "conflict:"
+        sudo systemctl disable "$piholeFTL_service" --now
+    sudo pacman -Rc "$conflict"
+    fi
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
+        fi
+
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+     dnsmasq --test
+     else
+     cat /etc/resolv.conf
+     dnsmasq --test
+    fi
+fi
+}
+dhcpcd_UP() {
+    # https://wiki.archlinux.org/title/Dhcpcd
+    # /etc/dhcpcd.conf
+
+ set +e
+
+service=dhcpcd
+pkg_=dhcpcd     # conflict with pi-hole-ftl
+conflict=pi-hole-core
+
+            disable_=(
+systemd-resolved
+iptables
+avahi-daemon
+avahi-daemon.socket
+dnsmasq
+    )
+
+
+
+    debug=off
+
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
+
+
+
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+    if  pacman -Qq "$conflict" >/dev/null 2>&1; then
+    sudo pacman -Rc "$conflict"
+    fi
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
+
+        fi
+#  set -e
+
+
+
+for disable in "${disable_[@]}" ; do
+if  [[ "$(systemctl status "$disable")" ]];then
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+        else
+        echo "$disable does not exist"
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+
+        sudo dhcpcd -k
+sudo dhcpcd
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    else
+    cat /etc/resolv.conf
+
+    fi
+
+fi
+}
+
 
 journalctl-live_() {
     # Filtered live Journalctl-logs
@@ -1448,7 +1726,7 @@ piHole_UP() {
     debug=off
     service=pihole-FTL
 
-        set -e
+        # set -e
 
     if [[ $debug == "on" ]]; then
             echo "Todo: $pkg..."
@@ -1488,18 +1766,35 @@ fi
 
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
-        fi
+
+
+     for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
 
         # update
         sudo pihole -g
 
 
          pihole status
+    cat /etc/resolv.conf
 
 # http://127.0.0.53/admin/
+else
+        # update
+        sudo pihole -g
+
+
+         pihole status
+cat /etc/resolv.conf
+
+# http://127.0.0.53/admin/
+
 fi
-
-
+fi
 
 }
 piHole_DOWN() {
@@ -3514,229 +3809,7 @@ fi
  modinfo vboxsf
  vboxmanage --version
 }
-NetworkManager_UP() {
-    # NetworkManager
-    # https://wiki.archlinux.org/title/NetworkManager
 
-pkg_=networkmanager
-
-    service="NetworkManager"
-    disable_=(
-dhcpcd
-dnsmasq
-iptables
-avahi-daemon
-avahi-daemon.socket
-systemd-resolved
-    )
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        for pkg in "${pkg_[@]}";do
-sudo pacman -Su "$pkg"
-done
-
-
-        fi
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
-        done
-echo " 100 =-"
-
-    cat /etc/resolv.conf
-    fi
-}
-resolved_UP() {
-    # https://wiki.archlinux.org/title/Systemd-resolved
-    # /etc/systemd/resolved.conf
-
-pkg_=systemd    # base
-         service="systemd-resolved"
-    disable_=(
-dhcpcd
-dnsmasq
-iptables
-avahi-daemon
-avahi-daemon.socket
-    )
-
-    debug=off
-
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
-
-
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        for pkg in "${pkg_[@]}";do
-sudo pacman -Su "$pkg"
-done
-
-
-        fi
-
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
-        done
-echo " 100 =-"
-
-    cat /etc/resolv.conf
-    fi
-fi
-}
-dnsmasq_UP() {
-    # https://wiki.archlinux.org/title/Dnsmasq
-    # /etc/dnsmasq.conf
-set -e
-
-service=dnsmasq
-pkg_=$service     # conflict with pi-hole-ftl
-            disable_=(
-dhcpcd
-systemd-resolved
-iptables
-avahi-daemon
-avahi-daemon.socket
-    )
-
-    debug=off
-
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
-
-
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        for pkg in "${pkg_[@]}";do
-sudo pacman -Su "$pkg"
-done
-
-
-        fi
-
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
-        done
-echo " 100 =-"
-
-    cat /etc/resolv.conf
-    fi
-fi
-}
-dhcpcd_UP() {
-    # https://wiki.archlinux.org/title/Dhcpcd
-    # /etc/dhcpcd.conf
-
-set -e
-
-service=dhcpcd
-pkg_=dhcpcd     # conflict with pi-hole-ftl
-            disable_=(
-systemd-resolved
-iptables
-avahi-daemon
-avahi-daemon.socket
-dnsmasq
-    )
-
-
-
-    debug=off
-
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
-
-
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        for pkg in "${pkg_[@]}";do
-sudo pacman -Su "$pkg"
-done
-
-
-        fi
-
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
-        done
-echo " 100 =-"
-
-    cat /etc/resolv.conf
-    fi
-fi
-}
 
 soft_reboot() {
     # faster reboot replacement
