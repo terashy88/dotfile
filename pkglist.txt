@@ -32,6 +32,7 @@ blender
 blur-effect
 bolt
 boost
+bottles
 box2d
 bpf
 brave-browser-beta
@@ -89,7 +90,6 @@ folder-color-switcher
 frameworkintegration5
 freeplane
 galculator
-gamescope
 gammastep
 gcolor3
 gdu
@@ -159,22 +159,26 @@ lbry-desktop-bin
 lib32-alsa-oss
 lib32-dbus-glib
 lib32-fakeroot
+lib32-freeglut
+lib32-glew
 lib32-gst-plugins-base
 lib32-gst-plugins-good
+lib32-gtk3
 lib32-libappindicator-gtk2
 lib32-libcurl-compat
 lib32-libcurl-gnutls
 lib32-libidn11
 lib32-libindicator-gtk2
+lib32-libjpeg6-turbo
 lib32-libpng12
 lib32-librtmp0
 lib32-libtiff4
 lib32-libudev0-shim
 lib32-libvpx1.3
 lib32-libxslt
-lib32-mesa-demos
-lib32-mesa-utils
 lib32-ocl-icd
+lib32-openal
+lib32-pcsclite
 lib32-sdl2_image
 lib32-sdl2_mixer
 lib32-sdl2_ttf
@@ -189,6 +193,7 @@ libcurl-gnutls
 libgcrypt15
 libidn11
 libiptcdata
+libjpeg6-turbo
 libkleo
 libnvidia-container
 libopenshot
@@ -206,9 +211,9 @@ libvpx1.3
 lightdm-settings
 linssid
 linux612-broadcom-wl
-linux-steam-integration
 linux-wifi-hotspot
 lua52
+lutris
 manjaro-application-utility
 manjaro-bluetooth
 manjaro-browser-settings
@@ -232,6 +237,7 @@ memtest86-efi
 memtest86+-efi
 memtester
 menulibre
+mesa-demos
 meson
 mingw-w64-gcc
 mixxx
@@ -239,6 +245,7 @@ mkinitcpio-openswap
 monero
 motion
 mtpfs
+musescore
 mysql++
 mysql-workbench
 mythes-de
@@ -292,7 +299,6 @@ portmaster
 powerline
 powerline-go
 powertop
-proton-ge-custom-bin
 protontricks
 protonutils
 proxychains-ng
@@ -385,7 +391,6 @@ virt-manager
 virtualbox
 virtualbox-guest-utils
 virt-viewer
-vkd3d
 vscodium-bin-features
 vscodium-bin-marketplace
 vulkan-extra-layers

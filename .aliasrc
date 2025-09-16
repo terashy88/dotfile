@@ -61,6 +61,25 @@ fetch_
 portmaster_restart() {
     # https://wiki.safing.io/en/Portmaster/App/DNSConfiguration
     # https://quad9.net/support/faq/
+    #! -- https://docs.safing.io/portmaster/install/linux
+
+pkg_=(
+    portmaster
+)
+
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+
+
+    for pkg in "${pkg_[@]}";do
+        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+        fi
+    done
+
+
+
     echo "restarting Portmaster.."
     sudo systemctl restart portmaster
 
@@ -71,6 +90,11 @@ portmaster_restart() {
     # Debug info
     # curl http://127.0.0.1:817/api/v1/debug/core
 }
+portmaster-log()
+{
+    sudo journalctl -r -u portmaster |more
+}
+
 NetworkManager_restart(){
     echo "restart NetworkManager.."
      sudo systemctl restart NetworkManager
@@ -81,7 +105,7 @@ safety-up() {
     pkg=(
         portmaster
         fail2ban
-        i2pd
+        # i2pd #! problem with snyk
         pihole-FTL
         # ufw
     )
@@ -89,6 +113,19 @@ safety-up() {
     for pkg_ in "${pkg[@]}"; do
         sudo systemctl enable --now "$pkg_"
     done
+
+
+service_=(
+    iptables
+# ufw
+systemd-resolved
+)
+                # portmaster and iptables are in conflict
+    for service in "${service_[@]}"; do
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl disable --now "$service"
+        fi
+        done
 }
 safety_down() {
 
@@ -97,12 +134,26 @@ safety_down() {
         pihole-FTL
         fail2ban
         i2pd
-        ufw
+        # ufw
      )
 
     for pkg_ in "${pkg[@]}"; do
         sudo systemctl disable --now "$pkg_"
     done
+
+service_=(
+    # iptables
+ufw
+systemd-resolved
+)
+
+    # portmaster and iptables are in conflict
+    for service in "${service_[@]}"; do
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$service"
+        fi
+    done
+
 }
 
 fail2ban_status() {
@@ -144,6 +195,10 @@ iinstall__() {
         # KDE
         plasma-workspace-wallpapers
     )
+
+if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Syu
+    fi
 
     if [[ -n "${package_[*]}" ]]; then
         # Check if any program needs to be uninstalled
@@ -698,7 +753,15 @@ checkrebuild_() {
 
     echo ""
     echo "Rebuild Python $ver..."
-    sleep 4
+
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
 
     # pamac build $(pacman -Qoq /usr/lib/python$ver) --no-confirm
     $helper -Syu "$(pacman -Qoq /usr/lib/python$ver)"
@@ -861,13 +924,13 @@ wine-config() {
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
     for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -1080,11 +1143,14 @@ pacman-update() {
 
     else
         echo -n "Unknown OS"
-        for ((i = 1; i <= 3; i++)); do
-            echo -n "."
-            sleep 1
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
         done
-        echo ""
+echo " 100 =-"
+
         echo "Cancel update"
     fi
 }
@@ -1209,7 +1275,11 @@ dnsleaktest_() {
     echo "drill Test:"
     drill @127.0.0.1 archlinux.org
     drill archlinux.org | grep "Query time"
+
+     resolvectl query go.dnscheck.tools
+     resolvectl status
 }
+# dig google.de
 
 alias ip-c='    ip -c a' # ip-coler     ip addr      ip -br -c addr show     ip route show   ip link show
 
@@ -1308,12 +1378,12 @@ i2pd_UP() {
     # Monitoring: http://127.0.0.1:7070/
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
         for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -1350,12 +1420,12 @@ wireguard_UP() {
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
 
 
@@ -1426,7 +1496,7 @@ fi
 
          pihole status
 
-
+# http://127.0.0.53/admin/
 fi
 
 
@@ -1457,12 +1527,12 @@ cloudflared_UP() {
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
         fi
     done
@@ -1481,7 +1551,7 @@ set -e
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
@@ -1490,7 +1560,7 @@ set -e
         echo "$pkg is not great, it does not follow my GTK-THEME and GUI Position"&& exit 1
     else
         if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-            sudo pacman -S "$pkg"
+            sudo pacman -Su "$pkg"
         fi
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
@@ -1519,7 +1589,7 @@ set -e
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
@@ -1528,7 +1598,7 @@ set -e
         echo "Todo: $pkg..."
     else
         if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-            sudo pacman -S "$pkg"
+            sudo pacman -Su "$pkg"
         fi
 
         if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
@@ -1551,7 +1621,7 @@ set -e
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
@@ -1560,7 +1630,7 @@ set -e
         echo "Todo: $pkg..."
     else
         if ! pacman -Qq "$pkg"; then
-            sudo pacman -S "$pkg"
+            sudo pacman -Su "$pkg"
         fi
 
         if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
@@ -1631,12 +1701,12 @@ yt() {
     )
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
     for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -1661,13 +1731,13 @@ yta() {
     )
 
         if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
+        sudo pacman -Sy
     fi
 
 
     for pkg in "${pkg_[@]}";do
         if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -S "$pkg"|| echo "failed to get $pkg..."
+            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
     done
 
@@ -2248,7 +2318,7 @@ swap-activate() {
 
             if swapon --show | grep -q "file"; then
                 echo "deleting old swapfile"
-                sudo swapoff $path_ &
+                sudo swapoff "$path_" &
                 pid=$!
 
                 while kill -0 ${pid} >/dev/null 2>&1; do
@@ -2266,6 +2336,7 @@ swap-activate() {
         sudo dd if=/dev/zero of=$path_ bs=1M count="$i" status=progress || {
             echo "Error creating swapfile"
             sleep 3
+            exit 1
         }
         # set permission
         if sh -c "sudo chmod 600 $path_"; then
@@ -2965,6 +3036,10 @@ backup_() {
         betterbird_
     fi
 }
+fstab_backup()
+{
+    sh -c "sudo -u root ln -fv ~/ownCloud/p-git/fstab /etc/fstab"
+}
 
 imwheel_() {
 
@@ -3175,7 +3250,7 @@ ufw_UP() {
 fail2ban_() {
     # --- Enable fail2ban
 
-    if ! pacman -Qq fail2ban; then
+    if ! pacman -Qq fail2ban >/dev/null 2>&1; then
         sudo pacman -Syu --needed fail2ban
     fi
 
@@ -3378,7 +3453,7 @@ pkg=(
     sudo pacman -Sy
 
     for pkg_ in "${pkg[@]}"; do
-        sudo pacman -S --needed "$pkg_"
+        sudo pacman -Su --needed "$pkg_"
 done
 
     if systemctl status libvirtd | grep "inactive" >/dev/null 2>&1; then
@@ -3408,7 +3483,7 @@ pkg=(
     sudo pacman -Sy
 
     for pkg_ in "${pkg[@]}"; do
-        sudo pacman -S --needed "$pkg_"
+        sudo pacman -Su --needed "$pkg_"
 done
 
 
@@ -3436,74 +3511,231 @@ fi
 
  LC_ALL=C lscpu
 
+ modinfo vboxsf
  vboxmanage --version
 }
 NetworkManager_UP() {
     # NetworkManager
     # https://wiki.archlinux.org/title/NetworkManager
 
-    if systemctl status NetworkManager | grep "inactive" >/dev/null 2>&1; then
-        # sudo pacman -S --needed
+pkg_=networkmanager
 
-        sudo systemctl enable NetworkManager --now
+    service="NetworkManager"
+    disable_=(
+dhcpcd
+dnsmasq
+iptables
+avahi-daemon
+avahi-daemon.socket
+systemd-resolved
+    )
 
-        sudo systemctl disable dhcpcd --now
-        sudo systemctl disable dnsmasq --now
-        sudo systemctl disable systemd-resolved --now
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
+    fi
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
 
-        sudo systemctl disable iptables --now
+
+        fi
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
     fi
 }
 resolved_UP() {
-    # todo - Don't work
     # https://wiki.archlinux.org/title/Systemd-resolved
     # /etc/systemd/resolved.conf
 
-    if systemctl status systemd-resolved | grep "inactive" >/dev/null 2>&1; then
-        # sudo pacman -S --needed
+pkg_=systemd    # base
+         service="systemd-resolved"
+    disable_=(
+dhcpcd
+dnsmasq
+iptables
+avahi-daemon
+avahi-daemon.socket
+    )
 
-        sudo systemctl enable systemd-resolved --now
+    debug=off
 
-        sudo systemctl disable dhcpcd --now
-        sudo systemctl disable dnsmasq --now
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
 
-        sudo systemctl disable iptables --now
+
+
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
     fi
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
 
+
+        fi
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    fi
+fi
 }
 dnsmasq_UP() {
-    # todo - Don't work
     # https://wiki.archlinux.org/title/Dnsmasq
     # /etc/dnsmasq.conf
+set -e
 
-    if systemctl status dnsmasq | grep "inactive" >/dev/null 2>&1; then
-        # sudo pacman -S --needed
+service=dnsmasq
+pkg_=$service     # conflict with pi-hole-ftl
+            disable_=(
+dhcpcd
+systemd-resolved
+iptables
+avahi-daemon
+avahi-daemon.socket
+    )
 
-        sudo systemctl enable dnsmasq --now
+    debug=off
 
-        sudo systemctl disable dhcpcd --now
-        sudo systemctl disable systemd-resolved --now
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
 
-        sudo systemctl disable iptables --now
+
+
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
     fi
-    dnsmasq --test
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
+
+
+        fi
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    fi
+fi
 }
 dhcpcd_UP() {
-    # todo - Don't work
     # https://wiki.archlinux.org/title/Dhcpcd
     # /etc/dhcpcd.conf
 
-    if systemctl status dhcpcd | grep "inactive" >/dev/null 2>&1; then
-        # sudo pacman -S --needed
+set -e
 
-        sudo systemctl enable dhcpcd --now
+service=dhcpcd
+pkg_=dhcpcd     # conflict with pi-hole-ftl
+            disable_=(
+systemd-resolved
+iptables
+avahi-daemon
+avahi-daemon.socket
+dnsmasq
+    )
 
-        sudo systemctl disable dnsmasq --now
-        sudo systemctl disable systemd-resolved --now
 
-        sudo systemctl disable iptables --now
+
+    debug=off
+
+if   [[ $debug == "on" ]]; then
+        for pkg in  "${pkg_[@]}";do
+echo "Todo: $pkg"
+done
+else
+
+
+
+    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        sudo pacman -Sy
     fi
-    sudo dhcpcd -k
+        for pkg in "${pkg_[@]}";do
+sudo pacman -Su "$pkg"
+done
+
+
+        fi
+
+
+for disable in "${disable_[@]}" ; do
+if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+        sudo systemctl disable "$disable"  --now
+        fi
+done
+
+    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable "$service" --now
+        # set -e
+
+    for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+echo " 100 =-"
+
+    cat /etc/resolv.conf
+    fi
+fi
 }
 
 soft_reboot() {
