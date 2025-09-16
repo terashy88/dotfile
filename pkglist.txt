@@ -242,7 +242,6 @@ meson
 mingw-w64-gcc
 mixxx
 mkinitcpio-openswap
-monero
 motion
 mtpfs
 musescore

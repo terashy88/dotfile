@@ -112,9 +112,9 @@ echo " 100 =-"
 safety-up() {
 
     pkg=(
-        # portmaster
+        portmaster
         fail2ban
-        # i2pd #! problem with snyk
+        i2pd #! problem with snyk
         pihole-FTL
         # ufw
     )
@@ -1313,7 +1313,7 @@ alias myip="      sh -c 'curl http:/ipecho.net/plain; echo'"
 alias whatismyip=myip
 
 NetworkManager_UP() {
-    # NetworkManager
+    # NetworkManager "Default"
     # https://wiki.archlinux.org/title/NetworkManager
 
 pkg_=(
@@ -1327,6 +1327,10 @@ iptables
 avahi-daemon
 avahi-daemon.socket
 systemd-resolved
+    )
+    cleanup_=(
+        # dnsmasq
+        # dhcpcd
     )
 
 if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
@@ -1345,6 +1349,11 @@ for disable in "${disable_[@]}" ; do
 if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
         sudo systemctl disable "$disable"  --now
         fi
+done
+
+
+for cleanup in "${cleanup_[@]}";do
+sudo pacman -Rc "$cleanup"
 done
 
     if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
@@ -1367,7 +1376,9 @@ resolved_UP() {
     # https://wiki.archlinux.org/title/Systemd-resolved
     # /etc/systemd/resolved.conf
 
-pkg_=systemd    # base
+pkg_=(
+    systemd    # base
+)
          service="systemd-resolved"
     disable_=(
 dhcpcd
@@ -1375,6 +1386,7 @@ dnsmasq
 iptables
 avahi-daemon
 avahi-daemon.socket
+
     )
 
     debug=off
@@ -1384,19 +1396,18 @@ if   [[ $debug == "on" ]]; then
 echo "Todo: $pkg"
 done
 else
-
-
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
         sudo pacman -Sy
     fi
         for pkg in "${pkg_[@]}";do
+
+    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+
 sudo pacman -Su "$pkg"
+        fi
 done
 
 
-        fi
 
 
 for disable in "${disable_[@]}" ; do
@@ -1409,12 +1420,17 @@ done
         sudo systemctl enable "$service" --now
         # set -e
 
+
+
     for ((i = 1; i <= 22; i++)); do
             echo -n "::"
             sleep 0.06
 
         done
 echo " 100 =-"
+
+    cat /etc/resolv.conf
+    else
 
     cat /etc/resolv.conf
     fi
@@ -1426,7 +1442,9 @@ dnsmasq_UP() {
 # set -e
 
 service=dnsmasq
-pkg_=$service     # conflict with pi-hole-ftl
+pkg_=(
+    "$service"     # conflict with pi-hole-ftl
+)
 conflict=pi-hole-core
 piholeFTL_service=pihole-FTL
             disable_=(
@@ -1447,7 +1465,7 @@ else
 
 
 
-    if ! pacman -Qq |grep "$pkg" >/dev/null 2>&1; then
+    if ! pacman -Qq  "$pkg" >/dev/null 2>&1; then
             if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
         sudo pacman -Sy
     fi
@@ -1484,6 +1502,7 @@ echo " 100 =-"
      dnsmasq --test
      else
      cat /etc/resolv.conf
+     echo ""
      dnsmasq --test
     fi
 fi
@@ -1491,11 +1510,13 @@ fi
 dhcpcd_UP() {
     # https://wiki.archlinux.org/title/Dhcpcd
     # /etc/dhcpcd.conf
-
- set +e
+# todo
+#  set +e
 
 service=dhcpcd
-pkg_=dhcpcd     # conflict with pi-hole-ftl
+pkg_=(
+    dhcpcd     # conflict with pi-hole-ftl
+)
 conflict=pi-hole-core
 
             disable_=(
@@ -1508,7 +1529,7 @@ dnsmasq
 
 
 
-    debug=off
+    debug=on
 
 if   [[ $debug == "on" ]]; then
         for pkg in  "${pkg_[@]}";do
@@ -1516,20 +1537,22 @@ echo "Todo: $pkg"
 done
 else
 
-
-
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
         sudo pacman -Sy
     fi
+
+
     if  pacman -Qq "$conflict" >/dev/null 2>&1; then
     sudo pacman -Rc "$conflict"
     fi
+
         for pkg in "${pkg_[@]}";do
+    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
 sudo pacman -Su "$pkg"
+fi
 done
 
-        fi
+
 #  set -e
 
 
@@ -1548,14 +1571,15 @@ done
         sudo systemctl enable "$service" --now
         # set -e
 
+         sudo dhcpcd -k
+sudo dhcpcd
+
     for ((i = 1; i <= 22; i++)); do
             echo -n "::"
             sleep 0.06
 
         done
 
-        sudo dhcpcd -k
-sudo dhcpcd
 echo " 100 =-"
 
     cat /etc/resolv.conf
@@ -1618,7 +1642,7 @@ dkms_status()
     dkms status
 }
 
-alias network_bettercap_monitoring='sudo bettercap' # network-monitoring     live-scan spoofing
+alias network_bettercap_monitoring='sudo bettercap' # network-monitoring     live-scan spoofing      resolvectl monitor
 alias sniffglue="sudo sniffglue"                    # Network sniffer
 # alias ufw-iptables='sudo iptables -L'
 alias whowatch='whowatch'                                                                       # Displays information about the users currently logged on to the machine in real
