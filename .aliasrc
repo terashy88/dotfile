@@ -191,7 +191,7 @@ iinstall__() {
 
     # Install packages
     package_=(
-        ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop scrcpy obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic geeqie droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+        ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
 
 
      )
@@ -1037,8 +1037,7 @@ steam_clean() {
 # bindkey -s '§' "xdotool_ "
 
 crossover_up()
-{
-# --
+{ # --
     # https://wiki.archlinux.org/title/CrossOver
     # https://www.codeweavers.com/
     echo "--"
@@ -1641,10 +1640,7 @@ alias journalctl-log='   sudo journalctl -r |more'
 alias whois='whois' # whois input-ip 127.0.0.1
 # alias kernel_info='lsmod'
 alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # MSDOS tracert google.ch
-dkms_status()
-{
-    dkms status
-}
+
 
 alias network_bettercap_monitoring='sudo bettercap' # network-monitoring     live-scan spoofing      resolvectl monitor
 alias sniffglue="sudo sniffglue"                    # Network sniffer
@@ -2010,8 +2006,7 @@ gg() {
 # Convert
 alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 
-# cam-info
-alias cam-info=' v4l2-ctl --list-devices'
+
 
 yt() {
 # Downloads    youtube-dl, clipgrab
@@ -3674,9 +3669,22 @@ docker_up() {
         fi
     done
 
-modprobe v4l2loopback
+sudo modprobe v4l2loopback
 v4l2-ctl --list-devices
  }
+
+ dkms_status()
+{
+    # v4l2 /
+    dkms status
+}
+dkms_rebuild()
+{
+    sudo  dkms autoinstall
+}
+
+# cam-info
+alias cam-info=' v4l2-ctl --list-devices'
 
 samba-up() {
     # samba setup

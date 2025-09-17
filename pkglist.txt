@@ -90,6 +90,7 @@ folder-color-switcher
 frameworkintegration5
 freeplane
 galculator
+gamescope
 gammastep
 gcolor3
 gdu
@@ -212,10 +213,9 @@ libvpx1.3
 lightdm-settings
 linssid
 linux612-broadcom-wl
+linux-steam-integration
 linux-wifi-hotspot
 lua52
-lutris
-manjaro-application-utility
 manjaro-bluetooth
 manjaro-browser-settings
 manjaro-gstreamer
@@ -281,6 +281,7 @@ ollama-cuda
 openjdk-src
 otpclient
 owncloud-client
+pamac-gtk
 papirus-folders
 paru-bin
 pass-otp
