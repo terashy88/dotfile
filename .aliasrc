@@ -61,6 +61,7 @@ fetch_
 portmaster_restart() {
     # https://wiki.safing.io/en/Portmaster/App/DNSConfiguration
     # https://quad9.net/support/faq/
+    # http://127.0.0.1:817/api/v1/compat/self-check
     #! -- https://docs.safing.io/portmaster/install/linux
 
 pkg_=(
@@ -114,7 +115,7 @@ safety-up() {
     pkg=(
         portmaster
         fail2ban
-        i2pd #! problem with snyk
+        # i2pd #! problem with snyk
         pihole-FTL
         # ufw
     )
@@ -536,7 +537,7 @@ pkglist_restore() {
     $helper -Syu
 
     #  early packages:
-    earlyPKG_=(fakeroot pfetch portmaster-stub otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden)
+    earlyPKG_=(fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden)
 
     for i in "${earlyPKG_[@]}"; do
         if ! $helper -S --needed "$i"; then
@@ -1299,6 +1300,8 @@ dnsleaktest_() {
 
      resolvectl query go.dnscheck.tools
      resolvectl status
+    cat /etc/resolv.conf
+
 }
 # dig google.de
 
@@ -1602,7 +1605,7 @@ journalctl-live_() {
         #"UFW BLOCK"
         #"blob"
         button/ # Arrow keys
-        portmaster-start
+        # portmaster
     )
 
     echo "Live Journalctl-log.."
