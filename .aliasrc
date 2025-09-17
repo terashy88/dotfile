@@ -1346,8 +1346,12 @@ done
 
 
 for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
+if pacman -Qq|grep "$disable" >/dev/null 2>&1;then
+if  systemctl status "$disable" | grep -q "running" ; then
+         sudo systemctl disable "$disable"  --now
+         else
+         echo ""
+        fi
         fi
 done
 

@@ -207,6 +207,7 @@ libtg_owt
 libtiff4
 libuninameslist
 libvirt-dbus
+libvncserver
 libvpx1.3
 lightdm-settings
 linssid
@@ -329,11 +330,9 @@ qt5-networkauth
 qt6ct
 rclone-browser
 rebuild-detector
-remmina
 rmlint-shredder-git
 sayonara-player
 scratch
-scrcpy
 screenfetch
 sdl2_ttf
 shotcut
