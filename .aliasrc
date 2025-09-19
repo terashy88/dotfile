@@ -115,9 +115,9 @@ safety-up() {
     pkg=(
         portmaster
         fail2ban
-        # i2pd #! problem with snyk
+         i2pd #! problem with snyk
         pihole-FTL
-        # ufw
+         ufw
     )
 
     for pkg_ in "${pkg[@]}"; do
@@ -127,7 +127,7 @@ safety-up() {
 
 service_=(
     iptables
-# ufw
+#  ufw
 systemd-resolved
 )
                 # portmaster and iptables are in conflict
@@ -154,7 +154,7 @@ safety_down() {
 service_=(
     # iptables
 ufw
-systemd-resolved
+# systemd-resolved
 )
 
     # portmaster and iptables are in conflict
@@ -164,6 +164,7 @@ systemd-resolved
         fi
     done
 
+NetworkManager_restart
 }
 
 fail2ban_status() {
@@ -177,7 +178,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -609,6 +610,7 @@ alias fwupd_list="fwupdmgr get-devices"
 
 cclean() {
     # System clean / maintain
+    # https://wiki.manjaro.org/index.php/System_Maintenance
 
     # Package Manager clean
     sudo pacman -Sc --noconfirm
@@ -912,7 +914,7 @@ wine-config() {
     protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
     )
 
-    set -e
+    set +e
 
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
@@ -939,6 +941,7 @@ wine-config() {
     env WINEPREFIX="$path_" wineboot
     fi
 
+    set -e
     # echo "prefix set.. " # deprecate
     # echo ""
     # export WINEARCH=win64
@@ -1226,7 +1229,7 @@ grub-update() {
     # sudo grub-install --recheck && sudo update-grub
     sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro --recheck --verbose
     sudo mkinitcpio -P
-    sudo update-grub && sudo tree /boot/efi
+    sudo update-grub && sudo tree -s /boot/efi
 }
 
 alias rechner-bc='calculator-bc'
@@ -1699,7 +1702,7 @@ i2pd_UP() {
 
         if systemctl status "$pkg" | grep "running" >/dev/null 2>&1; then
         exo-open http://127.0.0.1:7070/ &
-    i2pd
+    sh -c "i2pd" &
     fi
 }
 wireguard_UP() {
@@ -1785,7 +1788,7 @@ if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
                         echo "" | sudo tee -a /etc/hosts
                         echo "adding to hosts File:"
                         echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" | sudo tee -a /etc/hosts
-                        echo 'ip.address.of.pihole   pi.hole $HOST' | sudo tee -a /etc/hosts
+                        echo "ip.address.of.pihole   pi.hole $HOST" | sudo tee -a /etc/hosts
                       fi
                 }
                 hostsFile
@@ -2212,7 +2215,7 @@ testOFF=(
 ~/.config/wireplumber/wireplumber.conf.d/alsa-config.conf # fix sound stuttering while pavucontrol is open
 
 ~/.config/wireplumber/wireplumber.conf.d/update-rate-and-format.conf
-# ~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
+~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
 # ~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf
 # ~/.config/wireplumber/wireplumber.conf.d/device-rename.conf
 # ~/.config/wireplumber/wireplumber.conf.d/disable-logind.conf
