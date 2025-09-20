@@ -11,7 +11,6 @@ fetch_() {
         # if ping -c 1 google.com -q >/dev/null 2>&1; then
         if ip link show | grep 'state UP' >/dev/null 2>&1; then
 
-
             # get helper
             if command -v paru >/dev/null 2>&1; then
                 helper=paru
@@ -29,32 +28,28 @@ fetch_() {
             fi
         else
             echo "-= [ offline ] =-"
-           fi
+        fi
     }
     helper_
 
     alias zz="yy" # US Keyboard
-    alias yy="$helper"
+    alias yy='$helper'
 
     # get fetch
     # if ping -c 1 google.com -q >/dev/null 2>&1; then
 
-        if  pacman -Q $fetch >/dev/null 2>&1; then
-                $fetch
-        else
-            echo "$fetch is not installed"
-          fi
+    if pacman -Q $fetch >/dev/null 2>&1; then
+        $fetch
+    else
+        echo "$fetch is not installed"
+    fi
     # fi
 }
 fetch_
 
 ############ Todo Workaround ################
 
-
-
 #############################################
-
-
 
 # restart sshd
 
@@ -64,22 +59,19 @@ portmaster_restart() {
     # http://127.0.0.1:817/api/v1/compat/self-check
     #! -- https://docs.safing.io/portmaster/install/linux
 
-pkg_=(
-    portmaster
-)
+    pkg_=(
+        portmaster
+    )
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
         fi
     done
-
-
 
     echo "restarting Portmaster.."
     sudo systemctl restart portmaster
@@ -91,21 +83,20 @@ pkg_=(
     # Debug info
     # curl http://127.0.0.1:817/api/v1/debug/core
 }
-portmaster-log()
-{
-    sudo journalctl -r -u portmaster |more
+portmaster-log() {
+    sudo journalctl -r -u portmaster | more
 }
 
-NetworkManager_restart(){
+NetworkManager_restart() {
     echo "restart NetworkManager.."
-     sudo systemctl restart NetworkManager
+    sudo systemctl restart NetworkManager
 
-     for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
+    for ((i = 1; i <= 22; i++)); do
+        echo -n "::"
+        sleep 0.06
 
-        done
-echo " 100 =-"
+    done
+    echo " 100 =-"
 
     cat /etc/resolv.conf
 }
@@ -115,27 +106,26 @@ safety-up() {
     pkg=(
         portmaster
         fail2ban
-         i2pd #! problem with snyk
+        i2pd #! problem with snyk
         pihole-FTL
-         ufw
+        ufw
     )
 
     for pkg_ in "${pkg[@]}"; do
         sudo systemctl enable --now "$pkg_"
     done
 
-
-service_=(
-    iptables
-#  ufw
-systemd-resolved
-)
-                # portmaster and iptables are in conflict
+    service_=(
+        iptables
+        #  ufw
+        systemd-resolved
+    )
+    # portmaster and iptables are in conflict
     for service in "${service_[@]}"; do
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl disable --now "$service"
         fi
-        done
+    done
 }
 safety_down() {
 
@@ -145,17 +135,17 @@ safety_down() {
         fail2ban
         i2pd
         # ufw
-     )
+    )
 
     for pkg_ in "${pkg[@]}"; do
         sudo systemctl disable --now "$pkg_"
     done
 
-service_=(
-    # iptables
-ufw
-# systemd-resolved
-)
+    service_=(
+        # iptables
+        ufw
+        # systemd-resolved
+    )
 
     # portmaster and iptables are in conflict
     for service in "${service_[@]}"; do
@@ -164,21 +154,21 @@ ufw
         fi
     done
 
-NetworkManager_restart
+    NetworkManager_restart
 }
 
 fail2ban_status() {
     # https://wiki.archlinux.org/title/Fail2ban
     # /etc/fail2ban/jail.local
 
-     sudo fail2ban-client status
+    sudo fail2ban-client status
 }
 
 iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -195,8 +185,7 @@ iinstall__() {
     package_=(
         ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
 
-
-     )
+    )
     # Array of programs to be uninstall
     del_=(
         wallpapers-2018
@@ -208,11 +197,11 @@ iinstall__() {
         plasma-workspace-wallpapers
     )
 
-if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Syu
     fi
 
-    if [[ -n "${package_[*]}" ]]; then
+    if [[ -n ${package_[*]} ]]; then
         # Check if any program needs to be uninstalled
         for package__ in "${package_[@]}"; do
             paru -S --needed "$package__"
@@ -221,7 +210,7 @@ if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
         echo "  nothing to install"
     fi
 
-    if [[ -n "${del_[*]}" ]]; then
+    if [[ -n ${del_[*]} ]]; then
         # Check if any program needs to be uninstalled
         for program in "${del_[@]}"; do
             sudo pacman -Rc "$program"
@@ -248,8 +237,6 @@ nvidiaInstall() {
     else
         sudo pacman -Sy
 
-
-
         Install packages
         package_=(
             libnvidia-container
@@ -265,11 +252,11 @@ nvidiaInstall() {
             lib32-nvidia-utils
             lib32-opencl-nvidia
 
-             mhwd-nvidia
+            mhwd-nvidia
         )
         # pkgIgnore=("video-nvidia" )
 
-        if [[ -n "${package_[*]}" ]]; then
+        if [[ -n ${package_[*]} ]]; then
             # Check if any program needs to be uninstalled
             for package__ in "${package_[@]}"; do
                 paru -S --needed "$package__"
@@ -286,7 +273,7 @@ lightdmInstallslicker_() {
         lightdm
         lightdm-settings
         lightdm-slick-greeter
-        )
+    )
 
     if pacman -Qq lightdm-slick-greeter >/dev/null 2>&1; then
         # todo
@@ -302,7 +289,7 @@ lightdmInstallslicker_() {
         sudo pacman -Syu --needed "${package_[@]}"
     fi
 
-    if [[ -n "${package_[*]}" ]]; then
+    if [[ -n ${package_[*]} ]]; then
         # Check if any program needs to be uninstalled
         for package__ in "${package_[@]}"; do
             paru -S --needed "$package__"
@@ -329,7 +316,7 @@ rrestoreBackup() {
     fi
 
     # Confirm deletion of the backup file
-    if [[ -e "$del" ]]; then
+    if [[ -e $del ]]; then
 
         echo "Are you sure you want to Delete: $del ?"
         printf "    y = yes \n  or \n   n = no? "
@@ -341,27 +328,27 @@ rrestoreBackup() {
             clear
             sleep 0.4
             case $r in
-            Y | y)
-                rm "$del" && echo "Deleted: $del" || exit 1
-                exit 0
-                ;;
-            n | N)
-                echo ""
-                echo "$del will not be deleted."
-                exit 1
-                ;;
-            *)
-                if [[ $r == "" ]]; then
-                    echo "there was no input..."
-                else
+                Y | y)
+                    rm "$del" && echo "Deleted: $del" || exit 1
+                    exit 0
+                    ;;
+                n | N)
                     echo ""
-                    echo "The input $r was not correct"
-                    sleep 0.3
-                    echo " To delete $del please press:"
-                    sleep 0.3
-                    printf "    [ y ] = yes or [ n ] = no...\n"
-                fi
-                ;;
+                    echo "$del will not be deleted."
+                    exit 1
+                    ;;
+                *)
+                    if [[ $r == "" ]]; then
+                        echo "there was no input..."
+                    else
+                        echo ""
+                        echo "The input $r was not correct"
+                        sleep 0.3
+                        echo " To delete $del please press:"
+                        sleep 0.3
+                        printf "    [ y ] = yes or [ n ] = no...\n"
+                    fi
+                    ;;
             esac
         done
     fi
@@ -404,68 +391,63 @@ tmux_() {
     pkg_=tmux
     limit=44
 
-if hash tmux  >/dev/null 2>&1;then
-    if tmux has-session -t $profile >/dev/null 2>&1; then
-        if [[ $TMUX == "" ]]; then
-            # tmux
-            tmux new-session
-            return
+    if hash tmux >/dev/null 2>&1; then
+        if tmux has-session -t $profile >/dev/null 2>&1; then
+            if [[ $TMUX == "" ]]; then
+                # tmux
+                tmux new-session
+                return
+            fi
+        else
+            if ! tmux has-session -t $profile >/dev/null 2>&1; then
+
+                tmux new-session -s "$profile"
+            fi
+        fi
+
+        # Limit Max Session
+        while [ "$(tmux list-sessions | wc -l)" -gt $limit ]; do
+            oldest_session=$(tmux list-sessions -F "#{session_id},#{session_activity}" | sort -t',' -k2 | head -n 1 | cut -d ',' -f 1)
+            tmux kill-session -t "$oldest_session"
+            echo "Oldest session was closed"
+        done
+
+        # tmux
+        if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+            tmux source-file ~/.config/tmux/tmux.conf
         fi
     else
-        if ! tmux has-session -t $profile >/dev/null 2>&1; then
-
-            tmux new-session -s "$profile"
-        fi
+        tmux() {
+            # get tmux
+            if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+                sudo pacman --noconfirm -Syu "$pkg_" || echo "error getting $pkg_"
+            fi
+        }
     fi
-
-    # Limit Max Session
-    while [ "$(tmux list-sessions | wc -l)" -gt $limit ]; do
-        oldest_session=$(tmux list-sessions -F "#{session_id},#{session_activity}" | sort -t',' -k2 | head -n 1 | cut -d ',' -f 1)
-        tmux kill-session -t "$oldest_session"
-        echo "Oldest session was closed"
-    done
-
-
-
-    # tmux
-    if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-        tmux source-file ~/.config/tmux/tmux.conf
-    fi
-else
-tmux()
-{
-    # get tmux
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-        sudo pacman --noconfirm -Syu "$pkg_" || echo "error getting $pkg_"
-    fi
-}
-fi
 }
 tmux_
 
+set_ZSH_() {
+    chsh_="/bin/zsh"
 
-set_ZSH_()
-{
-chsh_="/bin/zsh"
-
-if  command -v zsh >/dev/null 2>&1;then
-if [ "$(grep "$USER" /etc/passwd | awk -F: '{print $NF}' | grep -c "$chsh_")" = "0" ]; then
-echo 2
-echo "changing Shell to: $chsh_"
-chsh -s  "$chsh_" "$USER"
-fi
-fi
+    if command -v zsh >/dev/null 2>&1; then
+        if [ "$(grep "$USER" /etc/passwd | awk -F: '{print $NF}' | grep -c "$chsh_")" = "0" ]; then
+            echo 2
+            echo "changing Shell to: $chsh_"
+            chsh -s "$chsh_" "$USER"
+        fi
+    fi
 }
- set_ZSH_
+set_ZSH_
 
 set_path() {
     # Check if user id is 1000 or higher
     id_=$(id -u) || true
-    [[ "${id_}" -ge 1000 ]] || return
+    [[ ${id_} -ge 1000 ]] || return
 
     for i in "$@"; do
         # Check if the directory exists
-        [[ -d "${i}" ]] || continue
+        [[ -d ${i} ]] || continue
 
         # Check if it is not already in your $PATH.
         echo "${PATH}" | grep -Eq "(^|:)${i}(:|$)" && continue
@@ -578,7 +560,7 @@ brave_unlock() {
 
         read -r r
 
-        if [[ "$r" =~ ^[Yy]$ ]] || [[ "$r" == "" ]]; then
+        if [[ $r =~ ^[Yy]$ ]] || [[ $r == "" ]]; then
             echo 1
         else
             echo "removing SingletonLock cancelled"
@@ -700,7 +682,6 @@ delete_packages_() {
         drkonqi
         pragha
 
-
     )
 
     # Loop through the packages and remove them
@@ -768,14 +749,12 @@ checkrebuild_() {
     echo ""
     echo "Rebuild Python $ver..."
 
-
     for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
+        echo -n "::"
+        sleep 0.06
 
-        done
-echo " 100 =-"
-
+    done
+    echo " 100 =-"
 
     # pamac build $(pacman -Qoq /usr/lib/python$ver) --no-confirm
     $helper -Syu "$(pacman -Qoq /usr/lib/python$ver)"
@@ -785,9 +764,6 @@ echo " 100 =-"
 
     python --version
 }
-
-
-
 
 java_status_() {
     # Java
@@ -820,7 +796,7 @@ move_to_trash_() {
         mkdir -p ~/.local/share/Trash/files/
     fi
     for arg in "$@"; do
-        if [[ -e "${arg}" ]]; then # check for existence of file or directory
+        if [[ -e ${arg} ]]; then # check for existence of file or directory
             # get the base filename without extension
             filename=$(basename -- "${arg}")
             extension="${filename##*.}"
@@ -847,7 +823,7 @@ rm() {
         stty -echo
         read -r r
         echo
-        if [[ "$r" =~ ^[Yy]$ ]] || [[ "$r" == "" ]]; then
+        if [[ $r =~ ^[Yy]$ ]] || [[ $r == "" ]]; then
             sudo /bin/rm -vr "$@"
         else
             echo "Deletion cancelled"
@@ -860,7 +836,7 @@ rm() {
 orphans() {
     # sudo pacman -Sy
     orphans_="$(sudo pacman -Qtd)"
-    if [[ -n "${orphans_}" ]]; then
+    if [[ -n ${orphans_} ]]; then
         sudo pacman -Qqtd | sudo pacman -Rns - || true
     else
         sudo pacman -Qtdv
@@ -884,61 +860,57 @@ wine-config() {
     # winetricks option
     winetricks_=(
         # DLL
-    d3dx9 d3dcompiler_43 d3dcompiler_47 corefonts vcrun2017 cjkfonts  vcrun2005 dotnet48 xinput xact dxvk d3dx11_43 d3dx11_42 vcrun2008 vcrun2010
-    dxvk_nvapi
-    vkd3d
-    # fonts
-    allfonts
-     )
+        d3dx9 d3dcompiler_43 d3dcompiler_47 corefonts vcrun2017 cjkfonts vcrun2005 dotnet48 xinput xact dxvk d3dx11_43 d3dx11_42 vcrun2008 vcrun2010
+        dxvk_nvapi
+        vkd3d
+        # fonts
+        allfonts
+    )
 
     pkg_=(
-    # wine version
-    wine
-    # wine-staging
+        # wine version
+        wine
+        # wine-staging
 
-    # steam
-    steam
-    linux-steam-integration
+        # steam
+        steam
+        linux-steam-integration
 
-    gamescope
+        gamescope
 
-    wine-gecko
-    wine-nine
-    winetricks
+        wine-gecko
+        wine-nine
+        winetricks
 
+        lib32-gst-plugins-base
+        lib32-gst-plugins-good
+        lib32-pcsclite
 
-    lib32-gst-plugins-base
-    lib32-gst-plugins-good
-    lib32-pcsclite
-
-    protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
+        protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
     )
 
     set +e
 
-
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
         fi
     done
 
-
-    if pgrep -x "wineserver" > /dev/null; then
+    if pgrep -x "wineserver" >/dev/null; then
         wineserver -k 15
     fi
 
-    if ! [[ -d "$path_" ]];then
-        mkdir "$path_"|| echo "mkdir $path_ error.."&& exit 1
+    if ! [[ -d $path_ ]]; then
+        mkdir "$path_" || echo "mkdir $path_ error.." && exit 1
     fi
 
-    if  [[ -d "$path_" ]];then
-    env WINEPREFIX="$path_" wineboot
+    if [[ -d $path_ ]]; then
+        env WINEPREFIX="$path_" wineboot
     fi
 
     set -e
@@ -956,8 +928,8 @@ wine-config() {
     echo ""
     echo "starting winetricks -q.."
 
-    for option in "${winetricks_[@]}";do
-    winetricks -q "$option"
+    for option in "${winetricks_[@]}"; do
+        winetricks -q "$option"
     done
 
     # sh -c 'sudo chown -Rv "${USER}":"${USER}" "$pkg"'
@@ -971,8 +943,6 @@ wine-config() {
     # FSync
     # export WINEFSYNC=1
 
-
-
     wine --version
 
     sh -c 'winetricks &'
@@ -980,11 +950,9 @@ wine-config() {
     echo ""
     echo done..
 
-
-
     # missing pkg
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
             echo "$pkg does not exist!.."
         fi
     done
@@ -1000,7 +968,7 @@ wine_clean() {
 
     path_="$HOME"/.wine
 
-    if pgrep -x "wineserver" > /dev/null; then
+    if pgrep -x "wineserver" >/dev/null; then
         wineserver -k 15
     fi
 
@@ -1040,24 +1008,21 @@ steam_clean() {
 # alias §="xdotool - < .local/bin/magickeys.sh "
 # bindkey -s '§' "xdotool_ "
 
-crossover_up()
-{ # --
+crossover_up() { # --
     # https://wiki.archlinux.org/title/CrossOver
     # https://www.codeweavers.com/
     echo "--"
 }
-game_tweak()
-{
+game_tweak() {
     # https://wiki.archlinux.org/title/Gaming#Getting_games
     echo ""
 }
-crossover_down()
-{
+crossover_down() {
 
-if ! pacman -Qq crossover >/dev/null 2>&1;then
-    if [[ -e ~/.cxoffice ]];then
-        sudo find  ~/.cxoffice -delete -print
-    fi
+    if ! pacman -Qq crossover >/dev/null 2>&1; then
+        if [[ -e ~/.cxoffice ]]; then
+            sudo find ~/.cxoffice -delete -print
+        fi
     fi
 }
 crossover_down
@@ -1109,7 +1074,6 @@ alias cp='cp -vi ' # Confirm before overwriting something
 alias more='less --use-color'
 alias mv='mv -iv '
 
-
 pacman-update() {
     # Systemupdate
     os=$(cat /etc/arch-release)
@@ -1130,12 +1094,12 @@ pacman-update() {
     else
         echo -n "Unknown OS"
 
-    for ((i = 1; i <= 22; i++)); do
+        for ((i = 1; i <= 22; i++)); do
             echo -n "::"
             sleep 0.06
 
         done
-echo " 100 =-"
+        echo " 100 =-"
 
         echo "Cancel update"
     fi
@@ -1149,7 +1113,6 @@ manjaro-testing() {
     sudo pacman-mirrors --api --set-branch testing
     pamacclean
 }
-
 
 pamacclean() {
 
@@ -1170,8 +1133,6 @@ pamacclean() {
         sudo pacman-mirrors -a -P https --fasttrack 33 &&
         sudo pacman -Syyu --disable-download-timeout
 }
-
-
 
 # pacman-fix-permissions_() {
 # ! deprecate
@@ -1253,8 +1214,7 @@ trafficTracker() {
 }
 # https://wiki.archlinux.org/title/Systemd
 # Realtime Journal-log
-wifi_nearby()
-{
+wifi_nearby() {
     # https://wiki.archlinux.org/title/NetworkManager#DNS_management
     nmcli device wifi list
     nmcli connection show
@@ -1301,8 +1261,8 @@ dnsleaktest_() {
     drill @127.0.0.1 archlinux.org
     drill archlinux.org | grep "Query time"
 
-     resolvectl query go.dnscheck.tools
-     resolvectl status
+    resolvectl query go.dnscheck.tools
+    resolvectl status
     cat /etc/resolv.conf
 
 }
@@ -1321,285 +1281,266 @@ NetworkManager_UP() {
     # NetworkManager "Default"
     # https://wiki.archlinux.org/title/NetworkManager
 
-pkg_=(
-    networkmanager
-)
+    pkg_=(
+        networkmanager
+    )
     service="NetworkManager"
     disable_=(
-dhcpcd
-dnsmasq
-iptables
-avahi-daemon
-avahi-daemon.socket
-systemd-resolved
+        dhcpcd
+        dnsmasq
+        iptables
+        avahi-daemon
+        avahi-daemon.socket
+        systemd-resolved
     )
     cleanup_=(
         # dnsmasq
         # dhcpcd
     )
 
-if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
-        for pkg in "${pkg_[@]}";do
+    for pkg in "${pkg_[@]}"; do
 
-    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-sudo pacman -Su "$pkg"
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg"
         fi
-done
+    done
 
-
-
-for disable in "${disable_[@]}" ; do
-if pacman -Qq|grep "$disable" >/dev/null 2>&1;then
-if  systemctl status "$disable" | grep -q "running" ; then
-         sudo systemctl disable "$disable"  --now
-         else
-         echo ""
+    for disable in "${disable_[@]}"; do
+        if pacman -Qq | grep "$disable" >/dev/null 2>&1; then
+            if systemctl status "$disable" | grep -q "running"; then
+                sudo systemctl disable "$disable" --now
+            else
+                echo ""
+            fi
         fi
-        fi
-done
+    done
 
-
-for cleanup in "${cleanup_[@]}";do
-sudo pacman -Rc "$cleanup"
-done
+    for cleanup in "${cleanup_[@]}"; do
+        sudo pacman -Rc "$cleanup"
+    done
 
     if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
         sudo systemctl enable "$service" --now
         # set -e
 
-    for ((i = 1; i <= 22; i++)); do
+        for ((i = 1; i <= 22; i++)); do
             echo -n "::"
             sleep 0.06
 
         done
-echo " 100 =-"
+        echo " 100 =-"
 
-    cat /etc/resolv.conf
+        cat /etc/resolv.conf
     else
-    cat /etc/resolv.conf
+        cat /etc/resolv.conf
     fi
 }
 resolved_UP() {
     # https://wiki.archlinux.org/title/Systemd-resolved
     # /etc/systemd/resolved.conf
 
-pkg_=(
-    systemd    # base
-)
-         service="systemd-resolved"
+    pkg_=(
+        systemd # base
+    )
+    service="systemd-resolved"
     disable_=(
-dhcpcd
-dnsmasq
-iptables
-avahi-daemon
-avahi-daemon.socket
+        dhcpcd
+        dnsmasq
+        iptables
+        avahi-daemon
+        avahi-daemon.socket
 
     )
 
     debug=off
 
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        for pkg in "${pkg_[@]}";do
-
-    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-
-sudo pacman -Su "$pkg"
-        fi
-done
-
-
-
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
+    if [[ $debug == "on" ]]; then
+        for pkg in "${pkg_[@]}"; do
+            echo "Todo: $pkg"
         done
-echo " 100 =-"
-
-    cat /etc/resolv.conf
     else
+        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+            sudo pacman -Sy
+        fi
+        for pkg in "${pkg_[@]}"; do
 
-    cat /etc/resolv.conf
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+
+                sudo pacman -Su "$pkg"
+            fi
+        done
+
+        for disable in "${disable_[@]}"; do
+            if systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+                sudo systemctl disable "$disable" --now
+            fi
+        done
+
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable "$service" --now
+            # set -e
+
+            for ((i = 1; i <= 22; i++)); do
+                echo -n "::"
+                sleep 0.06
+
+            done
+            echo " 100 =-"
+
+            cat /etc/resolv.conf
+        else
+
+            cat /etc/resolv.conf
+        fi
     fi
-fi
 }
 dnsmasq_UP() {
     # https://wiki.archlinux.org/title/Dnsmasq
     # /etc/dnsmasq.conf
-# set -e
+    # set -e
 
-service=dnsmasq
-pkg_=(
-    "$service"     # conflict with pi-hole-ftl
-)
-conflict=pi-hole-core
-piholeFTL_service=pihole-FTL
-            disable_=(
-dhcpcd
-systemd-resolved
-iptables
-avahi-daemon
-avahi-daemon.socket
+    service=dnsmasq
+    pkg_=(
+        "$service" # conflict with pi-hole-ftl
+    )
+    conflict=pi-hole-core
+    piholeFTL_service=pihole-FTL
+    disable_=(
+        dhcpcd
+        systemd-resolved
+        iptables
+        avahi-daemon
+        avahi-daemon.socket
     )
 
     debug=off
 
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
-
-
-
-    if ! pacman -Qq  "$pkg" >/dev/null 2>&1; then
-            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-        if  pacman -Qq "$conflict" >/dev/null 2>&1; then
-        echo "conflict:"
-        sudo systemctl disable "$piholeFTL_service" --now
-    sudo pacman -Rc "$conflict"
-    fi
-        for pkg in "${pkg_[@]}";do
-sudo pacman -Su "$pkg"
-done
-        fi
-
-
-
-for disable in "${disable_[@]}" ; do
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
-        fi
-done
-
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
+    if [[ $debug == "on" ]]; then
+        for pkg in "${pkg_[@]}"; do
+            echo "Todo: $pkg"
         done
-echo " 100 =-"
+    else
 
-    cat /etc/resolv.conf
-     dnsmasq --test
-     else
-     cat /etc/resolv.conf
-     echo ""
-     dnsmasq --test
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+                sudo pacman -Sy
+            fi
+            if pacman -Qq "$conflict" >/dev/null 2>&1; then
+                echo "conflict:"
+                sudo systemctl disable "$piholeFTL_service" --now
+                sudo pacman -Rc "$conflict"
+            fi
+            for pkg in "${pkg_[@]}"; do
+                sudo pacman -Su "$pkg"
+            done
+        fi
+
+        for disable in "${disable_[@]}"; do
+            if systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+                sudo systemctl disable "$disable" --now
+            fi
+        done
+
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable "$service" --now
+            # set -e
+
+            for ((i = 1; i <= 22; i++)); do
+                echo -n "::"
+                sleep 0.06
+
+            done
+            echo " 100 =-"
+
+            cat /etc/resolv.conf
+            dnsmasq --test
+        else
+            cat /etc/resolv.conf
+            echo ""
+            dnsmasq --test
+        fi
     fi
-fi
 }
 dhcpcd_UP() {
     # https://wiki.archlinux.org/title/Dhcpcd
     # /etc/dhcpcd.conf
-# todo
-#  set +e
+    # todo
+    #  set +e
 
-service=dhcpcd
-pkg_=(
-    dhcpcd     # conflict with pi-hole-ftl
-)
-conflict=pi-hole-core
-
-            disable_=(
-systemd-resolved
-iptables
-avahi-daemon
-avahi-daemon.socket
-dnsmasq
+    service=dhcpcd
+    pkg_=(
+        dhcpcd # conflict with pi-hole-ftl
     )
+    conflict=pi-hole-core
 
-
+    disable_=(
+        systemd-resolved
+        iptables
+        avahi-daemon
+        avahi-daemon.socket
+        dnsmasq
+    )
 
     debug=on
 
-if   [[ $debug == "on" ]]; then
-        for pkg in  "${pkg_[@]}";do
-echo "Todo: $pkg"
-done
-else
+    if [[ $debug == "on" ]]; then
+        for pkg in "${pkg_[@]}"; do
+            echo "Todo: $pkg"
+        done
+    else
 
-        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-
-
-    if  pacman -Qq "$conflict" >/dev/null 2>&1; then
-    sudo pacman -Rc "$conflict"
-    fi
-
-        for pkg in "${pkg_[@]}";do
-    if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-sudo pacman -Su "$pkg"
-fi
-done
-
-
-#  set -e
-
-
-
-for disable in "${disable_[@]}" ; do
-if  [[ "$(systemctl status "$disable")" ]];then
-if  systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
-        sudo systemctl disable "$disable"  --now
+        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+            sudo pacman -Sy
         fi
-        else
-        echo "$disable does not exist"
+
+        if pacman -Qq "$conflict" >/dev/null 2>&1; then
+            sudo pacman -Rc "$conflict"
         fi
-done
 
-    if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable "$service" --now
-        # set -e
-
-         sudo dhcpcd -k
-sudo dhcpcd
-
-    for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
-
+        for pkg in "${pkg_[@]}"; do
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                sudo pacman -Su "$pkg"
+            fi
         done
 
-echo " 100 =-"
+        #  set -e
 
-    cat /etc/resolv.conf
-    else
-    cat /etc/resolv.conf
+        for disable in "${disable_[@]}"; do
+            if [[ "$(systemctl status "$disable")" ]]; then
+                if systemctl status "$disable" | grep "running" >/dev/null 2>&1; then
+                    sudo systemctl disable "$disable" --now
+                fi
+            else
+                echo "$disable does not exist"
+            fi
+        done
+
+        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable "$service" --now
+            # set -e
+
+            sudo dhcpcd -k
+            sudo dhcpcd
+
+            for ((i = 1; i <= 22; i++)); do
+                echo -n "::"
+                sleep 0.06
+
+            done
+
+            echo " 100 =-"
+
+            cat /etc/resolv.conf
+        else
+            cat /etc/resolv.conf
+
+        fi
 
     fi
-
-fi
 }
-
 
 journalctl-live_() {
     # Filtered live Journalctl-logs
@@ -1647,7 +1588,6 @@ alias whois='whois' # whois input-ip 127.0.0.1
 # alias kernel_info='lsmod'
 alias traceroute='traceroute' # traceroute input-ip    # traffic-backtrace info scan    # MSDOS tracert google.ch
 
-
 alias network_bettercap_monitoring='sudo bettercap' # network-monitoring     live-scan spoofing      resolvectl monitor
 alias sniffglue="sudo sniffglue"                    # Network sniffer
 # alias ufw-iptables='sudo iptables -L'
@@ -1685,29 +1625,28 @@ i2pd_UP() {
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-        for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
         fi
     done
 
+    if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+        sudo systemctl enable --now "$pkg"
+    fi
 
-        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg"
-        fi
-
-        if systemctl status "$pkg" | grep "running" >/dev/null 2>&1; then
+    if systemctl status "$pkg" | grep "running" >/dev/null 2>&1; then
         exo-open http://127.0.0.1:7070/ &
-    sh -c "i2pd" &
+        sh -c "i2pd" &
     fi
 }
 wireguard_UP() {
-# https://wiki.archlinux.org/title/WireGuard
-# todo
+    # https://wiki.archlinux.org/title/WireGuard
+    # todo
 
     # /etc/i2pd/i2pd.conf
     # Monitoring: http://127.0.0.1:7070/
@@ -1719,29 +1658,25 @@ wireguard_UP() {
     service=
     debug=on
 
+    for pkg in "${pkg_[@]}"; do
+        if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..."
+        else
+            set -e
 
-    for pkg in "${pkg_[@]}";do
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg..."
-    else
-        set -e
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+                sudo pacman -Sy
+            fi
 
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
+            fi
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
+            if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+                sudo systemctl enable --now "$service"
+            fi
 
-
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
         fi
-
-
-        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$service"
-        fi
-
-    fi
     done
 
 }
@@ -1756,75 +1691,71 @@ piHole_UP() {
     debug=off
     service=pihole-FTL
 
-        # set -e
+    # set -e
 
     if [[ $debug == "on" ]]; then
-            echo "Todo: $pkg..."
-        else
+        echo "Todo: $pkg..."
+    else
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Syu
-    fi
-
-
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            pamac build "$pkg"|| echo "failed to get $pkg..."
+        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+            sudo pacman -Syu
         fi
-done
 
-if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-                pamac build "$pkg"
+        for pkg in "${pkg_[@]}"; do
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                pamac build "$pkg" || echo "failed to get $pkg..."
+            fi
+        done
 
-                hostsFile() {
-                    # if ! grep -q "ip.address.of.pihole" /etc/hosts; then
-                    #     echo "" >>/etc/hosts
-                    #     echo "adding entry to hosts File:"
-                    #     echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" >>/etc/hosts
-                    #     echo 'ip.address.of.pihole   pi.hole $USER' >>/etc/hosts
-                    # fi
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            pamac build "$pkg"
 
-                    if ! grep -q "ip.address.of.pihole" /etc/hosts; then
-                        echo "" | sudo tee -a /etc/hosts
-                        echo "adding to hosts File:"
-                        echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" | sudo tee -a /etc/hosts
-                        echo "ip.address.of.pihole   pi.hole $HOST" | sudo tee -a /etc/hosts
-                      fi
-                }
-                hostsFile
-fi
+            hostsFile() {
+                # if ! grep -q "ip.address.of.pihole" /etc/hosts; then
+                #     echo "" >>/etc/hosts
+                #     echo "adding entry to hosts File:"
+                #     echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" >>/etc/hosts
+                #     echo 'ip.address.of.pihole   pi.hole $USER' >>/etc/hosts
+                # fi
+
+                if ! grep -q "ip.address.of.pihole" /etc/hosts; then
+                    echo "" | sudo tee -a /etc/hosts
+                    echo "adding to hosts File:"
+                    echo "# Pi-Hole https://wiki.archlinux.org/title/Pi-hole" | sudo tee -a /etc/hosts
+                    echo "ip.address.of.pihole   pi.hole $HOST" | sudo tee -a /etc/hosts
+                fi
+            }
+            hostsFile
+        fi
 
         if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
             sudo systemctl enable --now "$service"
 
+            for ((i = 1; i <= 22; i++)); do
+                echo -n "::"
+                sleep 0.06
 
-     for ((i = 1; i <= 22; i++)); do
-            echo -n "::"
-            sleep 0.06
+            done
+            echo " 100 =-"
 
-        done
-echo " 100 =-"
+            # update
+            sudo pihole -g
 
-        # update
-        sudo pihole -g
+            pihole status
+            cat /etc/resolv.conf
 
+        # http://127.0.0.53/admin/
+        else
+            # update
+            sudo pihole -g
 
-         pihole status
-    cat /etc/resolv.conf
+            pihole status
+            cat /etc/resolv.conf
 
-# http://127.0.0.53/admin/
-else
-        # update
-        sudo pihole -g
+        # http://127.0.0.53/admin/
 
-
-         pihole status
-cat /etc/resolv.conf
-
-# http://127.0.0.53/admin/
-
-fi
-fi
+        fi
+    fi
 
 }
 piHole_DOWN() {
@@ -1832,7 +1763,7 @@ piHole_DOWN() {
 
     sudo systemctl disable --now "$service"
 
-     pihole status
+    pihole status
 }
 
 cloudflared_UP() {
@@ -1843,26 +1774,24 @@ cloudflared_UP() {
     )
     debug=on
 
-    for pkg in "${pkg_[@]}";do
+    for pkg in "${pkg_[@]}"; do
 
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg..."&& exit 1
-    else
-        set -e
+        if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..." && exit 1
+        else
+            set -e
 
+            if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
+                sudo pacman -Sy
+            fi
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
-        sudo pacman -Sy
-    fi
-
-
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
-        fi
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
+            fi
         fi
     done
 
-    }
+}
 opensnitch_UP() {
     # opensnitch https://github.com/evilsocket/opensnitch
 
@@ -1872,31 +1801,29 @@ opensnitch_UP() {
     debug=on
     service=opensnitchd
 
-set -e
+    set -e
 
-
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-
-    for pkg in "${pkg_[@]}";do
+    for pkg in "${pkg_[@]}"; do
         if [[ $debug == "on" ]]; then
-        echo "$pkg is not great, it does not follow my GTK-THEME and GUI Position"&& exit 1
-    else
-        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-            sudo pacman -Su "$pkg"
-        fi
-        if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$service"
-        fi
-
-        if systemctl status "$service" | grep "running" >/dev/null 2>&1; then
-            opensnitch-ui &
+            echo "$pkg is not great, it does not follow my GTK-THEME and GUI Position" && exit 1
         else
-            echo "error: $pkg"
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                sudo pacman -Su "$pkg"
+            fi
+            if systemctl status "$service" | grep "inactive" >/dev/null 2>&1; then
+                sudo systemctl enable --now "$service"
+            fi
+
+            if systemctl status "$service" | grep "running" >/dev/null 2>&1; then
+                opensnitch-ui &
+            else
+                echo "error: $pkg"
+            fi
         fi
-    fi
 
     done
 }
@@ -1910,26 +1837,24 @@ nebula_UP() {
 
     debug=on
 
-set -e
+    set -e
 
-
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
+    for pkg in "${pkg_[@]}"; do
+        if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..."
+        else
+            if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+                sudo pacman -Su "$pkg"
+            fi
 
-    for pkg in "${pkg_[@]}";do
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg..."
-    else
-        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
-            sudo pacman -Su "$pkg"
+            if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+                sudo systemctl enable --now "$pkg"
+            fi
         fi
-
-        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg"
-        fi
-    fi
     done
 }
 ProtonVPN_UP() {
@@ -1942,26 +1867,24 @@ ProtonVPN_UP() {
     )
     debug=on
 
-set -e
+    set -e
 
-
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
+    for pkg in "${pkg_[@]}"; do
+        if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..."
+        else
+            if ! pacman -Qq "$pkg"; then
+                sudo pacman -Su "$pkg"
+            fi
 
-    for pkg in "${pkg_[@]}";do
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg..."
-    else
-        if ! pacman -Qq "$pkg"; then
-            sudo pacman -Su "$pkg"
+            if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
+                sudo systemctl enable --now "$pkg"
+            fi
         fi
-
-        if systemctl status "$pkg" | grep "inactive" >/dev/null 2>&1; then
-            sudo systemctl enable --now "$pkg"
-        fi
-    fi
     done
 }
 vpn-eth_deprecate() {
@@ -1970,26 +1893,24 @@ vpn-eth_deprecate() {
     pkg_=()
     debug=on
 
-set -e
+    set -e
 
-
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Syu
     fi
 
+    for pkg in "${pkg_[@]}"; do
+        if [[ $debug == "on" ]]; then
+            echo "Todo: $pkg..."
+        else
+            if [[ -d /opt/cisco/anyconnect ]]; then
+                sh -c "sudo rm -rfv /opt/cisco/anyconnect" || return 1
+            fi
+            sh -c "sudo mkdir -pv /opt/cisco/anyconnect/" || true
+            sh -c "sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh"
 
-    for pkg in "${pkg_[@]}";do
-    if [[ $debug == "on" ]]; then
-        echo "Todo: $pkg..."
-    else
-        if [[ -d /opt/cisco/anyconnect ]]; then
-            sh -c "sudo rm -rfv /opt/cisco/anyconnect" || return 1
+            fail2ban_
         fi
-        sh -c "sudo mkdir -pv /opt/cisco/anyconnect/" || true
-        sh -c "sudo ~/ownCloud/.bin/anyconnect-linux64-4.10.02086-core-vpn-webdeploy-k9.sh"
-
-        fail2ban_
-    fi
     done
 }
 # sudo dhclient -v
@@ -2007,30 +1928,26 @@ gg() {
     $info_ "$1" | grep --color=auto "$2"
 }
 
-
-
 # Convert
 alias ffmpeg='ffmpeg -hide_banner' #'ffmpeg -i input.mp4 output.avi'  https:/ffmpeg.org/ffmpeg.html
 
-
-
 yt() {
-# Downloads    youtube-dl, clipgrab
-# https://wiki.archlinux.org/title/Yt-dlp
-# https://github.com/yt-dlp/yt-dlp
+    # Downloads    youtube-dl, clipgrab
+    # https://wiki.archlinux.org/title/Yt-dlp
+    # https://github.com/yt-dlp/yt-dlp
 
     path_="$HOME/Downloads/yt"
     pkg_=(
         yt-dlp
     )
 
-    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
         fi
     done
 
@@ -2054,14 +1971,13 @@ yta() {
         yt-dlp
     )
 
-        if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]];then
+    if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
     fi
 
-
-    for pkg in "${pkg_[@]}";do
-        if !  pacman -Qq "$pkg" >/dev/null 2>&1;then
-            sudo pacman -Su "$pkg"|| echo "failed to get $pkg..."
+    for pkg in "${pkg_[@]}"; do
+        if ! pacman -Qq "$pkg" >/dev/null 2>&1; then
+            sudo pacman -Su "$pkg" || echo "failed to get $pkg..."
         fi
     done
 
@@ -2140,9 +2056,9 @@ f() {
     fi
 
     # Permission / input check
-    if [[ ! -e "$1" ]]; then
+    if [[ ! -e $1 ]]; then
         ## help correct this logic ##
-        if [[ "$m" && "$1" ]]; then
+        if [[ $m && $1 ]]; then
             echo "$1 does not exist"
             exit 1
         else
@@ -2163,7 +2079,7 @@ f() {
                 exit 1
             else
                 $m "$1"
-             fi
+            fi
         fi
     fi
 }
@@ -2190,57 +2106,53 @@ pulseaudio_up() {
 
     )
 
-
-# disable wireplumbe
+    # disable wireplumbe
 }
 pipewire_UP() {
     # https://wiki.archlinux.org/title/JACK_Audio_Connection_Kit
     # https://wiki.archlinux.org/title/PipeWire
 
-        #! pipewire-session-manager is stuttering with Pavucontrol try pwvucontrol — Pipewire Volume Control. Alternative to pavucontrol.
+    #! pipewire-session-manager is stuttering with Pavucontrol try pwvucontrol — Pipewire Volume Control. Alternative to pavucontrol.
 
+    testOFF=(
+        # wireplumber.bak pipewire.bak
+        # test disable with ".bak"
+        #! error with pavucontrol: ~/.config/pipewire/pipewire.conf.d/alsa-dmix.conf
+        ~/.config/pipewire/pipewire.conf.d/10-default-null-sink.conf
+        ~/.config/pipewire/media-session.d/alsa-monitor.conf
 
-testOFF=(
-    # wireplumber.bak pipewire.bak
-    # test disable with ".bak"
-#! error with pavucontrol: ~/.config/pipewire/pipewire.conf.d/alsa-dmix.conf
-~/.config/pipewire/pipewire.conf.d/10-default-null-sink.conf
-~/.config/pipewire/media-session.d/alsa-monitor.conf
+        # Discord
+        ~/.config/pipewire/pipewire-pulse.conf.d/switch-on-connect.conf
 
-# Discord
-~/.config/pipewire/pipewire-pulse.conf.d/switch-on-connect.conf
+        # Wireplumber: https://wiki.archlinux.org/title/WirePlumber
+        #! error with pavucontrol: ~/.config/wireplumber/wireplumber.conf.d/disable-alsa-monitor.conf
+        ~/.config/wireplumber/wireplumber.conf.d/alsa-config.conf # fix sound stuttering while pavucontrol is open
 
-# Wireplumber: https://wiki.archlinux.org/title/WirePlumber
-#! error with pavucontrol: ~/.config/wireplumber/wireplumber.conf.d/disable-alsa-monitor.conf
-~/.config/wireplumber/wireplumber.conf.d/alsa-config.conf # fix sound stuttering while pavucontrol is open
+        ~/.config/wireplumber/wireplumber.conf.d/update-rate-and-format.conf
+        ~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
+        # ~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf
+        # ~/.config/wireplumber/wireplumber.conf.d/device-rename.conf
+        # ~/.config/wireplumber/wireplumber.conf.d/disable-logind.conf
+        # ~/.config/wireplumber/wireplumber.conf.d/bluez-config.conf
 
-~/.config/wireplumber/wireplumber.conf.d/update-rate-and-format.conf
-~/.config/wireplumber/wireplumber.conf.d/disable-suspension.conf
-# ~/.config/wireplumber/wireplumber.conf.d/alsa-soft-mixer.conf
-# ~/.config/wireplumber/wireplumber.conf.d/device-rename.conf
-# ~/.config/wireplumber/wireplumber.conf.d/disable-logind.conf
-# ~/.config/wireplumber/wireplumber.conf.d/bluez-config.conf
-
-
-)
+    )
     pkg_=(
 
         manjaro-pipewire # pipewire-pulse  pipewire-session-manager  pipewire-alsa
         pipewire-audio
 
-# Frontend
+        # Frontend
         qpwgraph
         easyeffects #! buggy https://github.com/wwmm/easyeffects/issues/3406
 
         pipewire-v4l2 # wireplumber
 
-            # Jack
+        # Jack
         jack2
         jack2-dbus
 
         # jack UI
         qjackctl
-
 
         # pwvucontrol  #! AUR bug
 
@@ -2249,10 +2161,9 @@ testOFF=(
     # config
     jack_control dps rate 44100
 
-
-# FMOD games crashing under PipeWire
-# Some games that use an old version of the FMOD audio engine, like Pillars of Eternity, invoke pulseaudio --check and crash if the PulseAudio binary is not present. A workaround is to symlink /bin/pulseaudio to /bin/true
-# Note that if you wish to reinstall PulseAudio, you need to remove the symlink.
+    # FMOD games crashing under PipeWire
+    # Some games that use an old version of the FMOD audio engine, like Pillars of Eternity, invoke pulseaudio --check and crash if the PulseAudio binary is not present. A workaround is to symlink /bin/pulseaudio to /bin/true
+    # Note that if you wish to reinstall PulseAudio, you need to remove the symlink.
     sh -c "sudo ln -s /bin/true /bin/pulseaudio"
 
 }
@@ -2277,8 +2188,7 @@ sound_cli() {
     alsamixer
 }
 
-sound_fix()
-{
+sound_fix() {
     alsactl init
 }
 
@@ -2295,10 +2205,6 @@ alias chown='chown -c '
 alias chmod='chmod -c '
 alias grep='grep --color=auto'
 alias g='grep --color=auto'
-
-
-
-
 
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
@@ -2345,103 +2251,94 @@ np() {
 }
 alias makepkg-si='makepkg -si' #git clone - PKGBUILD
 
-
-
 gitGH_up() {
-# Git
-        # https://wiki.archlinux.org/title/Git
+    # Git
+    # https://wiki.archlinux.org/title/Git
 
-user=terashy88
-branche=master
-remote=gh
-rpath=.git/repo
+    user=terashy88
+    branche=master
+    remote=gh
+    rpath=.git/repo
 
+    if [[ -n $1 ]]; then
+        touch "$rpath"
+        echo "$1" >"$rpath"
+    fi
 
-if  [[ -n "$1" ]];then
-touch "$rpath"
-echo "$1" > "$rpath"
-fi
+    if ! [[ -e $rpath ]]; then
+        echo "please add your repositorie name.."
+    else
 
-if ! [[ -e "$rpath" ]];then
-echo "please add your repositorie name.."
-else
+        git init
 
-    git init
+        if ! [[ -e readme.md ]]; then
+            touch readme.md
+        fi
 
-if ! [[ -e readme.md ]];then
-touch readme.md
-fi
+        repo="$(cat $rpath)"
 
-repo="$(cat $rpath)"
+        git add .
+        # git add README.md
 
-    git add .
-    # git add README.md
+        # git commit -m "$1"
+        git commit -m "commit"
 
-    # git commit -m "$1"
-    git commit -m "commit"
+        git branch -M "$branche"
 
-    git branch -M  "$branche"
+        git remote add "$remote" git@github.com:"$user"/"$repo".git
 
-    git remote add "$remote" git@github.com:"$user"/"$repo".git
-
-         git push -u "$remote" "$branche"
-         fi
+        git push -u "$remote" "$branche"
+    fi
 }
 
 gitGL_up() {
-# Git
+    # Git
 
-user=terashy
-branche=master
-remote=gl
-rpath=.git/repo
+    user=terashy
+    branche=master
+    remote=gl
+    rpath=.git/repo
 
+    if [[ -n $1 ]]; then
+        touch "$rpath"
+        echo "$1" >"$rpath"
+    fi
 
-if  [[ -n "$1" ]];then
-touch "$rpath"
-echo "$1" > "$rpath"
-fi
+    if ! [[ -e $rpath ]]; then
+        echo "please add your repositorie name.."
+    else
 
-if ! [[ -e "$rpath" ]];then
-echo "please add your repositorie name.."
-else
+        git init
 
-    git init
+        if ! [[ -e readme.md ]]; then
+            touch readme.md
+        fi
 
-if ! [[ -e readme.md ]];then
-touch readme.md
-fi
+        repo="$(cat $rpath)"
 
-repo="$(cat $rpath)"
+        git add .
+        # git add README.md
 
-    git add .
-    # git add README.md
+        # git commit -m "$1"
+        git commit -m "commit"
 
-    # git commit -m "$1"
-    git commit -m "commit"
+        git branch -M "$branche"
 
-    git branch -M  "$branche"
+        git remote add "$remote" git@gitlab.com:"$user"/"$repo".git
 
-    git remote add "$remote" git@gitlab.com:"$user"/"$repo".git
-
-         git push -u "$remote" "$branche"
-         fi
+        git push -u "$remote" "$branche"
+    fi
 }
 
+gitstatus() {
 
+    echo "Remote:"
+    git remote -v
 
+    git status
+    git config --list --show-origin
 
-
- gitstatus(){
-
-echo "Remote:"
-git remote -v
-
-  git status
- git config --list --show-origin
-
-
- }
+}
 
 alias gitpush_force='git push --all --force'
 alias gitlog='git log --pretty=on'
@@ -2476,10 +2373,6 @@ parse_git_branch() {
     (git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
 }
 
-
-
-
-
 git_delete_() {
     #  delete both, remote first
     git rm --cached
@@ -2509,7 +2402,7 @@ please() {
 my_touch() {
     # Define my_touch function to create directories and files
     for arg in "$@"; do
-        if [[ -n "${arg}" ]]; then
+        if [[ -n ${arg} ]]; then
             mkdir -p "$(dirname "${arg}")" && command touch "${arg}" && ls -ld "${arg}"
         else
             echo "Invalid argument: ${arg}"
@@ -2583,10 +2476,6 @@ alias restart='     sudo systemctl restart --now '
 alias stop='        sudo systemctl stop    --now '
 alias start='       sudo systemctl start   --now '
 
-
-
-
-
 swap-activate() {
     # swapfile
     # https://wiki.manjaro.org/index.php/Swap
@@ -2607,7 +2496,7 @@ swap-activate() {
         read -r i
 
         # number check
-        if ! [[ "$i" =~ ^[0-9]+$ ]]; then
+        if ! [[ $i =~ ^[0-9]+$ ]]; then
 
             echo "Memory size must be numbers"
             continue
@@ -2634,7 +2523,7 @@ swap-activate() {
 
     read -r r
 
-    if [[ "$r" =~ ^[Yy]$ ]] || [[ "$r" == "" ]]; then
+    if [[ $r =~ ^[Yy]$ ]] || [[ $r == "" ]]; then
 
         # Trap signals to perform cleanup actions
         cleanup_() {
@@ -2715,9 +2604,6 @@ EOF
 alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio -P'
 alias swapStatus='swapon --show'
 
-
-
-
 # Get server cpu info
 alias env='env ' # environment information
 # unset $(env | cut -d= -f1)
@@ -2787,7 +2673,7 @@ zoom_xfwmScreenTearingReset() {
 qq() {
     # xflock4 can be skip by terminate the terminal
     # xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen --cursor off -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
-    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen  -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
+    xfce4-terminal --hide-scrollbar --hide-menubar --hide-borders --fullscreen -x bash -c "sleep 2 ; cmatrix || true ; trap 'xflock4' SIGTERM; xflock4"
 }
 
 weather() {
@@ -2841,26 +2727,26 @@ autostart_() {
         remote_="deskflow"
         # remote_="input-leap"
 
-if command -v "$remote_" >/dev/null 2>&1;then
-        if ! pacman -Qq "$remote_" >/dev/null 2>&1; then
-            sudo pacman -Syu "$remote_"
-         fi
-
-        while (($(pgrep -xc "$remote_") > 1)); do
-            # while pgrep -x "$remote_ | wc -l -gt 1"; do
-            #    pkill -f "$remote_" -n 1
-            pgrep -o "$remote_" | xargs kill -9
-        done
-
-        if ! pgrep -x "$remote_" >/dev/null 2>&1; then
-            if ! pacman -Qq tmux; then
-                /bin/"$remote_" &
-            else
-                # todo
-                # tmux new -s remote "$remote_"
-                /bin/"$remote_" &
+        if command -v "$remote_" >/dev/null 2>&1; then
+            if ! pacman -Qq "$remote_" >/dev/null 2>&1; then
+                sudo pacman -Syu "$remote_"
             fi
-        fi
+
+            while (($(pgrep -xc "$remote_") > 1)); do
+                # while pgrep -x "$remote_ | wc -l -gt 1"; do
+                #    pkill -f "$remote_" -n 1
+                pgrep -o "$remote_" | xargs kill -9
+            done
+
+            if ! pgrep -x "$remote_" >/dev/null 2>&1; then
+                if ! pacman -Qq tmux; then
+                    /bin/"$remote_" &
+                else
+                    # todo
+                    # tmux new -s remote "$remote_"
+                    /bin/"$remote_" &
+                fi
+            fi
         fi
     }
     # InputLeap_
@@ -2892,22 +2778,22 @@ llama_() {
     inxi=$(inxi -M)
     pkg=(
         ollama
-        )
+    )
     b8="llama3.1" # 8B 4.9GB
 
     status_=true
 
-    if [[ "$status_" == "false" ]]; then
+    if [[ $status_ == "false" ]]; then
         # On / off
         echo "don't use: Exit.."
         exit
     fi
 
-for pkg_ in "${pkg[@]}"; do
-    # get ollama""""
-    if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
-        sudo pacman --noconfirm -Syu "$pkg_" || echo "error getting $pkg_" && exit
-    fi
+    for pkg_ in "${pkg[@]}"; do
+        # get ollama""""
+        if ! pacman -Qq "$pkg_" >/dev/null 2>&1; then
+            sudo pacman --noconfirm -Syu "$pkg_" || echo "error getting $pkg_" && exit
+        fi
     done
 
     # status check
@@ -2915,7 +2801,7 @@ for pkg_ in "${pkg[@]}"; do
         systemctl enable --now ollama
     fi
 
-    if [[ "$inxi" == *"$model"* ]]; then
+    if [[ $inxi == *"$model"* ]]; then
         ollama run gemma2:2b
     else
         ollama run "$b8"
@@ -2955,7 +2841,7 @@ aa() {
     model="F7"
     inxi=$(inxi -M)
     pkg_="ollama"
-    r1="deepseek-r1:8b"     # 4.7GB          reasoning
+    r1="deepseek-r1:8b"      # 4.7GB          reasoning
     vers=deepseek-coder:6.7b # 3.8 GB         No reasoning
     # vers2="deepseek-coder-v2" # 16b 8.9 GB  No reasoning
 
@@ -2966,7 +2852,7 @@ aa() {
 
     status_=true
 
-    if [[ "$status_" == "false" ]]; then
+    if [[ $status_ == "false" ]]; then
         # On / off
         echo "don't use: Exit.."
         exit
@@ -2993,7 +2879,7 @@ aa() {
         fi
     fi
 
-    if [[ -n "$1" ]]; then
+    if [[ -n $1 ]]; then
         #todo
 
         rag="$HOME/ownCloud"
@@ -3009,7 +2895,7 @@ aa() {
         # Recursively find all files in the directory and its subdirectories
         find "$rag" -type f | while read -r path_; do
             # Check if the file is readable and not excluded
-            if [[ -f "$path_" && -r "$path_" ]]; then
+            if [[ -f $path_ && -r $path_ ]]; then
                 # exclude=false
                 for p in "${exclude[@]}"; do
                     if [[ $path_ == *$p* ]]; then
@@ -3030,7 +2916,7 @@ aa() {
         # done
     else
         # Run model
-        if [[ "$inxi" == *"$model"* ]]; then
+        if [[ $inxi == *"$model"* ]]; then
             "$pkg_" run deepseek-r1:1.5b
         else
             "$pkg_" run "$r1"
@@ -3044,8 +2930,7 @@ aa() {
 aaa() {
     # ChatGPT Terminal
 
-
-    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c "echo \"    Welcome to tgpt AI - Bai Chatbot:\"; tgpt -m "
+    exo-open --launch TerminalEmulator --hide-menubar --geometry=88x22 -Hx bash -c 'echo "    Welcome to tgpt AI - Bai Chatbot:"; tgpt -m '
 }
 
 # chatblade with OpenAPI    #!   pay
@@ -3092,69 +2977,64 @@ sudo systemctl disable --now cups.path'
 
 alias printer-show='lpstat -p -d'
 
-scanner_UP()
-{
-# Scanner / Printer
-# https://wiki.archlinux.org/title/SANE
-# locate printer:
+scanner_UP() {
+    # Scanner / Printer
+    # https://wiki.archlinux.org/title/SANE
+    # locate printer:
     # sudo sane-find-scanner
     # sudo scanimage -vvL
-pkg=(
+    pkg=(
 
-# Driver:
-sane
-cups
-avahi
+        # Driver:
+        sane
+        cups
+        avahi
 
-# brother
-brscan4
+        # brother
+        brscan4
 
-# Frontend:
- skanpage
+        # Frontend:
+        skanpage
 
+    )
+    del_=(
+        brother-dcpl2520dw
+        simple-scan
+        skanlite
+        scantailor-advanced
+        naps2
+        xsane #! bug
+    )
 
-)
-del_=(
-brother-dcpl2520dw
- simple-scan
-    skanlite
-scantailor-advanced
-naps2
- xsane #! bug
-)
+    # systemctl
+    ctl=(
+        cups.service
+        cups.socket
+        saned.socket
+        cups.path
+        avahi-daemon.service
+    )
 
-# systemctl
-ctl=(
-    cups.service
-    cups.socket
-    saned.socket
-    cups.path
-    avahi-daemon.service
-)
+    # sudo pacman -Sy
 
+    for pkg_ in "${pkg[@]}"; do
+        if ! pacman -Qq | grep "$pkg_" >/dev/null 2>&1; then
 
-# sudo pacman -Sy
+            paru --needed -Su "$pkg_"
+        else
+            echo "$pkg_ skip.."
+        fi
 
-for pkg_ in "${pkg[@]}";do
- if ! pacman -Qq |grep "$pkg_"  >/dev/null 2>&1;then
-
-paru  --needed -Su "$pkg_"
-else
-echo "$pkg_ skip.."
-fi
-
-done
-
-# systemctl
-for ctl_ in "${ctl[@]}";do
-    if systemctl status "$ctl_" | grep "inactive" >/dev/null 2>&1; then
-    sudo systemctl enable --now "$ctl_"
-    fi
     done
 
+    # systemctl
+    for ctl_ in "${ctl[@]}"; do
+        if systemctl status "$ctl_" | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable --now "$ctl_"
+        fi
+    done
 
-
-    }
+}
 
 anbox_() {
     # Anbox snap #! deprecated
@@ -3282,11 +3162,11 @@ userGroupdel() {
     # Prompt the user for confirmation before deleting the user and group
     read -r "REPLY?Are you sure you want to delete the user '$1' and its group(s)? [y/N] "
     case $REPLY in
-    [yY][eE][sS][""] | [yY]) ;;
-    *)
-        echo "User and group deletion aborted"
-        return 1
-        ;;
+        [yY][eE][sS][""] | [yY]) ;;
+        *)
+            echo "User and group deletion aborted"
+            return 1
+            ;;
     esac
 
     # Use usermod to remove the user from its groups before deleting it
@@ -3360,8 +3240,7 @@ backup_() {
         betterbird_
     fi
 }
-fstab_backup()
-{
+fstab_backup() {
     sh -c "sudo -u root ln -fv ~/ownCloud/p-git/fstab /etc/fstab"
 }
 
@@ -3391,20 +3270,20 @@ EOF
 
 extract() {
     # Easy extract
-    if [[ -f "$1" ]]; then
+    if [[ -f $1 ]]; then
         case $1 in
-        *.tar.bz2) tar xvjf "$1" ;;
-        *.tar.gz) tar xvzf "$1" ;;
-        *.bz2) bunzip2 "$1" ;;
-        *.rar) rar x "$1" ;;
-        *.gz) gunzip "$1" ;;
-        *.tar) tar xvf "$1" ;;
-        *.tbz2) tar xvjf "$1" ;;
-        *.tgz) tar xvzf "$1" ;;
-        *.zip) unzip "$1" ;;
-        *.Z) uncompress "$1" ;;
-        *.7z) 7z x "$1" ;;
-        *) echo "don't know how to extract '$1'..." ;;
+            *.tar.bz2) tar xvjf "$1" ;;
+            *.tar.gz) tar xvzf "$1" ;;
+            *.bz2) bunzip2 "$1" ;;
+            *.rar) rar x "$1" ;;
+            *.gz) gunzip "$1" ;;
+            *.tar) tar xvf "$1" ;;
+            *.tbz2) tar xvjf "$1" ;;
+            *.tgz) tar xvzf "$1" ;;
+            *.zip) unzip "$1" ;;
+            *.Z) uncompress "$1" ;;
+            *.7z) 7z x "$1" ;;
+            *) echo "don't know how to extract '$1'..." ;;
         esac
     else
         echo "'$1' is not a valid file!"
@@ -3419,7 +3298,7 @@ search() {
     exclude=(
         "/run/user/1000"
         "/usr/share/icons"
-        )
+    )
     path_="/"
     exclude_args=()
     for dir in "${exclude[@]}"; do
@@ -3463,7 +3342,7 @@ function imgopen() {
 opendefaultpdf() {
     # Function for opening PDF files with the default program
     if command -v xdg-open >/dev/null 2>&1; then
-        if [[ -f "$1" ]]; then
+        if [[ -f $1 ]]; then
             xdg-open "$1" >/dev/null 2>&1 &
         else
             echo "$1 is not a valid file."
@@ -3483,7 +3362,7 @@ convert_toPDF() {
 
     # Check that the input file exists
     local input="$1"
-    if [[ ! -f "${input}" ]]; then
+    if [[ ! -f ${input} ]]; then
         echo "ERROR: '${input}' is not a valid file." >&2
         return 1
     fi
@@ -3495,7 +3374,7 @@ convert_toPDF() {
 
 set_wgetrc() {
 
-    if [[ -z "${XDG_CONFIG_HOME}" ]]; then
+    if [[ -z ${XDG_CONFIG_HOME} ]]; then
         export XDG_CONFIG_HOME="${HOME}/.config"
     fi
     export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
@@ -3600,10 +3479,10 @@ docker_up() {
 
     pkg=(
         docker
-         docker-compose
-          drone-runner-docker
-          kompose
-          )
+        docker-compose
+        drone-runner-docker
+        kompose
+    )
 
     # Get Package
     for i in "${pkg[@]}"; do
@@ -3624,14 +3503,13 @@ docker_up() {
     fi
 }
 
- kubernetes_UP()
- {
+kubernetes_UP() {
     # todo
     # https://wiki.archlinux.org/title/Kubernetes
 
     pkg=(
         # kubeadm
-          )
+    )
 
     # Get Package
     for i in "${pkg[@]}"; do
@@ -3645,23 +3523,19 @@ docker_up() {
         fi
     done
 
+    # kubelet.service.
 
-# kubelet.service.
+    # checkservices
+}
 
-
-# checkservices
- }
-
-
- v4l2loopback_UP()
- {
+v4l2loopback_UP() {
     # todo
     # https://wiki.archlinux.org/title/V4l2loopback
 
     pkg=(
         v4l2loopback-dkms
         v4l2loopback-utils
-          )
+    )
 
     # Get Package
     for i in "${pkg[@]}"; do
@@ -3675,18 +3549,16 @@ docker_up() {
         fi
     done
 
-sudo modprobe v4l2loopback
-v4l2-ctl --list-devices
- }
+    sudo modprobe v4l2loopback
+    v4l2-ctl --list-devices
+}
 
- dkms_status()
-{
+dkms_status() {
     # v4l2 /
     dkms status
 }
-dkms_rebuild()
-{
-    sudo  dkms autoinstall
+dkms_rebuild() {
+    sudo dkms autoinstall
 }
 
 # cam-info
@@ -3750,20 +3622,20 @@ loginManager() {
     read -r r
 
     case $r in
-    1)
-        if systemctl status lightdm | grep -q "running"; then
-            sudo systemctl disable lightdm
-        fi
-        echo "enable greetd"
-        sudo systemctl enable greetd
-        ;;
-    2)
-        if systemctl status greetd | grep -q "running"; then
-            sudo systemctl disable greetd
-        fi
-        echo "enable lightdm"
-        sudo systemctl enable lightdm
-        ;;
+        1)
+            if systemctl status lightdm | grep -q "running"; then
+                sudo systemctl disable lightdm
+            fi
+            echo "enable greetd"
+            sudo systemctl enable greetd
+            ;;
+        2)
+            if systemctl status greetd | grep -q "running"; then
+                sudo systemctl disable greetd
+            fi
+            echo "enable lightdm"
+            sudo systemctl enable lightdm
+            ;;
     esac
 }
 
@@ -3778,55 +3650,52 @@ virtManager_UP() {
     if [[ $debug == "on" ]]; then
         echo "virt-manager --"
     else
-pkg=(
-    virt-manager
-    qemu-desktop
-     libvirt
-     edk2-ovmf
-    # dnsmasq   #! pi-hole-ftl
-      iptables-nft
-)
+        pkg=(
+            virt-manager
+            qemu-desktop
+            libvirt
+            edk2-ovmf
+            # dnsmasq   #! pi-hole-ftl
+            iptables-nft
+        )
 
-    sudo pacman -Sy
+        sudo pacman -Sy
 
-    for pkg_ in "${pkg[@]}"; do
-        sudo pacman -Su --needed "$pkg_"
-done
+        for pkg_ in "${pkg[@]}"; do
+            sudo pacman -Su --needed "$pkg_"
+        done
 
-    if systemctl status libvirtd | grep "inactive" >/dev/null 2>&1; then
-        sudo systemctl enable libvirtd.service --now
+        if systemctl status libvirtd | grep "inactive" >/dev/null 2>&1; then
+            sudo systemctl enable libvirtd.service --now
 
-        sudo usermod -a -G libvirt,libvirt-qemu,kvm "$USER"
-    fi
+            sudo usermod -a -G libvirt,libvirt-qemu,kvm "$USER"
+        fi
 
-    # status check
+        # status check
         lscpu | grep -i Virtualization
-    sudo virt-host-validate qemu
-    sudo virsh list
-fi
+        sudo virt-host-validate qemu
+        sudo virsh list
+    fi
 }
 VM_UP_() {
     # Virtualbox
     # https://wiki.manjaro.org/index.php/VirtualBox
     #! Hardware Virtualization: black screen sometime if "Enable Nested Paging"
 
-
-pkg=(
-    # linux612-virtualbox-host-modules
-    virtualbox-guest-utils
-    # virtualbox-host-dkms
-)
+    pkg=(
+        # linux612-virtualbox-host-modules
+        virtualbox-guest-utils
+        # virtualbox-host-dkms
+    )
 
     sudo pacman -Sy
 
     for pkg_ in "${pkg[@]}"; do
         sudo pacman -Su --needed "$pkg_"
-done
+    done
 
-
-    sudo gpasswd -a "$USER" vboxusers   # Host
-    sudo usermod -aG vboxsf "${USER}"   # Guest
-
+    sudo gpasswd -a "$USER" vboxusers # Host
+    sudo usermod -aG vboxsf "${USER}" # Guest
 
     sudo modprobe vboxguest vboxvideo vboxsf
 
@@ -3834,43 +3703,38 @@ done
         sudo systemctl enable --now vboxservice.service
     fi
 
-    if [[ ! -d  /media ]];then
-    sudo mkdir /media
-    sh -c "sudo chmod 755 /media"
+    if [[ ! -d /media ]]; then
+        sudo mkdir /media
+        sh -c "sudo chmod 755 /media"
     else
         sh -c "sudo chmod 755 /media"
-fi
+    fi
 
+    sudo vboxreload
 
- sudo vboxreload
+    modprobe vboxdrv
 
- modprobe vboxdrv
+    LC_ALL=C lscpu
 
- LC_ALL=C lscpu
-
- modinfo vboxsf
- vboxmanage --version
+    modinfo vboxsf
+    vboxmanage --version
 }
-
 
 soft_reboot() {
     # faster reboot replacement
     systemctl soft-reboot
 }
-reboot()
-{
+reboot() {
     xfce4-session-logout --reboot --fast
 }
 
-timeshift_status()
-{
+timeshift_status() {
     sudo timeshift --list
 }
 
 # Gadget
-gpg_list()
-{
-gpg --list-keys
+gpg_list() {
+    gpg --list-keys
 }
 
 # some note

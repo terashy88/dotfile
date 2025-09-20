@@ -178,10 +178,9 @@ export_() {
     export LESS_TERMCAP_us=$'\E[01;36m'
     export LESS=-R
 
-
-if ! [[ -e "$XDG_CONFIG_HOME/wgetrc" ]];then  
-ln -fs /etc/wgetrc "$XDG_CONFIG_HOME/wgetrc"
-fi
+    if ! [[ -e "$XDG_CONFIG_HOME/wgetrc" ]]; then
+        ln -fs /etc/wgetrc "$XDG_CONFIG_HOME/wgetrc"
+    fi
     export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 
     # export JAVA_HOME=""
@@ -279,11 +278,11 @@ env_() {
 
     #todo
     # Terminal
-    if pacman -Q nemo >/dev/null 2>&1 ;then
-    gsettings set org.cinnamon.desktop.default-applications.terminal exec xfce4-terminal
-    # gsettings set org.cinnamon.desktop.default-applications.terminal exec $TERM
-    # exo-open --launch TerminalEmulator
-fi
+    if pacman -Q nemo >/dev/null 2>&1; then
+        gsettings set org.cinnamon.desktop.default-applications.terminal exec xfce4-terminal
+        # gsettings set org.cinnamon.desktop.default-applications.terminal exec $TERM
+        # exo-open --launch TerminalEmulator
+    fi
 
     nemo_() {
         # Set Nemo
@@ -315,12 +314,12 @@ ssh_() {
 
     # Source ssh-agent environment variables
 
-    if [[ -f "$SSH_AUTH_SOCK" ]]; then
+    if [[ -f $SSH_AUTH_SOCK ]]; then
         source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
     fi
 
     # Forwarding ssh-agent
-    if [[ -z "${SSH_CONNECTION}" ]]; then
+    if [[ -z ${SSH_CONNECTION} ]]; then
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
     fi
 
@@ -335,16 +334,16 @@ ssh_() {
     fi
 
     keychain_() {
-    #  keychain
+        #  keychain
 
-if command -v keychain >/dev/null 2>&1;then
-        # keychain ~/.ssh/id_*
-        # shellcheck source=/dev/null
-        [ -f ~/.keychain/"$HOSTNAME"-sh ] && . ~/.keychain/"$HOSTNAME"-sh 2>/dev/null
-        # shellcheck source=/dev/null
-        [ -f ~/.keychain/"$HOSTNAME"-sh-gpg ] && . ~/.keychain/"$HOSTNAME"-sh-gpg 2>/dev/null
+        if command -v keychain >/dev/null 2>&1; then
+            # keychain ~/.ssh/id_*
+            # shellcheck source=/dev/null
+            [ -f ~/.keychain/"$HOSTNAME"-sh ] && . ~/.keychain/"$HOSTNAME"-sh 2>/dev/null
+            # shellcheck source=/dev/null
+            [ -f ~/.keychain/"$HOSTNAME"-sh-gpg ] && . ~/.keychain/"$HOSTNAME"-sh-gpg 2>/dev/null
 
-        keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
+            keychain -q --absolute --dir "$XDG_RUNTIME_DIR"/keychain
         fi
     }
     keychain_
@@ -459,12 +458,12 @@ bindkey_() {
     # bindkey -e
     bindkey '^[[7~' beginning-of-line # Home key
     bindkey '^[[H' beginning-of-line  # Home key
-    if [[ "${terminfo[khome]}" != "" ]]; then
+    if [[ ${terminfo[khome]} != "" ]]; then
         bindkey "${terminfo[khome]}" beginning-of-line # [Home] - Go to beginning of line
     fi
     bindkey '^[[8~' end-of-line # End key
     bindkey '^[[F' end-of-line  # End key
-    if [[ "${terminfo[kend]}" != "" ]]; then
+    if [[ ${terminfo[kend]} != "" ]]; then
         bindkey "${terminfo[kend]}" end-of-line # [End] - Go to end of line
     fi
     bindkey '^[[2~' overwrite-mode                    # Insert key
@@ -488,11 +487,11 @@ bindkey_() {
     zle -N up-line-or-beginning-search
     zle -N down-line-or-beginning-search
 
-    [[ -n "${key[Up]}" ]] && bindkey -- "${key[Up]}" up-line-or-beginning-search
-    [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+    [[ -n ${key[Up]} ]] && bindkey -- "${key[Up]}" up-line-or-beginning-search
+    [[ -n ${key[Down]} ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
     rationalise-dot() {
-        if [[ $LBUFFER = *.. ]]; then
+        if [[ $LBUFFER == *.. ]]; then
             LBUFFER+=/..
         else
             LBUFFER+=.
@@ -539,10 +538,10 @@ alias help=run-help
     # This function API is accessible to scripts in /etc/profile.d
     append_path() {
         case ":${PATH}:" in
-        *:"$1":*) ;;
-        *)
-            PATH="${PATH:+${PATH}:}$1"
-            ;;
+            *:"$1":*) ;;
+            *)
+                PATH="${PATH:+${PATH}:}$1"
+                ;;
         esac
     }
 
@@ -767,7 +766,7 @@ zstyle_() {
     #
 
     # Handle zsh autoloading conventions
-    if [[ "$zsh_eval_context" = *loadautofunc && ! -o kshautoload ]]; then
+    if [[ $zsh_eval_context == *loadautofunc && ! -o kshautoload ]]; then
         bracketed-paste-magic "$@"
     fi
 
