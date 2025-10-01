@@ -1,0 +1,25 @@
+# Standard host addresses
+127.0.0.1 localhost
+
+# IPv6 multicast addresses
+::1 localhost ip6-localhost ip6-loopback
+
+# This host
+127.0.1.1  ${HOSTNAME}.localdomain  ${HOSTNAME}
+
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+# 127.0.0.1 messenger.com
+# 127.0.0.1 facebook.com
+
+# Deskflow https://wiki.archlinux.org/title/Deskflow
+10.10.66.1 archserver.localdomain archserver
+10.10.66.100 archleft.localdomain archleft
+10.10.66.105 archright.localdomain archright
+
+################################################
+
+# Pi-Hole https://wiki.archlinux.org/title/Pi-hole
+#ip.address.of.pihole pi.hole $HOST
+192.168.31.199 pi.hole  ${HOSTNAME}

@@ -217,8 +217,8 @@ env_() {
     # papirus-maia-icon-theme
 
     # Wayland --
-    GBM_BACKEND=nvidia-drm
-    __GLX_VENDOR_LIBRARY_NAME=nvidia
+    # GBM_BACKEND=nvidia-drm
+    # __GLX_VENDOR_LIBRARY_NAME=nvidia
 
     # GTK
     # GDK_BACKEND=x11

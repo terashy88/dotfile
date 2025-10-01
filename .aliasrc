@@ -168,7 +168,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop vivaldi fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -184,17 +184,12 @@ iinstall__() {
     # Install packages
     package_=(
         ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+        fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden
 
     )
     # Array of programs to be uninstall
     del_=(
-        wallpapers-2018
-        wallpapers-juhraya
-        fcitx # LANG problem
-        vlc
 
-        # KDE
-        plasma-workspace-wallpapers
     )
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
@@ -239,20 +234,21 @@ nvidiaInstall() {
 
         Install packages
         package_=(
+            hip-runtime-nvidia
+            lib32-opencl-nvidia
             libnvidia-container
             libva-nvidia-driver
-            linux612-nvidia-open
+            linux-firmware-nvidia
+            mhwd-nvidia
+            mhwd-nvidia-390xx
+            mhwd-nvidia-470xx
+            mhwd-nvidia-570xx
+            mhwd-nvidia-575xx
+            nvidia-550xx-dkms
+            nvidia-550xx-utils
             nvidia-container-toolkit
             nvidia-driver-assistant
-            nvidia-prime
-            nvidia-settings
-            nvidia-utils
             opencl-nvidia
-
-            lib32-nvidia-utils
-            lib32-opencl-nvidia
-
-            mhwd-nvidia
         )
         # pkgIgnore=("video-nvidia" )
 
@@ -328,27 +324,27 @@ rrestoreBackup() {
             clear
             sleep 0.4
             case $r in
-                Y | y)
-                    rm "$del" && echo "Deleted: $del" || exit 1
-                    exit 0
-                    ;;
-                n | N)
+            Y | y)
+                rm "$del" && echo "Deleted: $del" || exit 1
+                exit 0
+                ;;
+            n | N)
+                echo ""
+                echo "$del will not be deleted."
+                exit 1
+                ;;
+            *)
+                if [[ $r == "" ]]; then
+                    echo "there was no input..."
+                else
                     echo ""
-                    echo "$del will not be deleted."
-                    exit 1
-                    ;;
-                *)
-                    if [[ $r == "" ]]; then
-                        echo "there was no input..."
-                    else
-                        echo ""
-                        echo "The input $r was not correct"
-                        sleep 0.3
-                        echo " To delete $del please press:"
-                        sleep 0.3
-                        printf "    [ y ] = yes or [ n ] = no...\n"
-                    fi
-                    ;;
+                    echo "The input $r was not correct"
+                    sleep 0.3
+                    echo " To delete $del please press:"
+                    sleep 0.3
+                    printf "    [ y ] = yes or [ n ] = no...\n"
+                fi
+                ;;
             esac
         done
     fi
@@ -512,20 +508,19 @@ pkglist-backup() {
 
 pkglist_restore() {
 
-    set -e
+    # set -e #! will kill the terminal
 
-    helper_
+    pkglist=~/ownCloud/dotfile/pkglist.txt
 
     # Update System
-    $helper -Syu
+    $helper -Sy
 
     #  early packages:
     earlyPKG_=(fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden)
 
     for i in "${earlyPKG_[@]}"; do
-        if ! $helper -S --needed "$i"; then
-            echo "Failed to install package: $i"
-            return 1
+        if ! pacman -Qq "$i" >/dev/null 2>&1; then
+            "$helper" -Su "$i"
         fi
     done
 
@@ -540,9 +535,22 @@ pkglist_restore() {
         done <~/ownCloud/dotfile/pkglist_f7.txt # while loop alternativ fix empty line issue
 
     else
-        "$helper" -S --needed --batchinstall --useask --topdown --sudoloop - <~/ownCloud/dotfile/pkglist.txt || while read -r line; do
-            $helper -S --needed --batchinstall --useask --topdown --sudoloop - <<<"$line"
-        done <~/ownCloud/dotfile/pkglist.txt
+        # todo wait for /dev/tty prompt
+        "$helper" -S --needed --batchinstall --useask --topdown --sudoloop - <"$pkglist" || while read -r line; do
+            if ! pacman -Qq "$line" >/dev/null 2>&1; then
+                # pamac build --no-confirm "$line"
+                sudo pacman -S --needed --sudoloop - <<<"$line" || $helper -S --needed --batchinstall --useask --topdown --sudoloop - <<<"$line"
+            #
+            fi
+
+            #             read -p "Proceed with installation? [Y/n] " reply < /dev/tty
+
+            #   case $reply in
+            #      [yY]|"") break ;;
+            #      [nN]) exit 1 ;;
+            #      *) echo "Please enter Y(es) or N(o)" >&2 ;;
+            #   esac
+        done <"$pkglist"
     fi
 
     # xargs -a ~/ownCloud/dotfile/pkglist.txt -I % pamac build -k 1 %
@@ -664,23 +672,31 @@ delete_packages_() {
     # List of packages to delete
 
     packages=(
+        kodi
+        # geany # micro
+        snapd
+        xfburn
+        pidgin
         hexchat
         firefox
         viewnior
         mousepad
         audacious
-        kodi
-        nemo-emblems
-        xfburn
-        pidgin
-        xfce4-notes-plugin
-        snapd
+        nemo-emblems #! performance issues
         manjaro-hello
+        xfce4-screensaver
+        xfce4-notes-plugin
+        wallpapers-juhraya
+        wallpapers-2018
+        # xcape     #! screen tearing issue
         vlc
+
+        fcitx # LANG problem
 
         # KDE
         drkonqi
         pragha
+        plasma-workspace-wallpapers
 
     )
 
@@ -842,6 +858,28 @@ orphans() {
         sudo pacman -Qtdv
         echo -e "\n no orphans to remove"
     fi
+
+    #     oldpkg_()
+    #     {
+    #         # todo
+    #         pkg_file=~/ownCloud/dotfile/pkglist.txt
+    # day=100    # change this value according to your needs
+
+    # while read pkg; do
+    #     epoch=$(stat -c %Y "/var/lib/dpkg/info/$pkg.postinst") 2> /dev/null
+
+    #     if [[ $epoch ]]; then
+    #         current_date=$(date +%s)
+    #         days=$(( (current_date - epoch) / 86400 ))
+
+    #         if (( days > day )); then
+    #             echo "Package: $pkg is older than $day days"
+    #         fi
+    #     fi
+    # done < "$pkg_file"
+
+    # }
+
 }
 
 downgrade() {
@@ -1027,6 +1065,11 @@ crossover_down() {
 }
 crossover_down
 
+steam_primeRun() {
+    # todo
+    sh -c "prime-run /usr/bin/steam %U" &
+}
+
 xdotool_() {
 
     # ~/.local/bin/magickeys_off.sh
@@ -1111,6 +1154,10 @@ manjaro-stable() {
 }
 manjaro-testing() {
     sudo pacman-mirrors --api --set-branch testing
+    pamacclean
+}
+manjaro-unstable() {
+    sudo pacman-mirrors --api --set-branch unstable
     pamacclean
 }
 
@@ -1546,7 +1593,7 @@ journalctl-live_() {
     # Filtered live Journalctl-logs
 
     exclude=(
-        #"UFW BLOCK"
+        "UFW BLOCK"
         #"blob"
         button/ # Arrow keys
         # portmaster
@@ -2086,6 +2133,8 @@ f() {
 
 # nvidia Proprietary
 alias nvidia0300='sudo mhwd --force --auto pci nonfree 0300'
+alias nvidia0300_not_proprietary='sudo mhwd --force --auto pci free 0300'
+
 alias mhwd-info='vulkaninfo; mhwd -l ; mhwd -li; modprobe nvidia'
 
 # Sound
@@ -2479,7 +2528,7 @@ alias start='       sudo systemctl start   --now '
 swap-activate() {
     # swapfile
     # https://wiki.manjaro.org/index.php/Swap
-    set -e
+    # set -e
 
     # set swapfile path
     path_="/swapfile"
@@ -2548,27 +2597,27 @@ swap-activate() {
         # build swapfile
         sudo dd if=/dev/zero of=$path_ bs=1M count="$i" status=progress || {
             echo "Error creating swapfile"
-            sleep 3
-            exit 1
+            sleep 8
         }
         # set permission
         if sh -c "sudo chmod 600 $path_"; then
             echo "chmod 600 $path_"
         else
             echo "Error changing permissions"
-            sleep 3
+            sleep 8
             exit 1
         fi
         # create swapfile
         sudo mkswap $path_ || {
             echo "Error setting up swap"
-            sleep 3
+            sleep 8
             exit 1
         }
         # aktive swap
-        sudo swapon $path_ || {
+        sudo swapon -a || {
+            # sudo swapon $path_ || {
             echo "Error activating swap"
-            sleep 3
+            sleep 8
             exit 1
         }
 
@@ -2589,6 +2638,7 @@ EOF
         if sudo sh -c "grep -q $path_ /etc/fstab"; then
             echo "Entry already exists in /etc/fstab"
         else
+            sudo sh -c "echo "" >> /etc/fstab"
             sudo sh -c "echo \"$path_ none swap defaults 0 0\" >> /etc/fstab"
             echo "Entry added to /etc/fstab"
         fi
@@ -2598,6 +2648,7 @@ EOF
 
     # show swap
     if [[ -e $path_ ]]; then
+        cat /proc/swaps
         swapon --show
     fi
 }
@@ -2699,6 +2750,9 @@ alias df='df -h ' # Human-readable sizes check
 alias most='        du -hsx * | sort -rh | head -15'  # Biggest files in folder
 alias biggest-file=' du -hsx * | sort -rh | head -15' # Biggest files in folder
 alias diskspace='   gdu'                              # Biggest files in folder 'd'=delete
+biggest_package() {
+    LC_ALL=C.UTF-8 pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | LC_ALL=C.UTF-8 sort -h
+}
 
 # Memory / GPU / RAM
 alias free='free -h ' # Show sizes in MB
@@ -3078,7 +3132,7 @@ systemctl-enable() {
     fi
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/*
-    sh -c "sudo ln -fL ~/ownCloud/p-git/hosts /etc/hosts"
+    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/hosts /etc/hosts"
     xdg-mime default nemo.desktop inode/directory
     xdg-mime default nemo.desktop x-directory/normal
     xdg-mime default nemo-autorun-software.desktop x-content/unix-software
@@ -3162,11 +3216,11 @@ userGroupdel() {
     # Prompt the user for confirmation before deleting the user and group
     read -r "REPLY?Are you sure you want to delete the user '$1' and its group(s)? [y/N] "
     case $REPLY in
-        [yY][eE][sS][""] | [yY]) ;;
-        *)
-            echo "User and group deletion aborted"
-            return 1
-            ;;
+    [yY][eE][sS][""] | [yY]) ;;
+    *)
+        echo "User and group deletion aborted"
+        return 1
+        ;;
     esac
 
     # Use usermod to remove the user from its groups before deleting it
@@ -3212,16 +3266,22 @@ backup_() {
         sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
     fi
 
+    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/hosts /etc/hosts"
+    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/paru.conf /etc/paru.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pamac.conf /etc/pamac.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/pacman.conf /etc/pacman.conf"
-    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/paru.conf /etc/paru.conf"
+
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/vconsole.conf /etc/vconsole.conf"
+
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/lightdm.conf /etc/lightdm/lightdm.conf"
+    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/slick-greeter.conf /etc/lightdm/slick-greeter.conf"
+
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/journald.conf /etc/systemd/journald.conf"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/resolved.conf /etc/systemd/resolved.conf"
-    sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/wifi.config /etc/modprobe.d/wifi.conf"
+    # sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/wifi.config /etc/modprobe.d/wifi.conf"   # was on XPS15
     sh -c "sudo -u root ln -fv ~/ownCloud/p-git/sshd_config /etc/ssh/sshd_config"
-    sh -c "sudo -u root ln -fv ~/ownCloud/p-git/config.json /opt/safing/portmaster/config.json"
+
+    # sh -c "sudo -u root ln -fv ~/ownCloud/p-git/config.json /opt/safing/portmaster/config.json"
 
     ln -fv ~/ownCloud/dotfile/.zshrc ~/VM-share-rsx/.zshrc
     ln -fv ~/ownCloud/dotfile/.aliasrc ~/VM-share-rsx/.aliasrc
@@ -3272,18 +3332,18 @@ extract() {
     # Easy extract
     if [[ -f $1 ]]; then
         case $1 in
-            *.tar.bz2) tar xvjf "$1" ;;
-            *.tar.gz) tar xvzf "$1" ;;
-            *.bz2) bunzip2 "$1" ;;
-            *.rar) rar x "$1" ;;
-            *.gz) gunzip "$1" ;;
-            *.tar) tar xvf "$1" ;;
-            *.tbz2) tar xvjf "$1" ;;
-            *.tgz) tar xvzf "$1" ;;
-            *.zip) unzip "$1" ;;
-            *.Z) uncompress "$1" ;;
-            *.7z) 7z x "$1" ;;
-            *) echo "don't know how to extract '$1'..." ;;
+        *.tar.bz2) tar xvjf "$1" ;;
+        *.tar.gz) tar xvzf "$1" ;;
+        *.bz2) bunzip2 "$1" ;;
+        *.rar) rar x "$1" ;;
+        *.gz) gunzip "$1" ;;
+        *.tar) tar xvf "$1" ;;
+        *.tbz2) tar xvjf "$1" ;;
+        *.tgz) tar xvzf "$1" ;;
+        *.zip) unzip "$1" ;;
+        *.Z) uncompress "$1" ;;
+        *.7z) 7z x "$1" ;;
+        *) echo "don't know how to extract '$1'..." ;;
         esac
     else
         echo "'$1' is not a valid file!"
@@ -3622,27 +3682,27 @@ loginManager() {
     read -r r
 
     case $r in
-        1)
-            if systemctl status lightdm | grep -q "running"; then
-                sudo systemctl disable lightdm
-            fi
-            echo "enable greetd"
-            sudo systemctl enable greetd
-            ;;
-        2)
-            if systemctl status greetd | grep -q "running"; then
-                sudo systemctl disable greetd
-            fi
-            echo "enable lightdm"
-            sudo systemctl enable lightdm
-            ;;
+    1)
+        if systemctl status lightdm | grep -q "running"; then
+            sudo systemctl disable lightdm
+        fi
+        echo "enable greetd"
+        sudo systemctl enable greetd
+        ;;
+    2)
+        if systemctl status greetd | grep -q "running"; then
+            sudo systemctl disable greetd
+        fi
+        echo "enable lightdm"
+        sudo systemctl enable lightdm
+        ;;
     esac
 }
 
 virtManager_UP() {
-    # todo
-    # Virt-Manager --
+    # Virt-Manager
     # https://wiki.manjaro.org/index.php?title=Virt-manager
+    # https://wiki.archlinux.org/title/Libvirt
 
     debug=off
     # wrapper="paru -S --needed"
@@ -3671,10 +3731,25 @@ virtManager_UP() {
             sudo usermod -a -G libvirt,libvirt-qemu,kvm "$USER"
         fi
 
+        # Guest auto screen resize:
+        # sudo pacman -Syu spice-vdagent
+        #  xrandr --output Virtual-1 --auto
+
+        # share Folder
+        # https://de.linux-terminal.com/?p=7672
+        # sudo mount -t virtiofs <name> <vmFolderPath>
+
+        # Disk resize
+        # https://absprog.com/post/qemu-kvm-enlarge-disk
+        # sudo qemu-img resize /home/"USER"/.local/share/libvirt/images/manjaro.qcow2 +1G
+
+        # Disk Convert  #todo
+        # https://cubiclenate.com/2024/05/30/converting-vdi-to-qcow2-step-by-step-guide-for-virt-manager-migration/
+
         # status check
         lscpu | grep -i Virtualization
         sudo virt-host-validate qemu
-        sudo virsh list
+        sudo virsh list --all
     fi
 }
 VM_UP_() {
@@ -3725,7 +3800,20 @@ soft_reboot() {
     systemctl soft-reboot
 }
 reboot() {
-    xfce4-session-logout --reboot --fast
+
+    if type "xfce4-session-logout" >/dev/null 2>&1; then
+        xfce4-session-logout --reboot --fast
+    else
+
+        for ((i = 1; i <= 22; i++)); do
+            echo -n "::"
+            sleep 0.06
+
+        done
+        echo " Reboot =-"
+
+        systemctl reboot
+    fi
 }
 
 timeshift_status() {
