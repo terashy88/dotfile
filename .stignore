@@ -63,6 +63,7 @@
 # (?d).config/Portmaster/Local Storage/leveldb
 # (?d).config/Portmaster/Session Storage
 # (?d).config/Portmaster/blob_storage
+.i2pd
 
 # syncthing
 #!.stfolder    #  don't delete
@@ -273,7 +274,7 @@
 !/home/shaderico/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 (?d).config/pavucontrol*
 (?d).cache/xfce4/clipman/textsrc
-(?d)**xfce4-keyboard-shortcuts.xml**    #! if you have different Keyboard layouts
+(?d)**xfce4-keyboard-shortcuts.xml**                                                   #! if you have different Keyboard layouts
 (?d).local/share/notes/Notizen
 (?d).config/xfce4/panel/*
 (?d).config/mimeapps.list

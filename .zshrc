@@ -207,11 +207,9 @@ env_() {
     # Environment
 
     # GTK Theme
-    # Matcha-dark-sea
-    # gsettings set org.gnome.desktop.interface gtk-theme Adwaita
+    export GTK_THEME=Matcha-dark-sea
 
-    # test:
-    # GTK_THEME=Matcha-dark-sea:dark nemo
+    # gsettings set org.gnome.desktop.interface gtk-theme Adwaita
 
     # GTK Icon
     # papirus-maia-icon-theme
@@ -538,10 +536,10 @@ alias help=run-help
     # This function API is accessible to scripts in /etc/profile.d
     append_path() {
         case ":${PATH}:" in
-            *:"$1":*) ;;
-            *)
-                PATH="${PATH:+${PATH}:}$1"
-                ;;
+        *:"$1":*) ;;
+        *)
+            PATH="${PATH:+${PATH}:}$1"
+            ;;
         esac
     }
 

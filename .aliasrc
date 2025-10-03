@@ -168,7 +168,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop vivaldi fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix foliate audirvana LLaMA ai   nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain  jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop Baudline RNNoise SoX VMPK QMidiRoute Netjack Ninjam vivaldi SuperCollider ChucK Hydrogen Hugin Reaper Ocenaudio Yoshimi Hexter Padthv1 Qsynth "Pure Data" LMMS Scribus fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix Guitarix foliate audirvana LLaMA ai "Sonic Pi"  nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain Rakarrack jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -183,7 +183,7 @@ iinstall__() {
 
     # Install packages
     package_=(
-        ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs
+        ttf-ms-fonts viber wireshark-qt simplescreenrecorder vulkan-extra-tools telegram-desktop obs-studio obs-backgroundremoval obs-3d-effect motion mastodon manjaro-gstreamer kturtle krita kdenlive gimp-plugin-gmic droidcam digikam discover celluloid calibre flatpak gcolor3 gnome-maps libpamac-flatpak-plugin timer audacity ffmpeg fluidsynth ffmpeg4.4 mpv obs-studio xfce4-screensaver nodejs micro
         fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden
 
     )
@@ -235,20 +235,43 @@ nvidiaInstall() {
         Install packages
         package_=(
             hip-runtime-nvidia
+            lib32-nvidia-utils
             lib32-opencl-nvidia
             libnvidia-container
             libva-nvidia-driver
             linux-firmware-nvidia
+            linux-nvidia-open-meta
+            linux612-nvidia-open
+            linux615-nvidia-open
             mhwd-nvidia
             mhwd-nvidia-390xx
             mhwd-nvidia-470xx
             mhwd-nvidia-570xx
             mhwd-nvidia-575xx
-            nvidia-550xx-dkms
-            nvidia-550xx-utils
             nvidia-container-toolkit
             nvidia-driver-assistant
+            nvidia-prime
+            nvidia-settings
+            nvidia-utils
             opencl-nvidia
+
+            # # 550xx
+            #  hip-runtime-nvidia
+            # lib32-opencl-nvidia
+            # libnvidia-container
+            # libva-nvidia-driver
+            # linux-firmware-nvidia
+            # mhwd-nvidia
+            # mhwd-nvidia-390xx
+            # mhwd-nvidia-470xx
+            # mhwd-nvidia-570xx
+            # mhwd-nvidia-575xx
+            # nvidia-550xx-dkms
+            # nvidia-550xx-utils
+            # nvidia-container-toolkit
+            # nvidia-driver-assistant
+            # opencl-nvidia
+
         )
         # pkgIgnore=("video-nvidia" )
 
@@ -516,7 +539,7 @@ pkglist_restore() {
     $helper -Sy
 
     #  early packages:
-    earlyPKG_=(fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin owncloud-client bitwarden)
+    earlyPKG_=(fakeroot pfetch portmaster otpclient syncthing brave-browser-beta librewolf-bin micro owncloud-client bitwarden)
 
     for i in "${earlyPKG_[@]}"; do
         if ! pacman -Qq "$i" >/dev/null 2>&1; then
@@ -684,7 +707,6 @@ delete_packages_() {
         audacious
         nemo-emblems #! performance issues
         manjaro-hello
-        xfce4-screensaver
         xfce4-notes-plugin
         wallpapers-juhraya
         wallpapers-2018
@@ -2261,14 +2283,17 @@ alias diff='diff --color=auto'
 # These common commands are just too long! Abbreviate them.
 alias ka='pkill -5 ' #'killall'
 
-alias e='eval "${EDITOR:=neovim}"'
+e() {
+    eval "$EDITOR"
+}
+# alias e='eval "${EDITOR:=neovim}"'
 if [[ -n ${DISPLAY} ]]; then
     export EDITOR="/usr/bin/codium"
     # export EDITOR=" /usr/bin/codium --unity-launch " #! depreciate
 elif [[ -z ${DISPLAY} ]]; then
-    export EDITOR="neovim"
+    export EDITOR="micro"
 else
-    export EDITOR="kate"
+    export EDITOR="neovim"
 fi
 export VISUAL=$EDITOR
 
@@ -2650,10 +2675,14 @@ EOF
     if [[ -e $path_ ]]; then
         cat /proc/swaps
         swapon --show
+        systemctl --type swap
     fi
 }
 alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio -P'
-alias swapStatus='swapon --show'
+ swapStatus(){
+swapon --show
+systemctl --type swap
+}
 
 # Get server cpu info
 alias env='env ' # environment information
