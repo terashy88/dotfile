@@ -142,9 +142,12 @@ export_() {
     # export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority     #! not allow for lightDM
 
     # dirs check with ~/.config/user-dirs.dirs
-    export XDG_DESKTOP_DIR="$HOME/Schreibtisch" || export XDG_DESKTOP_DIR="$HOME/Desktop"
-    # ! test Dlss
-    export XDG_DOWNLOAD_DIR="$HOME/Downloadss"
+    if [[ -e $HOME/Desktop ]]; then
+        export XDG_DESKTOP_DIR="$HOME/Desktop"
+    else
+        export XDG_DESKTOP_DIR="$HOME/Schreibtisch"
+    fi
+    export XDG_DOWNLOAD_DIR="$HOME/Downloads"
     # XDG_TEMPLATES_DIR="$HOME/Vorlagen"
     # XDG_PUBLICSHARE_DIR="$HOME/Öffentlich"
     export XDG_DOCUMENTS_DIR="$HOME/ownCloud/D-link"
@@ -205,26 +208,28 @@ export_
 
 env_() {
     # Environment
+    # https://wiki.archlinux.org/title/GTK
+    # https://wiki.archlinux.org/title/Wayland
 
     # GTK Theme
-    export GTK_THEME=Matcha-dark-sea
+    # export GTK_THEME=kvantum nemo
 
-    # gsettings set org.gnome.desktop.interface gtk-theme Adwaita
+    # gsettings set org.gnome.desktop.interface gtk-theme kvantum
 
     # GTK Icon
     # papirus-maia-icon-theme
 
     # Wayland --
-    # GBM_BACKEND=nvidia-drm
-    # __GLX_VENDOR_LIBRARY_NAME=nvidia
+    GBM_BACKEND=nvidia-drm
+    __GLX_VENDOR_LIBRARY_NAME=nvidia
 
     # GTK
-    # GDK_BACKEND=x11
+    GDK_BACKEND=x11
     # export QT_QPA_PLATFORM=wayland
     #! export QT_STYLE_OVERRIDE="wayland"
 
-    # X11
-    # export QT_QPA_PLATFORM="wayland;xcb"
+    # X11 / QT
+    export QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
     # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
     # ! export QT_STYLE_OVERRIDE="qt6ct"
@@ -243,6 +248,14 @@ env_() {
 
     # export QT_QPA_PLATFORMTHEME=""
     # export QT_STYLE_OVERRIDE=""
+
+    # GTK 3
+    # gtk-application-prefer-dark-theme = true
+
+    # GTK 4
+    # export GDK_DPI_SCALE=0.5
+    # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 
     # which Session
     wich_session() {
@@ -267,12 +280,11 @@ env_() {
     # export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
     # export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 
-    # https://wiki.archlinux.org/title/GTK
-    # export GDK_DPI_SCALE=0.5
-    # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
-    # gsettings set org.gnome.desktop.interface color-scheme prefer-dark
-
     # unset QT_STYLE_OVERRIDE
+
+    # GTK Sound
+    # gtk-enable-event-sounds=0
+    # gtk-enable-input-feedback-sounds=0
 
     #todo
     # Terminal

@@ -168,7 +168,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop Baudline RNNoise SoX VMPK QMidiRoute Netjack Ninjam vivaldi SuperCollider ChucK Hydrogen Hugin Reaper Ocenaudio Yoshimi Hexter Padthv1 Qsynth "Pure Data" LMMS Scribus fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix Guitarix foliate audirvana LLaMA ai "Sonic Pi"  nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain Rakarrack jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop plank Cairo-dock delfin Baudline RNNoise SoX VMPK QMidiRoute Netjack Ninjam vivaldi SuperCollider ChucK Hydrogen Hugin Reaper Ocenaudio Yoshimi Hexter Padthv1 Qsynth "Pure Data" LMMS Scribus fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix Guitarix foliate audirvana LLaMA ai "Sonic Pi"  nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain Rakarrack jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -223,7 +223,10 @@ EOF
 }
 
 nvidiaInstall() {
-    # todo
+    # https://wiki.archlinux.org/title/PRIME
+    # https://wiki.archlinux.org/title/NVIDIA/Troubleshooting
+    # https://wiki.archlinux.org/title/NVIDIA_Optimus#Use_NVIDIA_graphics_only
+
     debug=off
     # wrapper="paru -S --needed"
 
@@ -284,6 +287,10 @@ nvidiaInstall() {
             echo "  nothing to install"
         fi
     fi
+
+    sudo nvidia-xconfig
+    nvidia-settings --load-config-only
+    lspci -d ::03xx
 }
 
 lightdmInstallslicker_() {
@@ -805,13 +812,15 @@ checkrebuild_() {
 
 java_status_() {
     # Java
-    vers="jdk-openjdk"
+    vers=java-21-openjdk
     pkg_="jdk-openjdk jdk-openjdk openjdk-src"
+
+    sudo pacman -Sy
 
     # check Package
     for i in $pkg_; do
         if [[ ! $(pacman -Qq "$pkg_") ]]; then
-            sudo pacman -Syu --needed "$i"
+            sudo pacman -Su --needed "$i"
         else
             echo "error Package: $i"
         fi
@@ -1616,9 +1625,10 @@ journalctl-live_() {
 
     exclude=(
         "UFW BLOCK"
-        #"blob"
         button/ # Arrow keys
+
         # portmaster
+        #"blob"
     )
 
     echo "Live Journalctl-log.."
@@ -2113,7 +2123,7 @@ v() {
 
 f() {
     # File Manager
-    m="nemo"
+    m="nemo  &> /dev/null &"
     m2="thunar"
 
     # alternative Manager
@@ -2285,8 +2295,8 @@ alias ka='pkill -5 ' #'killall'
 
 e() {
     eval "$EDITOR"
+    # eval "${EDITOR:=neovim}"
 }
-# alias e='eval "${EDITOR:=neovim}"'
 if [[ -n ${DISPLAY} ]]; then
     export EDITOR="/usr/bin/codium"
     # export EDITOR=" /usr/bin/codium --unity-launch " #! depreciate
@@ -2601,20 +2611,20 @@ swap-activate() {
 
         # Trap signals to perform cleanup actions
         cleanup_() {
-            pid=''
 
             if swapon --show | grep -q "file"; then
                 echo "deleting old swapfile"
-                sudo swapoff "$path_" &
-                pid=$!
+                sudo swapoff "$path_"
+                echo "$path_"
 
-                while kill -0 ${pid} >/dev/null 2>&1; do
+                while swapon --show | grep -q "${path_}"; do
                     sleep 2
-                    echo "please wait"
+                    printf "please wait, "
                 done
+                echo ""
             fi
 
-            [[ -e $path_ ]] && sh -c "sudo rm $path_"
+            [[ -e $path_ ]] && sh -c "sudo rm -r $path_"
 
         }
         cleanup_
@@ -2623,6 +2633,7 @@ swap-activate() {
         sudo dd if=/dev/zero of=$path_ bs=1M count="$i" status=progress || {
             echo "Error creating swapfile"
             sleep 8
+            exit 1
         }
         # set permission
         if sh -c "sudo chmod 600 $path_"; then
@@ -2639,8 +2650,8 @@ swap-activate() {
             exit 1
         }
         # aktive swap
-        sudo swapon -a || {
-            # sudo swapon $path_ || {
+        # sudo swapon -a "$path_" || {
+        sudo swapon $path_ || {
             echo "Error activating swap"
             sleep 8
             exit 1
@@ -2679,9 +2690,12 @@ EOF
     fi
 }
 alias swap_delete='sudo swapoff /swapfile ; sudo rm /swapfile ; sudo mkinitcpio -P'
- swapStatus(){
-swapon --show
-systemctl --type swap
+swapStatus() {
+    path_="/swapfile"
+
+    ls -la "$path_"
+    swapon --show
+    systemctl --type swap
 }
 
 # Get server cpu info
@@ -2699,6 +2713,7 @@ alias lspci='lspci -k ' # Grafikcard information
 openGL_info() {
     # OpenGL info
     # sudo glxinfo -B
+    glxinfo | grep NVIDIA
     eglinfo -B
 }
 alias pstree='pstree ' # systemd tree views
@@ -2785,7 +2800,7 @@ biggest_package() {
 
 # Memory / GPU / RAM
 alias free='free -h ' # Show sizes in MB
-# alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'
+# alias  meminfo='grep -i --color memory /var/log/Xorg.0.log'   # Lightdm
 alias mem-psmc='ps -Ao "comm %cpu %mem"'
 # ps aux --sort -%mem
 
@@ -3294,6 +3309,8 @@ backup_() {
     if [[ -d "$(/var/lib/snapd/snap)" ]]; then
         sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
     fi
+
+    cp -r /etc/default/grub "$HOME"/ownCloud/p-git/grub
 
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/hosts /etc/hosts"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/paru.conf /etc/paru.conf"
