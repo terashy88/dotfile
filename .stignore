@@ -226,6 +226,9 @@
 # (?d)VM-share-rsx/*
 (?d)**.vdi
 
+# Virt Maschine
+.local/share/libvirt
+
 # Android
 *thumbnails*
 # *.android

@@ -237,15 +237,35 @@ nvidiaInstall() {
 
         Install packages
         package_=(
+            # hip-runtime-nvidia
+            # lib32-nvidia-utils
+            # lib32-opencl-nvidia
+            # libnvidia-container
+            # libva-nvidia-driver
+            # linux-firmware-nvidia
+            # linux-nvidia-open-meta
+            # linux612-nvidia-open
+            # linux615-nvidia-open
+            # mhwd-nvidia
+            # mhwd-nvidia-390xx
+            # mhwd-nvidia-470xx
+            # mhwd-nvidia-570xx
+            # mhwd-nvidia-575xx
+            # nvidia-container-toolkit
+            # nvidia-driver-assistant
+            # nvidia-prime
+            # nvidia-settings
+            # nvidia-utils
+            # opencl-nvidia
+
+            # # 550xx
+            nvidia-550xx-utils
+            nvidia-550xx-dkms
             hip-runtime-nvidia
-            lib32-nvidia-utils
             lib32-opencl-nvidia
             libnvidia-container
             libva-nvidia-driver
             linux-firmware-nvidia
-            linux-nvidia-open-meta
-            linux612-nvidia-open
-            linux615-nvidia-open
             mhwd-nvidia
             mhwd-nvidia-390xx
             mhwd-nvidia-470xx
@@ -253,27 +273,7 @@ nvidiaInstall() {
             mhwd-nvidia-575xx
             nvidia-container-toolkit
             nvidia-driver-assistant
-            nvidia-prime
-            nvidia-settings
-            nvidia-utils
             opencl-nvidia
-
-            # # 550xx
-            #  hip-runtime-nvidia
-            # lib32-opencl-nvidia
-            # libnvidia-container
-            # libva-nvidia-driver
-            # linux-firmware-nvidia
-            # mhwd-nvidia
-            # mhwd-nvidia-390xx
-            # mhwd-nvidia-470xx
-            # mhwd-nvidia-570xx
-            # mhwd-nvidia-575xx
-            # nvidia-550xx-dkms
-            # nvidia-550xx-utils
-            # nvidia-container-toolkit
-            # nvidia-driver-assistant
-            # opencl-nvidia
 
         )
         # pkgIgnore=("video-nvidia" )
@@ -958,7 +958,7 @@ wine-config() {
         protontricks wine-mono vulkan-tools giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader glew lib32-dbus-glib lib32-freeglut lib32-glew lib32-gtk2 lib32-imlib2 lib32-libappindicator-gtk2 lib32-libcaca lib32-libcurl-compat lib32-libcurl-gnutls lib32-libdbusmenu-glib lib32-libdbusmenu-gtk2 lib32-libgcrypt lib32-libid3tag lib32-libidn11 lib32-libindicator-gtk2 lib32-libjpeg6-turbo lib32-libmikmod lib32-libmodplug lib32-libnm lib32-libpng12 lib32-librtmp0 lib32-libtheora lib32-libtiff lib32-libudev0-shim lib32-libvpx lib32-libwebp lib32-openssl lib32-sdl2_image lib32-sdl2_mixer lib32-sdl2_ttf lib32-sdl_image lib32-sdl_mixer lib32-sdl_ttf lib32-smpeg libcurl-compat libcurl-gnutls libdbusmenu-gtk2 libgcrypt15 libidn11 libindicator-gtk2 libjpeg6-turbo libpng librtmp0 libtiff4 libudev0-shim libvpx openssl opusfile sdl2_image sdl2_mixer sdl2_ttf sdl_image sdl_mixer sdl_ttf smpeg vulkan-extra-layers vulkan-extra-tools lib32-alsa-lib lib32-alsa-plugins lib32-gnutls lib32-libldap lib32-libpulse lib32-libva lib32-libxml2 lib32-mpg123 lib32-openal lib32-v4l-utils vulkan-intel vulkan-mesa-layers vkd3d lib32-alsa-oss
     )
 
-    set +e
+    # set +e
 
     if [[ $(pacman -Su --print-format "%v" | wc -l) -gt 0 ]]; then
         sudo pacman -Sy
@@ -982,7 +982,7 @@ wine-config() {
         env WINEPREFIX="$path_" wineboot
     fi
 
-    set -e
+    # set -e
     # echo "prefix set.. " # deprecate
     # echo ""
     # export WINEARCH=win64
