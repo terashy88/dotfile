@@ -106,8 +106,8 @@ safety-up() {
     pkg=(
         portmaster
         fail2ban
-        i2pd #! problem with snyk
-        pihole-FTL
+        i2pd       #! problem with snyk
+        pihole-FTL #! problem with portmaster
         ufw
     )
 
@@ -168,7 +168,7 @@ iinstall__() {
     # orphans: remotemouse #! buggy --
     # Hold Pkg:
 
-    #tt test: wn3d-desktop plank Cairo-dock delfin Baudline RNNoise SoX VMPK QMidiRoute Netjack Ninjam vivaldi SuperCollider ChucK Hydrogen Hugin Reaper Ocenaudio Yoshimi Hexter Padthv1 Qsynth "Pure Data" LMMS Scribus fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix Guitarix foliate audirvana LLaMA ai "Sonic Pi"  nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain Rakarrack jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
+    #tt test: wn3d-desktop plank caddy Cairo-dock delfin Baudline RNNoise SoX VMPK QMidiRoute Netjack Ninjam vivaldi SuperCollider ChucK Hydrogen Hugin Reaper Ocenaudio Yoshimi Hexter Padthv1 Qsynth "Pure Data" LMMS Scribus fcitx wechat mgard adios2 Xournal++ vdhcoapp Bubblewrap piper Ferdium gscan2 WordQuiz texlive vesktop lazarus vtk occt opencascade Liferea helm gkrellm AppImage tradingview Beagle kitty Citrix Guitarix foliate audirvana LLaMA ai "Sonic Pi"  nextcloud appimagelauncher ghostty flutter stylus chatty cheat tealdeer tldr parus links rate-mirrors OpenSnitch visit fail2ban mullvad nomacs mp3gain mp3diags QMP3Gain Rakarrack jack_mixer ZRYTHM carla Waydroid noisetorch Giada Connie ALPM whatsie qtractor zabbix
     #  qemu-base https://wiki.archlinux.org/title/QEMU
 
     # sound: LADSPA, LV2 and VST plugins
@@ -1367,8 +1367,8 @@ NetworkManager_UP() {
         dhcpcd
         dnsmasq
         iptables
-        avahi-daemon
-        avahi-daemon.socket
+        # avahi-daemon
+        # avahi-daemon.socket
         systemd-resolved
     )
     cleanup_=(
@@ -1428,8 +1428,8 @@ resolved_UP() {
         dhcpcd
         dnsmasq
         iptables
-        avahi-daemon
-        avahi-daemon.socket
+        # avahi-daemon
+        # avahi-daemon.socket
 
     )
 
@@ -1490,8 +1490,8 @@ dnsmasq_UP() {
         dhcpcd
         systemd-resolved
         iptables
-        avahi-daemon
-        avahi-daemon.socket
+        # avahi-daemon
+        # avahi-daemon.socket
     )
 
     debug=off
@@ -1557,8 +1557,8 @@ dhcpcd_UP() {
     disable_=(
         systemd-resolved
         iptables
-        avahi-daemon
-        avahi-daemon.socket
+        # avahi-daemon
+        # avahi-daemon.socket
         dnsmasq
     )
 
@@ -2170,7 +2170,6 @@ alias nvidia0300_not_proprietary='sudo mhwd --force --auto pci free 0300'
 alias mhwd-info='vulkaninfo; mhwd -l ; mhwd -li; modprobe nvidia'
 
 # Sound
-
 pulseaudio_up() {
     # Pulseaudio
     # https://wiki.archlinux.org/title/PulseAudio
@@ -2188,6 +2187,12 @@ pulseaudio_up() {
     )
 
     # disable wireplumbe
+
+    # restart
+    pulseaudio -k
+    pulseaudio --start
+
+    arecord -l
 }
 pipewire_UP() {
     # https://wiki.archlinux.org/title/JACK_Audio_Connection_Kit
@@ -2295,10 +2300,10 @@ alias ka='pkill -5 ' #'killall'
 
 e() {
     eval "$EDITOR"
-    # eval "${EDITOR:=neovim}"
+    # eval "${EDITOR:=codium} "
 }
 if [[ -n ${DISPLAY} ]]; then
-    export EDITOR="/usr/bin/codium"
+    export EDITOR="/usr/bin/codium "
     # export EDITOR=" /usr/bin/codium --unity-launch " #! depreciate
 elif [[ -z ${DISPLAY} ]]; then
     export EDITOR="micro"
@@ -2316,7 +2321,7 @@ ee() {
         count=$((count + 1))
         filename="Untitled-$count"
     done
-    $EDITOR -w "$filename"
+    eval "$EDITOR" -w "$filename"
     return
 }
 eee() {
@@ -2425,28 +2430,28 @@ gitstatus() {
 }
 
 alias gitpush_force='git push --all --force'
-alias gitlog='git log --pretty=on'
+alias gitlog='      git log --pretty=on'
 alias gitremotestatus='git remote -v'
 
-alias gitdiff='git diff'
+alias gitdiff='     git diff'
 
 # Create branch
-alias gitbranch='git branch'
-alias gitcheckout='git checkout -b'
+alias gitbranch='   git branch'
+alias gitcheckout=' git checkout -b'
 alias gitremoteadd='git remote add'
-alias gitremoterm='git remote rm'
+alias gitremoterm=' git remote rm'
 
 # Git Pull
-alias gitpull='git pull'
+alias gitpull='     git pull'
 
 # Git fetch
-alias gitfetch='git fetch'
-alias gitpull='git merge'
+alias gitfetch='    git fetch'
+alias gitpull='     git merge'
 
-alias gitclone='git clone'
-alias gittag='git tag -a -m'
-alias gitreflog='git reflog'
-alias gitl='git log --graph --oneline --decorate'
+alias gitclone='    git clone'
+alias gittag='      git tag -a -m'
+alias gitreflog='   git reflog'
+alias gitl='        git log --graph --oneline --decorate'
 alias giti='echo
 git log -n 12 --graph --oneline --decorate
 echo
@@ -2699,7 +2704,7 @@ swapStatus() {
 }
 
 # Get server cpu info
-alias env='env ' # environment information
+alias zshenv='env ' # environment information
 # unset $(env | cut -d= -f1)
 alias cpuinfo='cat /proc/cpuinfo' # shortform 'lscpu'
 alias cpuwatch='watch -n 0.5 grep \"cpu MHz\" /proc/cpuinfo'
@@ -3171,6 +3176,8 @@ systemctl-enable() {
     sudo systemctl enable --now systemd-vconsole-setup.service
     sudo update-ca-trust
     update-mime-database ~/.local/share/mime
+    update-desktop-database ~/.config/mimeapps.list
+    update-desktop-database ~/.local/share/applications/
     if [[ -d "$(/var/lib/snapd/snap)" ]]; then
         sh -c "sudo ln -s /var/lib/snapd/snap /snap"
     fi
@@ -3684,7 +3691,7 @@ samba-up() {
     sudo testparm /etc/samba/smb.conf
     sudo gpasswd sambashare -a "$USER"
     sudo systemctl restart smb nmb
-    sudo systemctl enable --now avahi-daemon.service avahi-daemon.socket
+    sudo systemctl enable --now avahi-daemon.service avahi-daemon.socket # Needed for geoclue / redshift
 
     testparm
     sudo smbstatus
