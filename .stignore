@@ -203,7 +203,7 @@
 (?d)!**.default-release/TbSync
 (?d)!**.default-release/extensions
 (?d)!**.default-release/persdict.dat
-# (?d).thunderbird/*
+(?d).thunderbird/*
 
 # Mozilla, firefox
 (?d).mozilla

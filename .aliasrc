@@ -105,9 +105,9 @@ safety-up() {
 
     pkg=(
         portmaster
-        fail2ban
-        i2pd       #! problem with snyk
-        pihole-FTL #! problem with portmaster
+        # fail2ban
+        # i2pd #! problem with snyk
+        # pihole-FTL #! problem with portmaster
         ufw
     )
 
@@ -236,46 +236,59 @@ nvidiaInstall() {
         sudo pacman -Sy
 
         Install packages
-        package_=(
-            # hip-runtime-nvidia
-            # lib32-nvidia-utils
-            # lib32-opencl-nvidia
-            # libnvidia-container
-            # libva-nvidia-driver
-            # linux-firmware-nvidia
-            # linux-nvidia-open-meta
-            # linux612-nvidia-open
-            # linux615-nvidia-open
-            # mhwd-nvidia
-            # mhwd-nvidia-390xx
-            # mhwd-nvidia-470xx
-            # mhwd-nvidia-570xx
-            # mhwd-nvidia-575xx
-            # nvidia-container-toolkit
-            # nvidia-driver-assistant
-            # nvidia-prime
-            # nvidia-settings
-            # nvidia-utils
-            # opencl-nvidia
 
-            # # 550xx
-            nvidia-550xx-utils
-            nvidia-550xx-dkms
-            hip-runtime-nvidia
-            lib32-opencl-nvidia
-            libnvidia-container
-            libva-nvidia-driver
-            linux-firmware-nvidia
-            mhwd-nvidia
-            mhwd-nvidia-390xx
-            mhwd-nvidia-470xx
-            mhwd-nvidia-570xx
-            mhwd-nvidia-575xx
-            nvidia-container-toolkit
-            nvidia-driver-assistant
-            opencl-nvidia
+        nvidia550_=off
+        if [[ $nvidia550_ == on ]]; then
 
-        )
+            nvidia550=(
+                # # 550xx
+                nvidia-550xx-utils
+                nvidia-550xx-dkms
+                hip-runtime-nvidia
+                lib32-opencl-nvidia
+                libnvidia-container
+                libva-nvidia-driver
+                linux-firmware-nvidia
+                mhwd-nvidia
+                mhwd-nvidia-390xx
+                mhwd-nvidia-470xx
+                mhwd-nvidia-570xx
+                mhwd-nvidia-575xx
+                nvidia-container-toolkit
+                nvidia-driver-assistant
+                opencl-nvidia
+            )
+        else
+            nvidia550=(
+                hip-runtime-nvidia
+                lib32-nvidia-utils
+                lib32-opencl-nvidia
+                libnvidia-container
+                libva-nvidia-driver
+                linux-firmware-nvidia
+                linux-nvidia-open-meta
+                linux612-nvidia-open
+                linux615-nvidia-open
+                mhwd-nvidia
+                mhwd-nvidia-390xx
+                mhwd-nvidia-470xx
+                mhwd-nvidia-570xx
+                mhwd-nvidia-575xx
+                nvidia-container-toolkit
+                nvidia-driver-assistant
+                nvidia-prime
+                nvidia-settings
+                nvidia-utils
+                opencl-nvidia
+            )
+        fi
+
+        package_="${nvidia550}" # (
+        # package_=$nvidia550__ # (
+
+        # "${nvidia550__}"
+        #
+        # )
         # pkgIgnore=("video-nvidia" )
 
         if [[ -n ${package_[*]} ]]; then
@@ -2299,11 +2312,11 @@ alias diff='diff --color=auto'
 alias ka='pkill -5 ' #'killall'
 
 e() {
-    eval "$EDITOR"
+    eval "$EDITOR $*"
     # eval "${EDITOR:=codium} "
 }
 if [[ -n ${DISPLAY} ]]; then
-    export EDITOR="/usr/bin/codium "
+    export EDITOR="/usr/bin/codium"
     # export EDITOR=" /usr/bin/codium --unity-launch " #! depreciate
 elif [[ -z ${DISPLAY} ]]; then
     export EDITOR="micro"
@@ -3317,7 +3330,7 @@ backup_() {
         sh -c "sudo -u root ln -s /var/lib/snapd/snap /snap"
     fi
 
-    cp -r /etc/default/grub "$HOME"/ownCloud/p-git/grub
+    sh -c 'sudo cp -fr /etc/default/grub "$HOME"/ownCloud/p-git/grub'
 
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/hosts /etc/hosts"
     sh -c "sudo -u root ln -fv ~/ownCloud/dotfile/paru.conf /etc/paru.conf"
@@ -3344,12 +3357,12 @@ backup_() {
 
     betterbird_() {
         # Betterbird / Thunderbird Sync
-        ln "$HOME"/*.betterbird/training.dat "$HOME"/.thunderbird/*.thunderbird/training.dat
-        ln "$HOME"/*.betterbird/quicktext/templates.xml "$HOME"/.thunderbird/*.thunderbird/quicktext/templates.xml
-        ln "$HOME"/*.betterbird/quicktext/scripts.xml "$HOME"/.thunderbird/*.thunderbird/quicktext/scripts.xml
-        # ln "$HOME"/*.betterbird/ImapMail/**/msgFilterRules.dat
+        ln -fv "$HOME"/.thunderbird/*.betterbird/training.dat "$HOME"/.thunderbird/*.thunderbird/training.dat
+        ln -fv "$HOME"/.thunderbird/*.betterbird/quicktext/templates.xml "$HOME"/.thunderbird/*.thunderbird/quicktext/templates.xml
+        ln -fv "$HOME"/.thunderbird/*.betterbird/quicktext/scripts.xml "$HOME"/.thunderbird/*.thunderbird/quicktext/scripts.xml
+        # ln "$HOME"/.thunderbird/*.betterbird/ImapMail/**/msgFilterRules.dat "$HOME"/.thunderbird/*.thunderbird/ImapMail/**/msgFilterRules.dat
     }
-    if pacman -Qq betterbird-bin; then
+    if command -v betterbird &>/dev/null; then
         betterbird_
     fi
 }

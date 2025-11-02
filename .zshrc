@@ -220,15 +220,15 @@ env_() {
     # papirus-maia-icon-theme
 
     # Wayland --
-    GBM_BACKEND=nvidia-drm
-    __GLX_VENDOR_LIBRARY_NAME=nvidia
+    # GBM_BACKEND=nvidia-drm
+    # __GLX_VENDOR_LIBRARY_NAME=nvidia
 
     # GTK
     GDK_BACKEND=x11
     # export QT_QPA_PLATFORM=wayland
     #! export QT_STYLE_OVERRIDE="wayland"
 
-    # X11 / QT
+    # X11 / QT / libreoffice
     export QT_QPA_PLATFORM="wayland;xcb"
     # QT Gnome
     # export QT_QPA_PLATFORMTHEME="qt6ct" # Gnome / Plasma
@@ -253,8 +253,8 @@ env_() {
     # gtk-application-prefer-dark-theme = true
 
     # GTK 4
-    # export GDK_DPI_SCALE=0.5
-    # xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
+    export GDK_DPI_SCALE=0.5
+    xfconf-query -c xsettings -p /Gdk/WindowScalingFactor -s 1
     gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 
     # which Session

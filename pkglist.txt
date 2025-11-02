@@ -24,6 +24,7 @@ aspell-de
 aspell-en
 aur-auto-vote-git
 auto-auto-complete
+autorandr
 b43-fwcutter
 benchmark
 betterbird-bin
@@ -243,6 +244,7 @@ memtester
 menulibre
 mesa-demos
 meson
+mhwd-amdgpu
 micro
 mingw-w64-gcc
 mixxx
@@ -398,7 +400,6 @@ virt-viewer
 vkd3d
 vscodium-bin-features
 vscodium-bin-marketplace
-vscodium-features
 vulkan-extra-layers
 vulkan-extra-tools
 vulkan-utility-libraries
